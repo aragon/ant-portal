@@ -18,7 +18,7 @@ export default function initializeSentry(): void {
     initSentry({
       dsn,
       environment,
-      release: 'network-dashboard@' + env('BUILD'),
+      release: 'aragon-migrate@' + env('BUILD'),
     })
   }
 }
