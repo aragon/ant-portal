@@ -1,4 +1,4 @@
 export const theme = {
-  _name: 'network-dashboard',
+  _name: 'aragon-migrate',
   _appearance: 'light',
 }
