@@ -1,9 +1,29 @@
 {
   "name": "aragon-migrate",
+  "description": "Aragon Migration Tool",
   "version": "0.1.0",
   "private": true,
   "license": "AGPL-3.0-or-later",
   "author": "Aragon Association <legal@aragon.org>",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/aragon/migrate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aragon/migrate/issues"
+  },
+  "homepage": "https://github.com/aragon/migrate#readme",
+  "keywords": [
+    "aragon",
+    "network",
+    "ethereum",
+    "dapp",
+    "blockchain",
+    "startups"
+  ],
+  "engines": {
+    "node": ">= 12.0.0"
+  },
   "bundlewatch": {
     "files": [
       {
