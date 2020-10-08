@@ -1,6 +1,6 @@
-import { EnvNetworkType, EnvNetworkName } from './types'
+import { EnvNetworkConfig, EnvNetworkName } from './types'
 
-const networks = new Map<EnvNetworkName, EnvNetworkType>([
+const networks = new Map<EnvNetworkName, EnvNetworkConfig>([
   [
     'ethereum',
     {
@@ -25,6 +25,6 @@ const networks = new Map<EnvNetworkName, EnvNetworkType>([
   ],
 ])
 
-export function getNetworkConfig(name: EnvNetworkName): EnvNetworkType {
-  return networks.get(name) as EnvNetworkType
+export function getNetworkConfig(name: EnvNetworkName): EnvNetworkConfig {
+  return networks.get(name) as EnvNetworkConfig
 }

@@ -3,7 +3,7 @@ import React, { useMemo, useRef } from 'react'
 import { GU, Link, textStyle, useTheme } from '@aragon/ui'
 import { ChainUnsupportedError } from 'use-wallet'
 import { getNetworkName } from '../../lib/web3-utils'
-import { networkEnvironment } from '../../environment/current-environment'
+import { networkEnvironment } from '../../environment'
 import connectionError from './assets/connection-error.png'
 import { WalletError } from './types'
 

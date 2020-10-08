@@ -1,9 +1,9 @@
 import React, { ReactNode, useContext, useMemo } from 'react'
 import { providers as EthersProviders } from 'ethers'
 import { UseWalletProvider, useWallet } from 'use-wallet'
-import { networkEnvironment } from '../environment/current-environment'
-import { getUseWalletConnectors } from '../components/Account/ethereum-providers'
 import { ExternalProvider } from '@ethersproject/providers'
+import { networkEnvironment } from '../environment'
+import { getUseWalletConnectors } from '../components/Account/ethereum-providers'
 import { WalletWithProvider } from '../components/Account/types'
 
 type WalletContext = WalletWithProvider & (ExternalProvider | null)

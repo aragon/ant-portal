@@ -9,7 +9,7 @@ export interface EnvVariables {
   SENTRY_DSN(): string
 }
 
-export interface EnvNetworkType {
+export interface EnvNetworkConfig {
   chainId: number
   legacyNetworkType: string
   endpoints: {
