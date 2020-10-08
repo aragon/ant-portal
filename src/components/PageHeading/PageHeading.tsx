@@ -57,6 +57,9 @@ function PageHeading({
             line-height: 1.4;
             margin-top: ${margin}px;
             color: ${theme.surfaceContentSecondary};
+            max-width: ${95 * GU}px;
+            margin-left: auto;
+            margin-right: auto;
           `}
         >
           {description}
@@ -72,13 +75,7 @@ type HeadingProps = {
 }
 
 const Heading = ({ level, children, ...props }: HeadingProps) => {
-  const { tag } = levelProperties[level]
-
-  const Heading = ({ ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
-    return React.createElement(tag, props, children)
-  }
-
-  return <Heading {...props}>{children}</Heading>
+  return React.createElement(levelProperties[level].tag, props, children)
 }
 
 export default PageHeading
