@@ -1,35 +1,49 @@
 import React from 'react'
-import { mockPromiseLatency, MOCK_HASH } from '../../mock'
+import { ConversionStage, TokenConversionType } from './types'
+import Converter from './Converter/Converter'
 import LayoutGutter from '../Layout/LayoutGutter'
 import PageHeading from '../PageHeading/PageHeading'
-import Stepper from '../Stepper/Stepper'
-import { StepItems } from '../Stepper/types'
+import { MigrateStateProvider, useMigrateState } from './MigrateStateProvider'
 
-const mockSteps: StepItems = [
-  {
-    title: 'Initiate ANT migration',
-    handleSign: async ({ setSuccess, setWorking, setError, setHash }) => {
-      try {
-        await mockPromiseLatency(1000)
-        setWorking()
-        setHash(MOCK_HASH)
-        await mockPromiseLatency(1000)
-        setSuccess()
-      } catch (err) {
-        console.error(err)
-        setError()
-      }
+type MigrateProps = {
+  conversionType: TokenConversionType
+}
+
+function Migrate({ conversionType }: MigrateProps): JSX.Element {
+  return (
+    <MigrateStateProvider conversionType={conversionType}>
+      <MigrateContent />
+    </MigrateStateProvider>
+  )
+}
+
+type PageDetails = Record<
+  TokenConversionType,
+  { [key in ConversionStage]: { title: string; description: string } }
+>
+
+const pageDetails: PageDetails = {
+  ANT: {
+    entering: {
+      title: 'Aragon Migrate',
+      description: 'How much ANT would you like to upgrade?',
+    },
+    signing: {
+      title: 'Aragon Migrate',
+      description: 'Upgrading your ANT',
     },
   },
-]
+}
 
-function Migrate(): JSX.Element {
+function MigrateContent() {
+  const { conversionStage, conversionType } = useMigrateState()
+
+  const { title, description } = pageDetails[conversionType][conversionStage]
+
   return (
     <LayoutGutter>
-      <PageHeading
-        title="Aragon Migrate"
-        description="How much ANT would you like to upgrade?"
-      />
+      <PageHeading title={title} description={description} />
+
       <div
         css={`
           height: 400px;
@@ -39,7 +53,7 @@ function Migrate(): JSX.Element {
           width: 100%;
         `}
       >
-        <Stepper steps={mockSteps} />
+        <Converter />
       </div>
     </LayoutGutter>
   )
