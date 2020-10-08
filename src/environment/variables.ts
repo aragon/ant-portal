@@ -2,7 +2,7 @@ import { EnvNetworkName, EnvVariables } from './types'
 
 const DEFAULT_NETWORK_ENVIRONMENT: EnvNetworkName = 'rinkeby'
 
-const ENV_VARS: EnvVariables = {
+export const ENV_VARS: EnvVariables = {
   BUILD() {
     return process.env.BUILD || 'undefined'
   },
@@ -22,15 +22,4 @@ const ENV_VARS: EnvVariables = {
     const dsn = process.env.SENTRY_DSN || ''
     return dsn.trim()
   },
-}
-
-export function env(
-  name: keyof Omit<EnvVariables, 'NETWORK_ENVIRONMENT'>
-): string {
-  const envVar = ENV_VARS[name]
-  return envVar()
-}
-
-export function envNetwork(): EnvNetworkName {
-  return ENV_VARS.NETWORK_ENVIRONMENT() as EnvNetworkName
 }

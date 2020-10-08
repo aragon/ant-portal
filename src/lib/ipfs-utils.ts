@@ -1,7 +1,6 @@
-import { networkEnvironment } from '../environment/current-environment'
-
 // @ts-ignore
 import isIPFS from 'is-ipfs'
+import { networkEnvironment } from '../environment'
 
 export async function ipfsGet(
   cid: string

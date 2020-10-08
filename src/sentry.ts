@@ -3,11 +3,10 @@ import {
   captureMessage,
   captureException,
 } from '@sentry/browser'
-import { env } from './environment/environment'
+import { envVar, networkEnvironment } from './environment'
 import { getNetworkName } from './lib/web3-utils'
-import { networkEnvironment } from './environment/current-environment'
 
-const dsn = env('SENTRY_DSN')
+const dsn = envVar('SENTRY_DSN')
 const { chainId } = networkEnvironment
 const environment = getNetworkName(chainId)
 
@@ -18,7 +17,7 @@ export default function initializeSentry(): void {
     initSentry({
       dsn,
       environment,
-      release: 'aragon-migrate@' + env('BUILD'),
+      release: 'aragon-migrate@' + envVar('BUILD'),
     })
   }
 }

@@ -5,7 +5,7 @@ import status from './icons/status.png'
 import wallet from './icons/wallet.svg'
 import fortmatic from './icons/fortmatic.svg'
 import portis from './icons/portis.svg'
-import { env } from '../../../environment/environment'
+import { envVar } from '../../../environment'
 import {
   KnownProviderId,
   ProviderConfig,
@@ -120,17 +120,17 @@ function getProviderFromUseWalletId(id: WalletConnector): ProviderConfig {
 export function getUseWalletProviders(): WalletConfig[] {
   const providers: WalletConfig[] = [{ id: 'injected' }, { id: 'frame' }]
 
-  if (env('FORTMATIC_API_KEY')) {
+  if (envVar('FORTMATIC_API_KEY')) {
     providers.push({
       id: 'fortmatic',
-      useWalletConf: { apiKey: env('FORTMATIC_API_KEY') },
+      useWalletConf: { apiKey: envVar('FORTMATIC_API_KEY') },
     })
   }
 
-  if (env('PORTIS_DAPP_ID')) {
+  if (envVar('PORTIS_DAPP_ID')) {
     providers.push({
       id: 'portis',
-      useWalletConf: { dAppId: env('PORTIS_DAPP_ID') },
+      useWalletConf: { dAppId: envVar('PORTIS_DAPP_ID') },
     })
   }
 

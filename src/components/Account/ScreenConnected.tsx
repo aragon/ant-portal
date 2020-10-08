@@ -11,7 +11,7 @@ import {
   useTheme,
   // @ts-ignore
 } from '@aragon/ui'
-import { networkEnvironment } from '../../environment/current-environment'
+import { networkEnvironment } from '../../environment'
 import { getProviderFromUseWalletId } from './ethereum-providers'
 import { useCopyToClipboard } from '../../hooks/useCopyToClipboard'
 import { useWallet } from '../../providers/Wallet'

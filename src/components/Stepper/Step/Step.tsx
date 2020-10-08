@@ -3,7 +3,7 @@ import { Transition, animated } from 'react-spring/renderprops'
 // @ts-ignore
 import { TransactionBadge, textStyle, useTheme, RADIUS, GU } from '@aragon/ui'
 import Divider from './Divider'
-import { networkEnvironment } from '../../../environment/current-environment'
+import { networkEnvironment } from '../../../environment'
 import StatusVisual from './StatusVisual'
 
 import { springs } from '../../../style/springs'
