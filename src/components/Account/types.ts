@@ -7,6 +7,7 @@ import {
   ConnectorUnsupportedError,
 } from 'use-wallet'
 
+// Providers
 export type KnownProviderId =
   | 'frame'
   | 'metamask'
@@ -16,7 +17,7 @@ export type KnownProviderId =
   | 'portis'
   | 'unknown'
 
-export interface ProviderConfig {
+export type ProviderConfig = {
   id: KnownProviderId
   name: string
   type: string
@@ -28,6 +29,7 @@ export type Providers = {
   [key in KnownProviderId]: ProviderConfig
 }
 
+// Wallet
 export type WalletProvider = ExternalProvider
 export type WalletWithProvider = Wallet<WalletProvider>
 export type WalletConnector = WalletWithProvider['connector']
@@ -37,14 +39,14 @@ export type WalletError =
   | ConnectionRejectedError
   | ConnectorConfigError
 
-export type ScreenId = 'providers' | 'connecting' | 'connected' | 'error'
-
-export interface ScreenConfig {
-  id: ScreenId
-  title: string
-}
-
 export type WalletConfig = {
   id: WalletConnector
   useWalletConf?: { apiKey?: string; dAppId?: string }
+}
+
+// Account module screens
+export type ScreenId = 'providers' | 'connecting' | 'connected' | 'error'
+export type ScreenConfig = {
+  id: ScreenId
+  title: string
 }

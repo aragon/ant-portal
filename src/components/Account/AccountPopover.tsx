@@ -15,11 +15,11 @@ interface ScreenData {
 }
 
 type AccountPopoverProps = {
-  children: (arg0: ScreenData) => ReactNode
+  children: (screenData: ScreenData) => ReactNode
   direction: -1 | 1
   heading: ReactNode
   onClose: () => void
-  opener: any
+  opener: HTMLElement
   screenData: ScreenData
   screenId: string
   visible: boolean

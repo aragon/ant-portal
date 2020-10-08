@@ -25,7 +25,7 @@ function AccountModule(): JSX.Element {
     activatingDelayed,
     setActivatingDelayed,
   ] = useState<WalletConnector | null>(null)
-  const buttonRef = useRef(null)
+  const buttonRef = useRef() as React.MutableRefObject<HTMLDivElement>
   const { below } = useViewport()
   const compactMode = below('medium')
 
