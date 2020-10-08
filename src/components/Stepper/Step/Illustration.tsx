@@ -7,9 +7,10 @@ type IllustrationProps = {
   index: number
 }
 
-const gradients: {
-  [key in IllustrationMode]: [[string, string], [string, string]]
-} = {
+const gradients: Record<
+  IllustrationMode,
+  [[string, string], [string, string]]
+> = {
   neutral: [
     ['#98f9ff', '#00c2ff'],
     ['#01e8f7', '#00c2ff'],
