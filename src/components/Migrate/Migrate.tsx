@@ -1,6 +1,7 @@
 import React from 'react'
 import { mockPromiseLatency, MOCK_HASH } from '../../mock'
 import LayoutGutter from '../Layout/LayoutGutter'
+import PageHeading from '../PageHeading/PageHeading'
 import Stepper from '../Stepper/Stepper'
 import { StepItems } from '../Stepper/types'
 
@@ -25,6 +26,10 @@ const mockSteps: StepItems = [
 function Migrate(): JSX.Element {
   return (
     <LayoutGutter>
+      <PageHeading
+        title="Aragon Migrate"
+        description="How much ANT would you like to upgrade?"
+      />
       <div
         css={`
           height: 400px;
