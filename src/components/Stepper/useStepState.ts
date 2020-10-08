@@ -20,7 +20,7 @@ type Action = [
 type StepStateReturn = {
   stepState: StepState[]
   updateStep: Dispatch<Action>
-  initialStatus: typeof INITIAL_STATUS
+  initialStatus: StepStatus
 }
 
 function reduceSteps(
