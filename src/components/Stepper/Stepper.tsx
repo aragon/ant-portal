@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Transition, animated } from 'react-spring/renderprops'
 // @ts-ignore
 import { springs, noop, useTheme, GU } from '@aragon/ui'
@@ -6,54 +6,17 @@ import Step from './Step/Step'
 import { useDisableAnimation } from '../../hooks/useDisableAnimation'
 import { useMounted } from '../../hooks/useMounted'
 import useStepperLayout from './useStepperLayout'
-import { StepItems, StepStatus } from './types'
+import { StepItems } from './types'
+import useStepState from './useStepState'
 
 const AnimatedDiv = animated.div
 
-const INITIAL_STATUS = 'prompting'
 const DEFAULT_DESCRIPTIONS = {
   waiting: 'Waiting for signature',
   prompting: 'Waiting for signature',
   working: 'Transaction being mined',
   success: 'Transaction mined',
   error: 'An error has occured',
-}
-
-interface StepState {
-  status: StepStatus
-  hash?: string
-}
-
-type Action = [
-  'setHash' | 'setStatus',
-  {
-    status?: StepStatus
-    hash?: string
-    stepIndex: number
-  }
-]
-
-function initialStepState(steps: StepItems): StepState[] {
-  return steps.map((_, i) => {
-    return {
-      status: i === 0 ? INITIAL_STATUS : 'waiting',
-    }
-  })
-}
-
-function reduceSteps(
-  steps: StepState[],
-  [action, { status, stepIndex, hash }]: Action
-) {
-  if (action === 'setHash') {
-    steps[stepIndex].hash = hash
-    return [...steps]
-  }
-  if (action === 'setStatus' && status) {
-    steps[stepIndex].status = status
-    return [...steps]
-  }
-  return steps
 }
 
 type StepperProps = {
@@ -70,10 +33,7 @@ function Stepper({
   const mounted = useMounted()
   const [animationDisabled, enableAnimation] = useDisableAnimation()
   const [stepperStage, setStepperStage] = useState(0)
-  const [stepState, updateStep] = useReducer(
-    reduceSteps,
-    initialStepState(steps)
-  )
+  const { stepState, updateStep, initialStatus } = useStepState(steps)
   const { outerBoundsRef, innerBoundsRef, layout } = useStepperLayout()
 
   const stepsCount = steps.length - 1
@@ -119,7 +79,7 @@ function Stepper({
         updateStep(['setStatus', { stepIndex: stepperStage, status }])
       }
     },
-    [stepperStage, mounted]
+    [stepperStage, mounted, updateStep]
   )
 
   const updateHash = useCallback(
@@ -128,13 +88,13 @@ function Stepper({
         updateStep(['setHash', { stepIndex: stepperStage, hash }])
       }
     },
-    [stepperStage, mounted]
+    [stepperStage, mounted, updateStep]
   )
 
   const handleSign = useCallback(() => {
     const { handleSign } = steps[stepperStage]
 
-    updateStepStatus(INITIAL_STATUS)
+    updateStepStatus(initialStatus)
 
     // Pass state updates as render props to handleSign
     handleSign({
@@ -165,6 +125,7 @@ function Stepper({
     stepsCount,
     mounted,
     onComplete,
+    initialStatus,
   ])
 
   // Trigger sign prompt when moving to a new step
