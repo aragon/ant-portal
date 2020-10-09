@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+import { css } from 'styled-components'
 import {
   Button,
   TextInput,
@@ -9,10 +10,9 @@ import {
   GU,
   // @ts-ignore
 } from '@aragon/ui'
-import { useMigrateState } from '../MigrateStateProvider'
-import { css } from 'styled-components'
 import { fontWeight } from '../../../style/font'
 import { TokenConversionType } from '../types'
+import { useMigrateState } from '../MigrateStateProvider'
 
 const BLOG_POST_URL = ''
 const MOCK_AMOUNT = '78,000'
@@ -41,8 +41,7 @@ function ConverterForm(): JSX.Element {
   const { layoutName } = useLayout()
   const { conversionType } = useMigrateState()
 
-  const compactMode = layoutName === 'medium' || layoutName === 'small'
-
+  const compactMode = layoutName === 'small' || layoutName === 'medium'
   const tokenSymbol = TOKEN_SYMBOL[conversionType]
 
   return (
@@ -83,7 +82,7 @@ function ConverterForm(): JSX.Element {
           justify-content: center;
           grid-area: rate;
           border: 1px dashed ${theme.border};
-          border-radius: 8px;
+          border-radius: ${1 * GU}px;
         `}
       >
         Conversion Rate
@@ -102,7 +101,7 @@ function ConverterForm(): JSX.Element {
 function FormControls() {
   const [amount, setAmount] = useState('')
   const theme = useTheme()
-  const { setSigningStage } = useMigrateState()
+  const { continueToSigning } = useMigrateState()
   const { layoutName } = useLayout()
   const { conversionType } = useMigrateState()
 
@@ -165,13 +164,11 @@ function FormControls() {
           display: grid;
           grid-gap: ${1 * GU}px;
 
-          grid-template-columns: ${stackedButtons ? 'auto' : '0.75fr 1fr'};
+          grid-template-columns: ${stackedButtons ? 'auto' : '1fr 1fr'};
         `}
       >
-        <Button onClick={setSigningStage} wide>
-          Back
-        </Button>
-        <Button onClick={setSigningStage} mode="strong" wide>
+        <Button wide>Back</Button>
+        <Button onClick={continueToSigning} mode="strong" wide>
           Continue
         </Button>
       </div>

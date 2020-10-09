@@ -15,7 +15,7 @@ type MigrateStateProviderProps = {
 type MigrateStateContext = {
   conversionStage: ConversionStage
   conversionType: TokenConversionType
-  setSigningStage: () => void
+  continueToSigning: () => void
 }
 
 const UseMigrateStateContext = React.createContext<MigrateStateContext | null>(
@@ -30,11 +30,11 @@ function MigrateStateProvider({
     'entering'
   )
 
-  const setSigningStage = useCallback(() => setConversionStage('signing'), [])
+  const continueToSigning = useCallback(() => setConversionStage('signing'), [])
 
   const contextValue = useMemo(
-    () => ({ conversionStage, conversionType, setSigningStage }),
-    [conversionStage, conversionType, setSigningStage]
+    () => ({ conversionStage, conversionType, continueToSigning }),
+    [conversionStage, conversionType, continueToSigning]
   )
 
   return (
