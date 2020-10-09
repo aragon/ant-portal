@@ -8,11 +8,23 @@ type Props = {
 
 const MainView = React.memo(function MainView({ children }: Props) {
   return (
-    <>
+    <div
+      css={`
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      `}
+    >
       <Header />
-      <main>{children}</main>
+      <main
+        css={`
+          flex: 1;
+        `}
+      >
+        {children}
+      </main>
       <Footer />
-    </>
+    </div>
   )
 })
 
