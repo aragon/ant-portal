@@ -5,6 +5,7 @@ import * as serviceWorker from './serviceWorker'
 import { theme } from './style/theme'
 // @ts-ignore
 import { Main } from '@aragon/ui'
+import { FontStack } from './style/font'
 
 ReactDOM.render(
   // Due to an issue with styled-components v5, global styles must be applied outside of <React.StrictMode/> to avoid duplicate styles inside the head.
@@ -12,6 +13,7 @@ ReactDOM.render(
   // See – https://github.com/styled-components/styled-components/issues/3008
   <Main assetsUrl="./aragon-ui/" layout={false} theme={theme}>
     <React.StrictMode>
+      <FontStack />
       <App />
     </React.StrictMode>
   </Main>,
