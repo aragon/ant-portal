@@ -204,14 +204,7 @@ function StepIllustration({ number, status }: StepIllustrationProps) {
       `}
     >
       {renderIllustration ? (
-        <div
-          css={`
-            border-radius: 100%;
-            overflow: hidden;
-          `}
-        >
-          <TokenIllustration mode={illustrationMode} index={number} />
-        </div>
+        <TokenIllustration mode={illustrationMode} index={number} />
       ) : (
         <div
           css={`

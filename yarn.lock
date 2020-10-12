@@ -1159,7 +1159,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.1", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.1", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
   version "7.11.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.11.2.tgz#f549c13c754cc40b87644b9fa9f09a6a95fe0736"
   integrity sha512-TeWkU52so0mPtDcaCTxNBI/IHiz0pZgr8VEFqXFtZWpYD08ZB6FaSwVAS8MKRQAP3bYKiVjwysOJgMFY28o6Tw==
@@ -11108,6 +11108,13 @@ pocket-js-core@0.0.3:
   integrity sha512-OUTEvEVutdjLT6YyldvAlSebpBueUUWg2XKxGNt5u3QqrmLpBOOBmdDnGMNJ+lEwXtko+JqgwFq+HTi4g1QDVg==
   dependencies:
     axios "^0.18.0"
+
+polished@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/polished/-/polished-4.0.2.tgz#58f6a215dd93038c5b3808725ed31e208c2e6403"
+  integrity sha512-TJd61zfqQrVdysU04GzSKThFWgQrpFLrHZgKfv5BwRSxOrqFIgzLYKWWML4Q8EMMsJBUgwMitI10w9lpBMo+xQ==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
 
 popper.js@^1.14.4:
   version "1.16.1"
