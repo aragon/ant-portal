@@ -48,15 +48,14 @@ function MigrateContent() {
     <LayoutGutter
       css={`
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         height: 100%;
       `}
     >
       <div
         css={`
-          display: flex;
-          align-items: flex-end;
-          flex: 1;
+          margin-top: -${8 * GU}px;
           width: 100%;
         `}
       >
@@ -68,24 +67,17 @@ function MigrateContent() {
             margin-bottom: ${6 * GU}px;
           `}
         />
-      </div>
 
-      <div
-        css={`
-          display: flex;
-          justify-content: center;
-          width: 100%;
-        `}
-      >
-        <Converter />
+        <div
+          css={`
+            display: flex;
+            justify-content: center;
+            width: 100%;
+          `}
+        >
+          <Converter />
+        </div>
       </div>
-
-      {/* Bookend to centrally align converter via flex */}
-      <div
-        css={`
-          flex: 1;
-        `}
-      ></div>
     </LayoutGutter>
   )
 }
