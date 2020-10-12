@@ -21,46 +21,49 @@ function ConverterSigning(): JSX.Element {
       renderInfo={({ stepperStatus, handleSign }) => (
         <div
           css={`
-            margin-top: ${6 * GU}px;
+            margin-top: ${4 * GU}px;
           `}
         >
-          {stepperStatus === 'error' ? (
-            <div
-              css={`
-                display: grid;
-                grid-gap: ${1 * GU}px;
-                grid-template-columns: ${stackedButtons ? 'auto' : '1fr 1fr'};
-                margin-bottom: ${2 * GU}px;
-              `}
-            >
-              <Button wide onClick={handleBackToHome}>
-                Abandon process
+          <div
+            css={`
+              margin-bottom: ${4 * GU}px;
+            `}
+          >
+            {stepperStatus === 'error' ? (
+              <div
+                css={`
+                  display: grid;
+                  grid-gap: ${1 * GU}px;
+                  grid-template-columns: ${stackedButtons ? 'auto' : '1fr 1fr'};
+                `}
+              >
+                <Button wide onClick={handleBackToHome}>
+                  Abandon process
+                </Button>
+                <Button mode="strong" onClick={handleSign} wide>
+                  Repeat transaction
+                </Button>
+              </div>
+            ) : (
+              <Button
+                mode="strong"
+                onClick={handleBackToHome}
+                disabled={stepperStatus === 'working'}
+                wide
+                css={`
+                  max-width: ${30 * GU}px;
+                  margin: auto;
+                `}
+              >
+                Back to Migrate
               </Button>
-              <Button mode="strong" onClick={handleSign} wide>
-                Repeat transaction
-              </Button>
-            </div>
-          ) : (
-            <Button
-              mode="strong"
-              onClick={handleBackToHome}
-              disabled={stepperStatus === 'working'}
-              wide
-              css={`
-                max-width: ${30 * GU}px;
-                margin-left: auto;
-                margin-right: auto;
-                margin-bottom: ${2 * GU}px;
-              `}
-            >
-              Back to Migrate
-            </Button>
-          )}
+            )}
+          </div>
           <SigningInfo status={stepperStatus} />
         </div>
       )}
       css={`
-        padding-top: ${2 * GU}px;
+        padding-top: ${4 * GU}px;
         width: 100%;
         max-width: ${70 * GU}px;
       `}
