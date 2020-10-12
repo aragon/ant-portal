@@ -67,10 +67,11 @@ function StatusVisual({
   return (
     <div
       css={`
+        font-size: ${14 * GU}px;
         display: flex;
         position: relative;
-        width: ${13.5 * GU}px;
-        height: ${13.5 * GU}px;
+        width: 1em;
+        height: 1em;
       `}
       {...props}
     >
@@ -103,11 +104,11 @@ function StatusVisual({
               onStart={enableAnimation}
               immediate={animationDisabled}
               from={{
-                transform: 'scale3d(1.3, 1.3, 1)',
+                scale: 1.3,
               }}
               enter={{
                 opacity: 1,
-                transform: 'scale3d(1, 1, 1)',
+                scale: 1,
               }}
               leave={{
                 position: 'absolute' as const,
@@ -126,11 +127,19 @@ function StatusVisual({
                       padding: ${0.25 * GU}px;
                       background-color: ${theme.surface};
                       color: ${color};
-                      border: 1px solid currentColor;
+                      border: 2px solid currentColor;
                       bottom: 0;
                       right: 0;
                     `}
-                    style={animProps}
+                    style={{
+                      ...animProps,
+                      // Prevent rasterization artifacts by removing transform once animation has completed
+                      // Current spring version has misaligned typings on 'interpolate'
+                      // @ts-ignore
+                      transform: animProps.scale.interpolate((scale: number) =>
+                        scale !== 1 ? `scale3d(${scale}, ${scale}, 1)` : 'none'
+                      ),
+                    }}
                   >
                     {currentStatusIcon}
                   </AnimatedDiv>
@@ -189,8 +198,8 @@ function StepIllustration({ number, status }: StepIllustrationProps) {
   return (
     <div
       css={`
-        width: ${8.5 * GU}px;
-        height: ${8.5 * GU}px;
+        width: 0.65em;
+        height: 0.65em;
       `}
     >
       {renderIllustration ? (

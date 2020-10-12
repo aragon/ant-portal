@@ -5,7 +5,6 @@ import { TransactionBadge, textStyle, useTheme, RADIUS, GU } from '@aragon/ui'
 import Divider from './Divider'
 import { networkEnvironment } from '../../../environment'
 import StatusVisual from './StatusVisual'
-
 import { springs } from '../../../style/springs'
 import { useDisableAnimation } from '../../../hooks/useDisableAnimation'
 import { StepStatus } from '../types'
@@ -73,7 +72,7 @@ function Step({
           flex-direction: column;
           align-items: center;
 
-          width: ${31 * GU}px;
+          width: ${35 * GU}px;
         `}
         {...props}
       >
@@ -87,11 +86,10 @@ function Step({
         />
         <h2
           css={`
-            ${textStyle('title4')}
-
+            font-size: 22px;
             line-height: 1.2;
             text-align: center;
-            margin-bottom: ${1 * GU}px;
+            margin-bottom: ${1.2 * GU}px;
           `}
         >
           {status === 'error' ? 'Transaction failed' : title}
@@ -102,6 +100,8 @@ function Step({
             width: 100%;
             position: relative;
             text-align: center;
+
+            ${textStyle('body1')}
             color: ${theme.contentSecondary};
             line-height: 1.2;
           `}
@@ -150,7 +150,7 @@ function Step({
 
         <div
           css={`
-            margin-top: ${1.5 * GU}px;
+            margin-top: ${2.5 * GU}px;
             position: relative;
             width: 100%;
           `}
