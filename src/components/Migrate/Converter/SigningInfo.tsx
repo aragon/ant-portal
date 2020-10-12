@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 // @ts-ignore
-import { Link, Info } from '@aragon/ui'
+import { Link, Info, useTheme } from '@aragon/ui'
 
 type InfoStatus = 'working' | 'error' | 'success'
 
@@ -45,9 +45,24 @@ const DESCRIPTIONS: Descriptions = {
 }
 
 function SigningInfo({ status = 'working' }: SigningInfoProps): JSX.Element {
+  const theme = useTheme()
   const description = DESCRIPTIONS[status]
 
-  return <Info mode={status === 'error' ? 'error' : 'info'}>{description}</Info>
+  return (
+    <Info
+      mode={status === 'error' ? 'error' : 'info'}
+      css={
+        status === 'success' &&
+        `
+          background-color: ${theme.positiveSurface};
+          color: ${theme.positiveSurfaceContent};
+          border-color: ${theme.positive};
+        `
+      }
+    >
+      {description}
+    </Info>
+  )
 }
 
 export default SigningInfo
