@@ -1,4 +1,6 @@
 import React from 'react'
+// @ts-ignore
+import { GU } from '@aragon/ui'
 
 type DividerProps = {
   color: string
@@ -6,7 +8,13 @@ type DividerProps = {
 
 function Divider({ color, ...props }: DividerProps): JSX.Element {
   return (
-    <svg width="75.75" height="9.53" viewBox="0 0 75.75 9.53" {...props}>
+    <svg
+      css={`
+        width: ${13 * GU}px;
+      `}
+      viewBox="0 0 75.75 9.53"
+      {...props}
+    >
       <path d="M3.75,4.76,0,9.53V0Z" fill={color} opacity="0.3" />
       <path d="M11.75,4.76,8,9.53V0Z" fill={color} opacity="0.4" />
       <path d="M19.75,4.76,16,9.53V0Z" fill={color} opacity="0.5" />
