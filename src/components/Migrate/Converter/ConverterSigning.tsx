@@ -59,7 +59,7 @@ function ConverterSigning(): JSX.Element {
           </div>
         )}
         css={`
-          padding-top: ${3 * GU}px;
+          padding-top: ${2 * GU}px;
         `}
       />
     </>
