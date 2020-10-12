@@ -39,6 +39,7 @@
     "clipboard-polyfill": "^3.0.1",
     "ethers": "^5.0.15",
     "is-ipfs": "^2.0.0",
+    "polished": "^4.0.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",

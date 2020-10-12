@@ -12,10 +12,10 @@ import useStepState from './useStepState'
 const AnimatedDiv = animated.div
 
 const DEFAULT_DESCRIPTIONS = {
-  waiting: 'Waiting for signature',
-  prompting: 'Waiting for signature',
-  working: 'Transaction being mined',
-  success: 'Transaction mined',
+  waiting: 'Sign transaction…',
+  prompting: 'Sign transaction…',
+  working: 'Sign transaction…',
+  success: 'Transaction signed',
   error: 'An error has occured',
 }
 

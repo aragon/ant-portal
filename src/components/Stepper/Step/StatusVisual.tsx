@@ -3,12 +3,12 @@ import { Transition, animated } from 'react-spring/renderprops'
 import { css, keyframes } from 'styled-components'
 // @ts-ignore
 import { GU, IconCheck, IconCross, textStyle, useTheme } from '@aragon/ui'
-import Illustration from './Illustration'
+import TokenIllustration from './TokenIllustration'
 import { springs } from '../../../style/springs'
 import { useDisableAnimation } from '../../../hooks/useDisableAnimation'
 import { StepStatus } from '../types'
 
-const STATUS_ICONS: { [key: string]: string } = {
+const STATUS_ICONS: { [key: string]: any } = {
   error: IconCross,
   success: IconCheck,
 }
@@ -16,7 +16,7 @@ const STATUS_ICONS: { [key: string]: string } = {
 const AnimatedDiv = animated.div
 
 const spinAnimation = css`
-  mask-image: linear-gradient(35deg, rgba(0, 0, 0, 0.1) 10%, rgba(0, 0, 0, 1));
+  mask-image: linear-gradient(35deg, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 1));
   animation: ${keyframes`
     from {
       transform: rotate(0deg);
@@ -59,7 +59,7 @@ function StatusVisual({
     const Icon = STATUS_ICONS[status]
 
     return [
-      Icon && <Icon />,
+      Icon && <Icon width="30" height="30" />,
       <StepIllustration number={number} status={status} />,
     ]
   }, [status, number])
@@ -67,7 +67,7 @@ function StatusVisual({
   return (
     <div
       css={`
-        font-size: ${14 * GU}px;
+        font-size: ${17 * GU}px;
         display: flex;
         position: relative;
         // Using 'em' units allows us to uniformly scale the graphic via 'font-size' without having to manage individual dimensions.
@@ -93,8 +93,8 @@ function StatusVisual({
           <div
             css={`
               position: absolute;
-              bottom: ${0.5 * GU}px;
-              right: 0;
+              bottom: -${0.5 * GU}px;
+              right: -${1.25 * GU}px;
             `}
           >
             <Transition
@@ -125,10 +125,10 @@ function StatusVisual({
                       justify-content: center;
                       align-items: center;
                       border-radius: 100%;
-                      padding: ${0.25 * GU}px;
+                      padding: ${0.2 * GU}px;
                       background-color: ${theme.surface};
                       color: ${color};
-                      border: 2px solid currentColor;
+                      border: 3px solid currentColor;
                       bottom: 0;
                       right: 0;
                     `}
@@ -159,7 +159,7 @@ function StatusVisual({
             bottom: 0;
 
             border-radius: 100%;
-            border: 2px solid ${status === 'waiting' ? 'transparent' : color};
+            border: 3px solid ${status === 'waiting' ? 'transparent' : color};
 
             ${status === 'prompting' ? pulseAnimation : ''}
             ${status === 'working' ? spinAnimation : ''}
@@ -199,12 +199,12 @@ function StepIllustration({ number, status }: StepIllustrationProps) {
   return (
     <div
       css={`
-        width: 0.65em;
-        height: 0.65em;
+        width: 0.825em;
+        height: 0.825em;
       `}
     >
       {renderIllustration ? (
-        <Illustration mode={illustrationMode} index={number} />
+        <TokenIllustration mode={illustrationMode} index={number} />
       ) : (
         <div
           css={`
