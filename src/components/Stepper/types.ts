@@ -6,6 +6,8 @@ export type StepStatus =
   | 'error'
   | 'waiting'
 
+export type StepperStatus = 'working' | 'error' | 'success'
+
 export type StepDescriptions = Record<StepStatus, string>
 
 export type StepHandleSignProps = {

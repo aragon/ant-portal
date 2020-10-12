@@ -1,13 +1,14 @@
 import React, { ReactNode } from 'react'
 // @ts-ignore
 import { Info } from '@aragon/ui'
-import { SigningFlowStatus } from '../types'
 
-type Descriptions = Record<SigningFlowStatus, ReactNode>
+type InfoStatus = 'working' | 'error' | 'success'
+
+type Descriptions = Record<InfoStatus, ReactNode>
 
 type SigningInfoProps = {
   multiple?: boolean
-  status: SigningFlowStatus
+  status: InfoStatus
 }
 
 const DESCRIPTIONS_SINGLE: Descriptions = {
