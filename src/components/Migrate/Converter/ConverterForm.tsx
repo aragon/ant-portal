@@ -47,6 +47,12 @@ function ConverterForm(): JSX.Element {
   return (
     <form
       css={`
+        width: 100%;
+        max-width: ${130 * GU}px;
+        padding: ${6 * GU}px;
+        background-color: ${theme.surface};
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 5px;
+        border-radius: ${1.5 * GU}px;
         display: grid;
         grid-gap: ${4 * GU}px;
         ${compactMode ? stackedLayout : multiColumnLayout}
