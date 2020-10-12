@@ -7,7 +7,7 @@ export const shadowDepth = {
     shadowTint,
     0.03
   )}`,
-  medium: `0px 2px 4px r${rgba(shadowTint, 0.01)}, 0px 10px 20px ${rgba(
+  medium: `0px 2px 4px ${rgba(shadowTint, 0.01)}, 0px 10px 20px ${rgba(
     shadowTint,
     0.075
   )}`,
