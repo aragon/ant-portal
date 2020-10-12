@@ -27,7 +27,7 @@ function MigrateStateProvider({
   conversionType,
 }: MigrateStateProviderProps): JSX.Element {
   const [conversionStage, setConversionStage] = useState<ConversionStage>(
-    'entering'
+    'signing'
   )
 
   const continueToSigning = useCallback(() => setConversionStage('signing'), [])

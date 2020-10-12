@@ -21,12 +21,14 @@ const DEFAULT_DESCRIPTIONS = {
 
 type StepperProps = {
   steps: StepItems
-  onComplete?: () => void
+  onSuccess?: () => void
+  onError?: () => void
 }
 
 function Stepper({
   steps,
-  onComplete = noop,
+  onSuccess = noop,
+  onError = noop,
   ...props
 }: StepperProps): JSX.Element {
   const theme = useTheme()
@@ -102,6 +104,7 @@ function Stepper({
       setWorking: () => updateStepStatus('working'),
       setError: () => {
         updateStepStatus('error')
+        onError()
       },
       setSuccess: () => {
         updateStepStatus('success')
@@ -109,7 +112,7 @@ function Stepper({
         // Advance to next step or fire complete callback
         if (mounted()) {
           if (stepperStage === stepsCount) {
-            onComplete()
+            onSuccess()
           } else {
             setStepperStage(stepperStage + 1)
           }
@@ -124,7 +127,8 @@ function Stepper({
     updateHash,
     stepsCount,
     mounted,
-    onComplete,
+    onSuccess,
+    onError,
     initialStatus,
   ])
 
