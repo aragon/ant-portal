@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 // @ts-ignore
-import { GU } from '@aragon/ui'
+import { Button, GU } from '@aragon/ui'
 import Stepper from '../../Stepper/Stepper'
 import { getMockSteps } from '../../../mock'
 import SigningInfo from './SigningInfo'
@@ -17,12 +17,28 @@ function ConverterSigning(): JSX.Element {
         steps={getMockSteps(1)}
         onSuccess={() => setSigningStatus('success')}
         onError={() => setSigningStatus('error')}
+        renderInfo={() => (
+          <div
+            css={`
+              margin-top: ${5 * GU}px;
+            `}
+          >
+            <SigningInfo status={signingStatus} />
+            <Button
+              mode="strong"
+              wide
+              css={`
+                margin-top: ${1 * GU}px;
+              `}
+            >
+              Something something
+            </Button>
+          </div>
+        )}
         css={`
           padding-top: ${3 * GU}px;
-          margin-bottom: ${5 * GU}px;
         `}
       />
-      <SigningInfo status={signingStatus} />
     </>
   )
 }

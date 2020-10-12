@@ -23,12 +23,14 @@ type StepperProps = {
   steps: StepItems
   onSuccess?: () => void
   onError?: () => void
+  renderInfo?: () => void
 }
 
 function Stepper({
   steps,
   onSuccess = noop,
   onError = noop,
+  renderInfo,
   ...props
 }: StepperProps): JSX.Element {
   const theme = useTheme()
@@ -209,6 +211,7 @@ function Stepper({
           {layout === 'expanded' && renderSteps()}
         </ul>
       </div>
+      {renderInfo && renderInfo()}
     </div>
   )
 }
