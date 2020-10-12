@@ -6,7 +6,7 @@ import Step from './Step/Step'
 import { useDisableAnimation } from '../../hooks/useDisableAnimation'
 import { useMounted } from '../../hooks/useMounted'
 import useStepperLayout from './useStepperLayout'
-import { StepItems } from './types'
+import { StepItems, StepperStatus } from './types'
 import useStepState from './useStepState'
 
 const AnimatedDiv = animated.div
@@ -19,21 +19,33 @@ const DEFAULT_DESCRIPTIONS = {
   error: 'An error has occured',
 }
 
+const INITIAL_STEPPER_STATUS = 'working'
+
 type StepperProps = {
   steps: StepItems
-  onComplete?: () => void
+  onSuccess?: () => void
+  onError?: () => void
+  renderInfo?: (renderProps: {
+    stepperStatus: StepperStatus
+    handleSign: () => void
+  }) => void
 }
 
 function Stepper({
   steps,
-  onComplete = noop,
+  onSuccess = noop,
+  onError = noop,
+  renderInfo,
   ...props
 }: StepperProps): JSX.Element {
   const theme = useTheme()
   const mounted = useMounted()
+  const [stepperStatus, setStepperStatus] = useState<StepperStatus>(
+    INITIAL_STEPPER_STATUS
+  )
   const [animationDisabled, enableAnimation] = useDisableAnimation()
   const [stepperStage, setStepperStage] = useState(0)
-  const { stepState, updateStep, initialStatus } = useStepState(steps)
+  const { stepState, updateStep, initialStepStatus } = useStepState(steps)
   const { outerBoundsRef, innerBoundsRef, layout } = useStepperLayout()
 
   const stepsCount = steps.length - 1
@@ -73,6 +85,15 @@ function Stepper({
     })
   }, [steps, stepsCount, renderStep])
 
+  const updateStepperStatus = useCallback(
+    (status) => {
+      if (mounted()) {
+        setStepperStatus(status)
+      }
+    },
+    [mounted]
+  )
+
   const updateStepStatus = useCallback(
     (status) => {
       if (mounted()) {
@@ -94,7 +115,10 @@ function Stepper({
   const handleSign = useCallback(() => {
     const { handleSign } = steps[stepperStage]
 
-    updateStepStatus(initialStatus)
+    updateStepStatus(initialStepStatus)
+
+    // We must reset the stepper flow after clicking to retry
+    updateStepperStatus(INITIAL_STEPPER_STATUS)
 
     // Pass state updates as render props to handleSign
     handleSign({
@@ -102,14 +126,17 @@ function Stepper({
       setWorking: () => updateStepStatus('working'),
       setError: () => {
         updateStepStatus('error')
+        updateStepperStatus('error')
+        onError()
       },
       setSuccess: () => {
         updateStepStatus('success')
+        updateStepperStatus('success')
 
         // Advance to next step or fire complete callback
         if (mounted()) {
           if (stepperStage === stepsCount) {
-            onComplete()
+            onSuccess()
           } else {
             setStepperStage(stepperStage + 1)
           }
@@ -121,11 +148,13 @@ function Stepper({
     steps,
     stepperStage,
     updateStepStatus,
+    updateStepperStatus,
     updateHash,
     stepsCount,
     mounted,
-    onComplete,
-    initialStatus,
+    onSuccess,
+    onError,
+    initialStepStatus,
   ])
 
   // Trigger sign prompt when moving to a new step
@@ -205,6 +234,7 @@ function Stepper({
           {layout === 'expanded' && renderSteps()}
         </ul>
       </div>
+      {renderInfo && renderInfo({ stepperStatus, handleSign })}
     </div>
   )
 }

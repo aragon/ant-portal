@@ -20,7 +20,7 @@ type Action = [
 type StepStateReturn = {
   stepState: StepState[]
   updateStep: Dispatch<Action>
-  initialStatus: StepStatus
+  initialStepStatus: StepStatus
 }
 
 function reduceSteps(
@@ -49,7 +49,7 @@ function initialState(steps: StepItems): StepState[] {
 function useStepState(steps: StepItems): StepStateReturn {
   const [stepState, updateStep] = useReducer(reduceSteps, initialState(steps))
 
-  return { stepState, updateStep, initialStatus: INITIAL_STATUS }
+  return { stepState, updateStep, initialStepStatus: INITIAL_STATUS }
 }
 
 export default useStepState
