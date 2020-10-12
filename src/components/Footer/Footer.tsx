@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 // @ts-ignore
 import { GU, Link, useTheme, useLayout } from '@aragon/ui'
 import FooterLogo from './FooterLogo'
@@ -6,6 +6,7 @@ import LayoutGutter from '../Layout/LayoutGutter'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 
 function Footer(): JSX.Element {
+  const theme = useTheme()
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
   // TODO: add links urls when confirmed
@@ -22,7 +23,7 @@ function Footer(): JSX.Element {
               align-items: center;
               flex-direction: ${compactMode ? `column` : `row`};
               padding: ${4 * GU}px 0 ${8 * GU}px 0;
-              border-top: 1px solid #dde4e9b3;
+              border-top: 1px solid ${theme.border};
             `}
           >
             <div
@@ -44,9 +45,9 @@ function Footer(): JSX.Element {
   )
 }
 
-interface FooterLinkProps {
+type FooterLinkProps = {
   to?: string
-  children?: string
+  children?: ReactNode
 }
 
 function FooterLink({ to, children }: FooterLinkProps): JSX.Element {
