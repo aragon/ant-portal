@@ -70,6 +70,7 @@ function StatusVisual({
         font-size: ${14 * GU}px;
         display: flex;
         position: relative;
+        // Using 'em' units allows us to uniformly scale the graphic via 'font-size' without having to manage individual dimensions.
         width: 1em;
         height: 1em;
       `}
