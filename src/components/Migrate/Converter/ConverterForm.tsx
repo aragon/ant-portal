@@ -13,6 +13,7 @@ import {
 import { fontWeight } from '../../../style/font'
 import { TokenConversionType } from '../types'
 import { useMigrateState } from '../MigrateStateProvider'
+import { shadowDepth } from '../../../style/shadow'
 
 const BLOG_POST_URL = ''
 const MOCK_AMOUNT = '78,000'
@@ -51,7 +52,7 @@ function ConverterForm(): JSX.Element {
         max-width: ${130 * GU}px;
         padding: ${6 * GU}px;
         background-color: ${theme.surface};
-        box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 5px;
+        box-shadow: ${shadowDepth.far};
         border-radius: ${1.5 * GU}px;
         display: grid;
         grid-gap: ${4 * GU}px;
