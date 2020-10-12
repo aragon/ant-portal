@@ -150,7 +150,7 @@ function Step({
 
         <div
           css={`
-            margin-top: ${2.5 * GU}px;
+            margin-top: ${2 * GU}px;
             position: relative;
             width: 100%;
           `}
