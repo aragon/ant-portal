@@ -20,10 +20,10 @@ const mockStepItem: StepItem = {
     setHash,
   }: StepHandleSignProps): Promise<void> => {
     try {
-      await mockPromiseLatency(1000)
       setWorking()
+      await mockPromiseLatency(3000)
+
       setHash(MOCK_HASH)
-      await mockPromiseLatency(1000)
       setSuccess()
     } catch (err) {
       console.error(err)

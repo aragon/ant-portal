@@ -1,11 +1,8 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
-import {
-  Button,
-  // @ts-ignore
-} from '@aragon/ui'
 import Features from './Features'
 import LayoutGutter from '../Layout/LayoutGutter'
+import BrandButton from '../BrandButton/BrandButton'
 
 function GetStarted(): JSX.Element {
   const history = useHistory()
@@ -26,7 +23,9 @@ function GetStarted(): JSX.Element {
       >
         <div>
           <h2>Get started page</h2>
-          <Button onClick={handleNavigateToConverter}>Migrate ANT</Button>
+          <BrandButton onClick={handleNavigateToConverter}>
+            Migrate ANT
+          </BrandButton>
         </div>
         <Features />
       </div>

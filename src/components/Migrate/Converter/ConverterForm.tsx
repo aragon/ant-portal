@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { css } from 'styled-components'
 import {
-  Button,
   TextInput,
   Link,
   useTheme,
@@ -10,9 +9,11 @@ import {
   GU,
   // @ts-ignore
 } from '@aragon/ui'
+import BrandButton from '../../BrandButton/BrandButton'
 import { fontWeight } from '../../../style/font'
 import { TokenConversionType } from '../types'
 import { useMigrateState } from '../MigrateStateProvider'
+import { shadowDepth } from '../../../style/shadow'
 
 const BLOG_POST_URL = ''
 const MOCK_AMOUNT = '78,000'
@@ -47,6 +48,12 @@ function ConverterForm(): JSX.Element {
   return (
     <form
       css={`
+        width: 100%;
+        max-width: ${130 * GU}px;
+        padding: ${6 * GU}px;
+        background-color: ${theme.surface};
+        box-shadow: ${shadowDepth.high};
+        border-radius: ${1.5 * GU}px;
         display: grid;
         grid-gap: ${4 * GU}px;
         ${compactMode ? stackedLayout : multiColumnLayout}
@@ -167,10 +174,10 @@ function FormControls() {
           grid-template-columns: ${stackedButtons ? 'auto' : '1fr 1fr'};
         `}
       >
-        <Button wide>Back</Button>
-        <Button onClick={continueToSigning} mode="strong" wide>
+        <BrandButton wide>Back</BrandButton>
+        <BrandButton onClick={continueToSigning} mode="strong" wide>
           Continue
-        </Button>
+        </BrandButton>
       </div>
     </>
   )

@@ -1,7 +1,7 @@
 import { Dispatch, useReducer } from 'react'
 import { StepItems, StepStatus } from './types'
 
-const INITIAL_STATUS = 'prompting'
+const INITIAL_STATUS = 'working'
 
 type StepState = {
   status: StepStatus
