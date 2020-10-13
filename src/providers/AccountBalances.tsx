@@ -53,7 +53,7 @@ function AccountBalancesProvider({
 type BalanceWithDecimals = {
   balance: Balance
   decimals: number
-} | null
+}
 
 type AccountBalances = {
   antV1: BalanceWithDecimals
@@ -64,20 +64,16 @@ function useAccountBalances(): AccountBalances {
   const { antV1Balance, antV2Balance } = useContext(AccountBalancesContext)
 
   return {
-    antV1: antV1Balance
-      ? {
-          balance: antV1Balance,
-          // At the moment it doesn't make sense to request decimals via the contract
-          // as we already know the value
-          decimals: ANT_TOKEN_DECIMALS,
-        }
-      : null,
-    antV2: antV2Balance
-      ? {
-          balance: antV2Balance,
-          decimals: ANT_TOKEN_DECIMALS,
-        }
-      : null,
+    antV1: {
+      balance: antV1Balance,
+      // At the moment it doesn't make sense to request decimals via the contract
+      // as we already know the value
+      decimals: ANT_TOKEN_DECIMALS,
+    },
+    antV2: {
+      balance: antV2Balance,
+      decimals: ANT_TOKEN_DECIMALS,
+    },
   }
 }
 

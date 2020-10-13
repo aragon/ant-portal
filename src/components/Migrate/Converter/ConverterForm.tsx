@@ -50,7 +50,7 @@ function ConverterForm(): JSX.Element {
   const tokenSymbol = TOKEN_SYMBOL[conversionType]
 
   const formattedAntV1Balance =
-    antV1 && new TokenAmount(antV1.balance, antV1.decimals).format()
+    antV1.balance && new TokenAmount(antV1.balance, antV1.decimals).format()
 
   return (
     <form
