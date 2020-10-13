@@ -93,7 +93,7 @@ function AccountPopover({
             height: ${4 * GU}px;
             padding-left: ${2 * GU}px;
             border-bottom: 1px solid ${theme.border};
-            color: ${theme.contentSecondary};
+            color: ${theme.surfaceContentSecondary};
             ${textStyle('label2')};
           `}
         >

@@ -1,7 +1,6 @@
 import React from 'react'
 import {
   IdentityBadge,
-  Button,
   ButtonBase,
   GU,
   IconCheck,
@@ -11,6 +10,7 @@ import {
   useTheme,
   // @ts-ignore
 } from '@aragon/ui'
+import BrandButton from '../BrandButton/BrandButton'
 import { networkEnvironment } from '../../environment'
 import { getProviderFromUseWalletId } from './ethereum-providers'
 import { useCopyToClipboard } from '../../hooks/useCopyToClipboard'
@@ -118,7 +118,7 @@ function ScreenConnected(): JSX.Element {
         </span>
       </div>
 
-      <Button
+      <BrandButton
         onClick={() => reset()}
         wide
         css={`
@@ -126,7 +126,7 @@ function ScreenConnected(): JSX.Element {
         `}
       >
         Disconnect wallet
-      </Button>
+      </BrandButton>
     </div>
   )
 }

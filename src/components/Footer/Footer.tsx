@@ -57,7 +57,7 @@ function FooterLink({ to, children }: FooterLinkProps): JSX.Element {
     <Link
       css={`
         text-decoration: none;
-        color: ${theme.contentSecondary};
+        color: ${theme.surfaceContentSecondary};
       `}
     >
       {children}

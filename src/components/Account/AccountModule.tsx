@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useWallet } from '../../providers/Wallet'
 // @ts-ignore
-import { Button, GU, IconConnect, useViewport } from '@aragon/ui'
+import { GU, IconConnect, useViewport } from '@aragon/ui'
 import AccountButton from './AccountButton'
 import AccountPopover from './AccountPopover'
+import BrandButton from '../BrandButton/BrandButton'
 import ScreenConnected from './ScreenConnected'
 import ScreenConnecting from './ScreenConnecting'
 import ScreenError from './ScreenError'
@@ -92,7 +93,7 @@ function AccountModule(): JSX.Element {
       {screen.id === 'connected' ? (
         <AccountButton onClick={toggle} />
       ) : (
-        <Button
+        <BrandButton
           icon={<IconConnect />}
           label="Connect account"
           onClick={toggle}
