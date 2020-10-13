@@ -20,10 +20,6 @@ export function useInterval(
   }, [callback, clear])
 
   useEffect(() => {
-    savedCallback.current()
-  }, [])
-
-  useEffect(() => {
     function tick() {
       savedCallback.current()
     }
