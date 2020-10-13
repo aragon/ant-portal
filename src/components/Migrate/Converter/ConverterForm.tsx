@@ -52,7 +52,7 @@ function ConverterForm(): JSX.Element {
         max-width: ${130 * GU}px;
         padding: ${6 * GU}px;
         background-color: ${theme.surface};
-        box-shadow: ${shadowDepth.far};
+        box-shadow: ${shadowDepth.high};
         border-radius: ${1.5 * GU}px;
         display: grid;
         grid-gap: ${4 * GU}px;
