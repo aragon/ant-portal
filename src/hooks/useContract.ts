@@ -8,7 +8,7 @@ const { endpoints, contracts } = networkEnvironment
 
 const DEFAULT_PROVIDER = new Providers.JsonRpcProvider(endpoints.ethereum)
 
-export function useContract(
+function useContract(
   address: string,
   abi: string,
   signer = true
@@ -27,19 +27,7 @@ export function useContract(
   }, [abi, account, address, ethers, signer])
 }
 
-export function useContractReadOnly(
-  address: string,
-  abi: string
-): EthersContract | null {
-  return useMemo(() => {
-    if (!address) {
-      return null
-    }
-    return getContract(address, abi)
-  }, [abi, address])
-}
-
-export function getContract(
+function getContract(
   address: string,
   abi: string,
   provider:
