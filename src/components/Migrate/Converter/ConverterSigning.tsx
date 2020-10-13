@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 // @ts-ignore
-import { Button, useLayout, GU } from '@aragon/ui'
+import { useLayout, GU } from '@aragon/ui'
+import BrandButton from '../../BrandButton/BrandButton'
 import Stepper from '../../Stepper/Stepper'
 import { getMockSteps } from '../../../mock'
 import SigningInfo from './SigningInfo'
@@ -37,16 +38,15 @@ function ConverterSigning(): JSX.Element {
                   grid-template-columns: ${stackedButtons ? 'auto' : '1fr 1fr'};
                 `}
               >
-                <Button wide onClick={handleBackToHome}>
+                <BrandButton wide onClick={handleBackToHome}>
                   Abandon process
-                </Button>
-                <Button mode="strong" onClick={handleSign} wide>
+                </BrandButton>
+                <BrandButton mode="strong" onClick={handleSign} wide>
                   Repeat transaction
-                </Button>
+                </BrandButton>
               </div>
             ) : (
-              <Button
-                mode="strong"
+              <BrandButton
                 onClick={handleBackToHome}
                 disabled={stepperStatus === 'working'}
                 wide
@@ -56,7 +56,7 @@ function ConverterSigning(): JSX.Element {
                 `}
               >
                 Back to Migrate
-              </Button>
+              </BrandButton>
             )}
           </div>
           <SigningInfo status={stepperStatus} />
