@@ -46,7 +46,7 @@ function BrandButton({
         border-radius: 6px;
 
         font-weight: ${fontWeight.medium};
-        ${!disabled ? `box-shadow: ${shadowDepth.close};` : ''}
+        ${!disabled ? `box-shadow: ${shadowDepth.low};` : ''}
         ${mode === 'strong'
           ? `background: linear-gradient(135deg, ${theme.accentEnd} 0%, ${theme.accentStart} 100%);`
           : ''};
