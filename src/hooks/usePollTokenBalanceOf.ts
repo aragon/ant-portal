@@ -4,6 +4,8 @@ import { captureErrorWithSentry } from '../sentry'
 import { useMounted } from './useMounted'
 import { useInterval } from './useInterval'
 
+const POLL_INTERVAL = 3000
+
 export function usePollTokenBalanceOf(
   account: string | null,
   tokenContract: EthersContract | null
@@ -40,7 +42,7 @@ export function usePollTokenBalanceOf(
     [account, mounted, tokenContract, tokenBalance]
   )
 
-  useInterval(getBalance, 5000)
+  useInterval(getBalance, POLL_INTERVAL)
 
   return tokenBalance
 }

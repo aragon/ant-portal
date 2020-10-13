@@ -9,11 +9,14 @@ import {
   GU,
   // @ts-ignore
 } from '@aragon/ui'
+// @ts-ignore
+import TokenAmount from 'token-amount'
 import BrandButton from '../../BrandButton/BrandButton'
 import { fontWeight } from '../../../style/font'
 import { TokenConversionType } from '../types'
 import { useMigrateState } from '../MigrateStateProvider'
 import { shadowDepth } from '../../../style/shadow'
+import { useAccountBalances } from '../../../providers/AccountBalances'
 
 const BLOG_POST_URL = ''
 const MOCK_AMOUNT = '78,000'
@@ -41,9 +44,13 @@ function ConverterForm(): JSX.Element {
   const theme = useTheme()
   const { layoutName } = useLayout()
   const { conversionType } = useMigrateState()
+  const { antV1 } = useAccountBalances()
 
   const compactMode = layoutName === 'small' || layoutName === 'medium'
   const tokenSymbol = TOKEN_SYMBOL[conversionType]
+
+  const formattedAntV1Balance =
+    antV1 && new TokenAmount(antV1.balance, antV1.decimals).format()
 
   return (
     <form
@@ -79,7 +86,7 @@ function ConverterForm(): JSX.Element {
             color: ${theme.surfaceContentSecondary};
           `}
         >
-          Balance: {MOCK_AMOUNT} {tokenSymbol}
+          Balance: {formattedAntV1Balance} {tokenSymbol}
         </p>
       </div>
       <div
