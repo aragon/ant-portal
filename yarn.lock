@@ -14081,6 +14081,13 @@ token-amount@^0.1.0:
   dependencies:
     jsbi "^3.1.1"
 
+token-amount@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/token-amount/-/token-amount-0.2.0.tgz#eade9de6a95169f6ac2273c9517c9ccd20a47bc8"
+  integrity sha512-hr5fkLLRcDP98fohAZGtgm/zYK/HclnSNbvM6RHkk94iwBcrlmUSpFQxpXqdmU+seWYlc9pHDalj0fFpRXfWtg==
+  dependencies:
+    jsbi "^3.1.1"
+
 tough-cookie@^2.3.3, tough-cookie@^2.3.4, tough-cookie@^2.5.0, tough-cookie@~2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.5.0.tgz#cd9fb2a0aa1d5a12b473bd9fb96fa3dcff65ade2"
