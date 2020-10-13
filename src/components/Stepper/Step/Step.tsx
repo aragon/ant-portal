@@ -36,11 +36,11 @@ function Step({
     const appearance = {
       waiting: {
         visualColor: theme.accent,
-        descColor: theme.contentSecondary,
+        descColor: theme.surfaceContentSecondary,
       },
       prompting: {
         visualColor: theme.accent,
-        descColor: theme.contentSecondary,
+        descColor: theme.surfaceContentSecondary,
       },
       working: {
         visualColor: theme.accent,
@@ -102,7 +102,7 @@ function Step({
             text-align: center;
 
             ${textStyle('body1')}
-            color: ${theme.contentSecondary};
+            color: ${theme.surfaceContentSecondary};
             line-height: 1.2;
           `}
         >

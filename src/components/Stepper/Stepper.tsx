@@ -184,7 +184,7 @@ function Stepper({
                   css={`
                     text-align: center;
                     margin-bottom: ${2 * GU}px;
-                    color: ${theme.contentSecondary};
+                    color: ${theme.surfaceContentSecondary};
                   `}
                 >
                   {stepperStage + 1} out of {steps.length} transactions

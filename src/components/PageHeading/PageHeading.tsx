@@ -56,7 +56,7 @@ function PageHeading({
             font-size: 22px;
             line-height: 1.4;
             margin-top: ${margin}px;
-            color: ${theme.surfaceContentSecondary};
+            color: ${theme.contentSecondary};
             max-width: ${95 * GU}px;
             margin-left: auto;
             margin-right: auto;
