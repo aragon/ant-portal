@@ -6,7 +6,9 @@ import { networkEnvironment } from '../environment'
 import { getUseWalletConnectors } from '../components/Account/ethereum-providers'
 import { WalletWithProvider } from '../components/Account/types'
 
-type WalletContext = WalletWithProvider & (ExternalProvider | null)
+type WalletContext = {
+  ethers: EthersProviders.Web3Provider | null
+} & WalletWithProvider
 
 const WalletAugmentedContext = React.createContext<WalletContext | null>(null)
 
@@ -20,7 +22,10 @@ function WalletAugmented({ children }: { children: ReactNode }) {
     [ethereum]
   )
 
-  const contextValue = useMemo(() => ({ ...wallet, ethers }), [wallet, ethers])
+  const contextValue = useMemo((): WalletContext => ({ ...wallet, ethers }), [
+    wallet,
+    ethers,
+  ])
 
   return (
     <WalletAugmentedContext.Provider value={contextValue}>

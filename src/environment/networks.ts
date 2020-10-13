@@ -10,6 +10,9 @@ const networks = new Map<EnvNetworkName, EnvNetworkConfig>([
         ethereum: 'https://mainnet.eth.aragon.network/',
       },
       ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
+      contracts: {
+        tokenAntV1: '0x960b236A07cf122663c4303350609A66A7B288C0',
+      },
     },
   ],
   [
@@ -21,6 +24,9 @@ const networks = new Map<EnvNetworkName, EnvNetworkConfig>([
         ethereum: 'https://rinkeby.eth.aragon.network/',
       },
       ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
+      contracts: {
+        tokenAntV1: '0x8cf8196c14A654dc8Aceb3cbb3dDdfd16C2b652D',
+      },
     },
   ],
 ])

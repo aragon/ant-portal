@@ -16,4 +16,7 @@ export interface EnvNetworkConfig {
     ethereum: string
   }
   ipfsGateway: string
+  contracts: {
+    tokenAntV1: string
+  }
 }
