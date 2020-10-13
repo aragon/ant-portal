@@ -6,9 +6,9 @@ import ConverterSigning from './ConverterSigning'
 
 function Converter(): JSX.Element {
   const { conversionStage } = useMigrateState()
-  const testBalanceContext = useAccountBalances()
+  const { antV1, antV2 } = useAccountBalances()
 
-  console.log(testBalanceContext)
+  console.log({ antV1, antV2 })
 
   return (
     <>

@@ -20,9 +20,16 @@ export function useInterval(
   }, [callback, clear])
 
   useEffect(() => {
+    savedCallback.current()
+  }, [])
+
+  useEffect(() => {
     function tick() {
       savedCallback.current()
     }
+
+    // Avoid initial delys by running callback at starting edge
+    tick()
 
     intervalId.current = setInterval(tick, delay)
 

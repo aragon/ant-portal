@@ -18,5 +18,7 @@ export interface EnvNetworkConfig {
   ipfsGateway: string
   contracts: {
     tokenAntV1: string
+    tokenAntV2: string
+    migrator: string
   }
 }

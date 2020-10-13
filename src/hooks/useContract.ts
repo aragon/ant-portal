@@ -55,3 +55,9 @@ export function useAntTokenV1Contract(): EthersContract | null {
 
   return useContract(tokenAntV1, tokenAbi as any)
 }
+
+export function useAntTokenV2Contract(): EthersContract | null {
+  const { tokenAntV2 } = contracts
+
+  return useContract(tokenAntV2, tokenAbi as any)
+}
