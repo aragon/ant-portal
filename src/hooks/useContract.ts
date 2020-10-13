@@ -8,6 +8,17 @@ const { endpoints, contracts } = networkEnvironment
 
 const DEFAULT_PROVIDER = new Providers.JsonRpcProvider(endpoints.ethereum)
 
+function getContract(
+  address: string,
+  abi: string,
+  provider:
+    | Providers.Web3Provider
+    | Providers.JsonRpcSigner
+    | Providers.JsonRpcProvider = DEFAULT_PROVIDER
+): EthersContract {
+  return new EthersContract(address, abi, provider)
+}
+
 function useContract(
   address: string,
   abi: string,
@@ -25,17 +36,6 @@ function useContract(
 
     return getContract(address, abi, signer ? ethers.getSigner() : ethers)
   }, [abi, account, address, ethers, signer])
-}
-
-function getContract(
-  address: string,
-  abi: string,
-  provider:
-    | Providers.Web3Provider
-    | Providers.JsonRpcSigner
-    | Providers.JsonRpcProvider = DEFAULT_PROVIDER
-): EthersContract {
-  return new EthersContract(address, abi, provider)
 }
 
 export function useAntTokenV1Contract(): EthersContract | null {
