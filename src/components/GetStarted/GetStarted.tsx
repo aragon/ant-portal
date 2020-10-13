@@ -4,6 +4,7 @@ import {
   Button,
   // @ts-ignore
 } from '@aragon/ui'
+import Features from './Features'
 import LayoutGutter from '../Layout/LayoutGutter'
 
 function GetStarted(): JSX.Element {
@@ -27,6 +28,7 @@ function GetStarted(): JSX.Element {
           <h2>Get started page</h2>
           <Button onClick={handleNavigateToConverter}>Migrate ANT</Button>
         </div>
+        <Features />
       </div>
     </LayoutGutter>
   )
