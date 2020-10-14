@@ -1,25 +1,21 @@
-import React, { useCallback, useState } from 'react'
+import React, { useMemo } from 'react'
 import { css } from 'styled-components'
 import {
-  TextInput,
-  Link,
   useTheme,
   useLayout,
-  Info,
   GU,
   // @ts-ignore
 } from '@aragon/ui'
 // @ts-ignore
 import TokenAmount from 'token-amount'
-import BrandButton from '../../BrandButton/BrandButton'
 import { fontWeight } from '../../../style/font'
 import { TokenConversionType } from '../types'
 import { useMigrateState } from '../MigrateStateProvider'
 import { shadowDepth } from '../../../style/shadow'
 import { useAccountBalances } from '../../../providers/AccountBalances'
+import ConverterFormControls from './ConverterFormControls'
 
-const BLOG_POST_URL = ''
-const MOCK_AMOUNT = '78,000'
+const AMOUNT_DIGITS = 6
 const TOKEN_SYMBOL: Record<TokenConversionType, string> = {
   ANT: 'ANT',
 }
@@ -45,15 +41,22 @@ function ConverterForm(): JSX.Element {
   const { layoutName } = useLayout()
   const { conversionType } = useMigrateState()
   const { antV1 } = useAccountBalances()
+  const { balance, decimals } = antV1
 
   const compactMode = layoutName === 'small' || layoutName === 'medium'
   const tokenSymbol = TOKEN_SYMBOL[conversionType]
 
-  const formattedAntV1Balance =
-    antV1.balance && new TokenAmount(antV1.balance, antV1.decimals).format()
+  const formattedAntV1Balance = useMemo(
+    () =>
+      balance &&
+      new TokenAmount(balance, decimals).format({
+        digits: AMOUNT_DIGITS,
+      }),
+    [balance, decimals]
+  )
 
   return (
-    <form
+    <div
       css={`
         width: 100%;
         max-width: ${130 * GU}px;
@@ -86,7 +89,9 @@ function ConverterForm(): JSX.Element {
             color: ${theme.surfaceContentSecondary};
           `}
         >
-          Balance: {formattedAntV1Balance} {tokenSymbol}
+          {formattedAntV1Balance
+            ? `Balance: ${formattedAntV1Balance} ${tokenSymbol}`
+            : 'Enable account to see your balance'}
         </p>
       </div>
       <div
@@ -106,87 +111,12 @@ function ConverterForm(): JSX.Element {
           grid-area: inputs;
         `}
       >
-        <FormControls />
-      </div>
-    </form>
-  )
-}
-
-function FormControls() {
-  const [amount, setAmount] = useState('')
-  const theme = useTheme()
-  const { continueToSigning } = useMigrateState()
-  const { layoutName } = useLayout()
-  const { conversionType } = useMigrateState()
-
-  const stackedButtons = layoutName === 'small'
-  const tokenSymbol = TOKEN_SYMBOL[conversionType]
-
-  const handleAmountChange = useCallback((event) => {
-    setAmount(event.target.value)
-  }, [])
-
-  return (
-    <>
-      <label
-        css={`
-          display: block;
-        `}
-      >
-        <h3
-          css={`
-            font-weight: ${fontWeight.medium};
-            margin-bottom: ${1 * GU}px;
-          `}
-        >
-          Enter the amount you would like to convert
-        </h3>
-        <TextInput
-          wide
-          placeholder="0.0"
-          value={amount}
-          onChange={handleAmountChange}
-          type="number"
-          css={`
-            display: block;
-          `}
+        <ConverterFormControls
+          tokenSymbol={tokenSymbol}
+          amountDigits={AMOUNT_DIGITS}
         />
-      </label>
-      <p
-        css={`
-          margin-top: ${1 * GU}px;
-          color: ${theme.surfaceContentSecondary};
-        `}
-      >
-        You will receive:{' '}
-        <span css={`font-weight: ${fontWeight.medium}; color ${theme.accent}`}>
-          {MOCK_AMOUNT} {tokenSymbol}
-        </span>
-      </p>
-      <Info
-        css={`
-          margin-top: ${3 * GU}px;
-          margin-bottom: ${2 * GU}px;
-        `}
-      >
-        Please read our{' '}
-        <Link href={BLOG_POST_URL}>ANT Migration blog post</Link> if you have
-        any questions.
-      </Info>
-      <div
-        css={`
-          display: grid;
-          grid-gap: ${1 * GU}px;
-
-          grid-template-columns: ${stackedButtons ? 'auto' : '1fr 1fr'};
-        `}
-      >
-        <BrandButton wide>Back</BrandButton>
-        <BrandButton onClick={continueToSigning} mode="strong" wide>
-          Continue
-        </BrandButton>
       </div>
-    </>
+    </div>
   )
 }
 
