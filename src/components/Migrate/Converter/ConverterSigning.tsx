@@ -13,11 +13,11 @@ import { useMigrateState } from '../MigrateStateProvider'
 
 const { contracts } = networkEnvironment
 
-function ConverterSigning({
-  mockSigning,
-}: {
+type ConverterSigningProps = {
   mockSigning?: boolean
-}): JSX.Element {
+}
+
+function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
   const { layoutName } = useLayout()
   const history = useHistory()
   const { convertAmount } = useMigrateState()
