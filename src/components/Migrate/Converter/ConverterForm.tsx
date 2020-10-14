@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { css } from 'styled-components'
 import {
   TextInput,
@@ -17,9 +17,11 @@ import { TokenConversionType } from '../types'
 import { useMigrateState } from '../MigrateStateProvider'
 import { shadowDepth } from '../../../style/shadow'
 import { useAccountBalances } from '../../../providers/AccountBalances'
+import { parseUnits } from '../../../utils/math-utils'
+import { BigNumber } from 'ethers'
 
 const BLOG_POST_URL = ''
-const MOCK_AMOUNT = '78,000'
+const AMOUNT_DIGITS = 6
 const TOKEN_SYMBOL: Record<TokenConversionType, string> = {
   ANT: 'ANT',
 }
@@ -45,12 +47,19 @@ function ConverterForm(): JSX.Element {
   const { layoutName } = useLayout()
   const { conversionType } = useMigrateState()
   const { antV1 } = useAccountBalances()
+  const { balance, decimals } = antV1
 
   const compactMode = layoutName === 'small' || layoutName === 'medium'
   const tokenSymbol = TOKEN_SYMBOL[conversionType]
 
-  const formattedAntV1Balance =
-    antV1.balance && new TokenAmount(antV1.balance, antV1.decimals).format()
+  const formattedAntV1Balance = useMemo(
+    () =>
+      balance &&
+      new TokenAmount(balance, decimals).format({
+        digits: AMOUNT_DIGITS,
+      }),
+    [balance, decimals]
+  )
 
   return (
     <form
@@ -86,7 +95,9 @@ function ConverterForm(): JSX.Element {
             color: ${theme.surfaceContentSecondary};
           `}
         >
-          Balance: {formattedAntV1Balance} {tokenSymbol}
+          {formattedAntV1Balance
+            ? `Balance: ${formattedAntV1Balance} ${tokenSymbol}`
+            : 'Enable account to see your balance'}
         </p>
       </div>
       <div
@@ -112,12 +123,31 @@ function ConverterForm(): JSX.Element {
   )
 }
 
+type ValidationStatus =
+  | 'notConnected'
+  | 'insufficientBalance'
+  | 'noAmount'
+  | 'valid'
+
+const BUTTON_MESSAGE: Record<ValidationStatus, string> = {
+  notConnected: 'Connect Wallet',
+  insufficientBalance: 'Insufficient ANT balance',
+  noAmount: 'Enter an amount',
+  valid: 'Continue',
+}
+
 function FormControls() {
   const [amount, setAmount] = useState('')
   const theme = useTheme()
   const { continueToSigning } = useMigrateState()
   const { layoutName } = useLayout()
   const { conversionType } = useMigrateState()
+  const { formattedAmount, validationStatus } = useInputValidation(
+    amount,
+    AMOUNT_DIGITS
+  )
+
+  console.log(formattedAmount, validationStatus)
 
   const stackedButtons = layoutName === 'small'
   const tokenSymbol = TOKEN_SYMBOL[conversionType]
@@ -143,7 +173,7 @@ function FormControls() {
         </h3>
         <TextInput
           wide
-          placeholder="0.0"
+          placeholder={`0.0 ${tokenSymbol} v1`}
           value={amount}
           onChange={handleAmountChange}
           type="number"
@@ -160,8 +190,9 @@ function FormControls() {
       >
         You will receive:{' '}
         <span css={`font-weight: ${fontWeight.medium}; color ${theme.accent}`}>
-          {MOCK_AMOUNT} {tokenSymbol}
-        </span>
+          {formattedAmount}
+        </span>{' '}
+        {tokenSymbol} v2
       </p>
       <Info
         css={`
@@ -182,12 +213,61 @@ function FormControls() {
         `}
       >
         <BrandButton wide>Back</BrandButton>
-        <BrandButton onClick={continueToSigning} mode="strong" wide>
-          Continue
+        <BrandButton
+          onClick={continueToSigning}
+          mode="strong"
+          wide
+          disabled={true}
+        >
+          {BUTTON_MESSAGE[validationStatus]}
         </BrandButton>
       </div>
     </>
   )
+}
+
+function useInputValidation(amount: string, digits: number) {
+  const { antV1 } = useAccountBalances()
+  const { balance, decimals } = antV1
+
+  const parsedAmountBn = useMemo(() => parseInputValue(amount, decimals), [
+    amount,
+    decimals,
+  ])
+
+  const formattedAmount = useMemo((): string => {
+    return new TokenAmount(parsedAmountBn, decimals).format({
+      digits,
+    })
+  }, [parsedAmountBn, decimals, digits])
+
+  const validationStatus = useMemo((): ValidationStatus => {
+    if (!balance) {
+      return 'notConnected'
+    }
+
+    if (parsedAmountBn.gt(balance)) {
+      return 'insufficientBalance'
+    }
+
+    if (parsedAmountBn.isZero()) {
+      return 'noAmount'
+    }
+
+    return 'valid'
+  }, [parsedAmountBn, balance])
+
+  return {
+    parsedAmountBn,
+    formattedAmount,
+    validationStatus,
+  }
+}
+
+function parseInputValue(inputValue: string, decimals: number): BigNumber {
+  const trimmedValue = inputValue.trim()
+
+  return parseUnits(trimmedValue || '0', decimals)
 }
 
 export default ConverterForm
