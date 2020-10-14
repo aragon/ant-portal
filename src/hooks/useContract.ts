@@ -41,7 +41,7 @@ function useContract<T>(
     }
 
     return getContract(address, abi, signer ? ethers.getSigner() : ethers)
-  }, [abi, account, address, ethers, signer]) as ExtendedContract<T>
+  }, [abi, account, address, ethers, signer]) as ExtendedContract<T> | null
 }
 
 export function useAntTokenV1Contract(): TokenAntV1 | null {
