@@ -82,7 +82,7 @@
     "start": "dotenv yarn sync-assets && cross-env TSC_COMPILE_ON_ERROR=true react-app-rewired start",
     "start:ethereum": "cross-env NETWORK_ENVIRONMENT=ethereum && yarn start",
     "start:rinkeby": "cross-env NETWORK_ENVIRONMENT=rinkeby && yarn start",
-    "build": "dotenv yarn lint && yarn sync-assets && react-app-rewired build",
+    "build": "dotenv yarn sync-assets && yarn lint && react-app-rewired build",
     "build:ethereum": "cross-env NETWORK_ENVIRONMENT=ethereum yarn build",
     "build:rinkeby": "cross-env NETWORK_ENVIRONMENT=rinkeby yarn build",
     "test": "react-app-rewired test --passWithNoTests --watchAll=false",
