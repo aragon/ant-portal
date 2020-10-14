@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import {
   noop,
+  IconConnect,
   // @ts-ignore
 } from '@aragon/ui'
 import BrandButton from '../../BrandButton/BrandButton'
@@ -13,7 +14,7 @@ type ConverterButtonProps = {
 }
 
 const BUTTON_MESSAGES: Record<ValidationStatus, string> = {
-  notConnected: 'Connect Wallet',
+  notConnected: 'Enable account',
   insufficientBalance: 'Insufficient ANT balance',
   noAmount: 'Enter an amount',
   valid: 'Continue',
@@ -26,6 +27,8 @@ function ConverterButton({
 }: ConverterButtonProps): JSX.Element {
   const disableButton =
     status === 'insufficientBalance' || status === 'noAmount'
+
+  const showConnectIcon = status === 'notConnected'
 
   const handleClick = useMemo(() => {
     if (status === 'valid') {
@@ -45,9 +48,9 @@ function ConverterButton({
       mode="strong"
       wide
       disabled={disableButton}
-    >
-      {BUTTON_MESSAGES[status]}
-    </BrandButton>
+      icon={showConnectIcon && <IconConnect />}
+      label={BUTTON_MESSAGES[status]}
+    />
   )
 }
 

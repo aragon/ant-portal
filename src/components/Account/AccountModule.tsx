@@ -95,7 +95,7 @@ function AccountModule(): JSX.Element {
       ) : (
         <BrandButton
           icon={<IconConnect />}
-          label="Connect account"
+          label="Enable account"
           onClick={toggle}
           display={compactMode ? 'icon' : 'all'}
         />
