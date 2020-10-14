@@ -52,6 +52,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@typechain/ethers-v5": "^2.0.0",
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
@@ -74,6 +75,7 @@
     "react-router-dom": "^5.2.0",
     "rimraf": "^3.0.2",
     "styled-components": "^5.2.0",
+    "typechain": "^3.0.0",
     "typescript": "^4.0.3"
   },
   "scripts": {
@@ -88,7 +90,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint --ext ts,tsx src --max-warnings 0 && yarn typecheck",
     "typecheck": "tsc",
-    "sync-assets": "rimraf ./public/aragon-ui && copy-aragon-ui-assets ./public"
+    "sync-assets": "rimraf ./public/aragon-ui && copy-aragon-ui-assets ./public && yarn generateAbiTypes",
+    "generateAbiTypes": "rimraf ./src/abi/types && typechain --target ethers-v5 --outDir ./src/abi/types './src/abi/*.json'"
   },
   "husky": {
     "hooks": {
