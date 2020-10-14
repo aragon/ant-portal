@@ -12,5 +12,9 @@ export function bigNum(value: string | number): BigNumber {
  * @returns {BN} value converted to it's normal representation
  */
 export function parseUnits(value: string, digits: number): BigNumber {
-  return EthersUtils.parseUnits(value, digits)
+  try {
+    return EthersUtils.parseUnits(value, digits)
+  } catch (err) {
+    return bigNum(-1)
+  }
 }
