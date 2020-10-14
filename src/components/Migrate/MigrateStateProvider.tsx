@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers'
 import React, {
   ReactNode,
   useCallback,
@@ -15,7 +16,9 @@ type MigrateStateProviderProps = {
 type MigrateStateContext = {
   conversionStage: ConversionStage
   conversionType: TokenConversionType
+  convertAmount: BigNumber | null
   continueToSigning: () => void
+  updateConvertAmount: (amount: BigNumber | null) => void
 }
 
 const UseMigrateStateContext = React.createContext<MigrateStateContext | null>(
@@ -26,15 +29,35 @@ function MigrateStateProvider({
   children,
   conversionType,
 }: MigrateStateProviderProps): JSX.Element {
-  const [conversionStage, setConversionStage] = useState<ConversionStage>(
-    'entering'
-  )
+  const [conversionStage, setConversionStage] = useState<
+    MigrateStateContext['conversionStage']
+  >('entering')
+
+  const [convertAmount, setConvertAmount] = useState<
+    MigrateStateContext['convertAmount']
+  >(null)
 
   const continueToSigning = useCallback(() => setConversionStage('signing'), [])
+  const updateConvertAmount = useCallback(
+    (amount) => setConvertAmount(amount),
+    []
+  )
 
   const contextValue = useMemo(
-    () => ({ conversionStage, conversionType, continueToSigning }),
-    [conversionStage, conversionType, continueToSigning]
+    () => ({
+      conversionStage,
+      conversionType,
+      continueToSigning,
+      convertAmount,
+      updateConvertAmount,
+    }),
+    [
+      conversionStage,
+      conversionType,
+      continueToSigning,
+      convertAmount,
+      updateConvertAmount,
+    ]
   )
 
   return (

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   blockExplorerUrl,
   TextInput,
@@ -31,12 +31,13 @@ function ConverterFormControls({
 }: ConverterFormControlsProps): JSX.Element {
   const [amount, setAmount] = useState('')
   const theme = useTheme()
-  const { continueToSigning } = useMigrateState()
+  const { continueToSigning, updateConvertAmount } = useMigrateState()
   const { layoutName } = useLayout()
-  const { formattedAmount, validationStatus } = useInputValidation(
-    amount,
-    amountDigits
-  )
+  const {
+    formattedAmount,
+    validationStatus,
+    parsedAmountBn,
+  } = useInputValidation(amount, amountDigits)
 
   const antV2ContractUrl = blockExplorerUrl('address', contracts.tokenAntV2, {
     networkType: legacyNetworkType,
@@ -61,8 +62,13 @@ function ConverterFormControls({
         noop()
       }
     },
-    [continueToSigning, validationStatus]
+    [validationStatus, continueToSigning]
   )
+
+  // Pass updated amount to context state for use in the signing stepper
+  useEffect(() => {
+    updateConvertAmount(parsedAmountBn)
+  }, [parsedAmountBn, updateConvertAmount])
 
   return (
     <form onSubmit={handleSubmit}>
@@ -83,6 +89,7 @@ function ConverterFormControls({
           wide
           placeholder={`0.0 ${tokenSymbol} v1`}
           value={amount}
+          min="0"
           onChange={handleAmountChange}
           type="number"
           css={`

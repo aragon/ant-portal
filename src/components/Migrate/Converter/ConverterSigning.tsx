@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 // @ts-ignore
 import { useLayout, GU } from '@aragon/ui'
@@ -6,19 +6,69 @@ import BrandButton from '../../BrandButton/BrandButton'
 import Stepper from '../../Stepper/Stepper'
 import { getMockSteps } from '../../../mock'
 import SigningInfo from './SigningInfo'
+import { StepHandleSignProps } from '../../Stepper/types'
+import { useAntTokenV1Contract } from '../../../hooks/useContract'
+import { networkEnvironment } from '../../../environment'
+import { useMigrateState } from '../MigrateStateProvider'
 
-function ConverterSigning(): JSX.Element {
+const { contracts } = networkEnvironment
+
+type ConverterSigningProps = {
+  mockSigning?: boolean
+}
+
+function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
   const { layoutName } = useLayout()
   const history = useHistory()
+  const { convertAmount } = useMigrateState()
+  const antTokenV1Contract = useAntTokenV1Contract()
   const stackedButtons = layoutName === 'small'
 
   const handleBackToHome = useCallback(() => {
     history.push('/')
   }, [history])
 
+  const transactionSteps = useMemo(
+    () => [
+      {
+        title: 'Initiate ANT migration',
+        handleSign: async ({
+          setSuccess,
+          setWorking,
+          setError,
+          setHash,
+        }: StepHandleSignProps): Promise<void> => {
+          try {
+            // convertAmount should have already been validated and exist
+            // per the form but we still want to check here because:
+            // 1. It keeps typescript happy
+            // 2. Detailed errors are a good thing
+            if (!convertAmount) {
+              throw new Error('No amount was provided!')
+            }
+
+            setWorking()
+
+            const tx = await antTokenV1Contract?.functions.approveAndCall(
+              contracts.migrator,
+              convertAmount,
+              '0x'
+            )
+
+            setHash(tx ? tx.hash : '')
+            setSuccess()
+          } catch (err) {
+            console.error(err)
+            setError()
+          }
+        },
+      },
+    ],
+    [antTokenV1Contract, convertAmount]
+  )
   return (
     <Stepper
-      steps={getMockSteps(1)}
+      steps={mockSigning ? getMockSteps(1) : transactionSteps}
       renderInfo={({ stepperStatus, handleSign }) => (
         <div
           css={`
