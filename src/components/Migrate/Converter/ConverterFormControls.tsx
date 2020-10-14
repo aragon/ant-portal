@@ -1,22 +1,24 @@
 import React, { useCallback, useState } from 'react'
 import {
+  blockExplorerUrl,
   TextInput,
   Link,
   useTheme,
   useLayout,
   Info,
+  IconExternal,
   GU,
   noop,
   // @ts-ignore
 } from '@aragon/ui'
-// @ts-ignore
 import BrandButton from '../../BrandButton/BrandButton'
 import { fontWeight } from '../../../style/font'
 import { useMigrateState } from '../MigrateStateProvider'
 import ConverterButton from './ConverterButton'
 import useInputValidation from './useInputValidation'
+import { networkEnvironment } from '../../../environment'
 
-const BLOG_POST_URL = ''
+const { contracts, legacyNetworkType } = networkEnvironment
 
 type ConverterFormControlsProps = {
   tokenSymbol: string
@@ -35,6 +37,10 @@ function ConverterFormControls({
     amount,
     amountDigits
   )
+
+  const antV2ContractUrl = blockExplorerUrl('address', contracts.tokenAntV2, {
+    networkType: legacyNetworkType,
+  })
 
   const stackedButtons = layoutName === 'small'
 
@@ -102,9 +108,25 @@ function ConverterFormControls({
           margin-bottom: ${2 * GU}px;
         `}
       >
-        Please read our{' '}
-        <Link href={BLOG_POST_URL}>ANT Migration blog post</Link> if you have
-        any questions.
+        This conversion is a one way path.{' '}
+        <Link
+          href={antV2ContractUrl}
+          css={`
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            line-height: 1;
+          `}
+        >
+          {' '}
+          Review {tokenSymbol} v2 token contract{' '}
+          <IconExternal
+            size="small"
+            css={`
+              margin-left: ${0.5 * GU}px;
+            `}
+          />
+        </Link>
       </Info>
       <div
         css={`

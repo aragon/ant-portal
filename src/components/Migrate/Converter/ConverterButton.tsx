@@ -6,15 +6,15 @@ import {
 import BrandButton from '../../BrandButton/BrandButton'
 import { ValidationStatus } from '../types'
 
-type ConverterButtonProps = {
-  status: ValidationStatus
-}
-
 const BUTTON_MESSAGES: Record<ValidationStatus, string> = {
   notConnected: 'Enable account',
   insufficientBalance: 'Insufficient ANT balance',
   noAmount: 'Enter an amount',
   valid: 'Continue',
+}
+
+type ConverterButtonProps = {
+  status: ValidationStatus
 }
 
 function ConverterButton({ status }: ConverterButtonProps): JSX.Element {
