@@ -7,18 +7,20 @@ import {
   useLayout,
   Info,
   GU,
+  noop,
   // @ts-ignore
 } from '@aragon/ui'
 // @ts-ignore
 import TokenAmount from 'token-amount'
 import BrandButton from '../../BrandButton/BrandButton'
 import { fontWeight } from '../../../style/font'
-import { TokenConversionType } from '../types'
+import { TokenConversionType, ValidationStatus } from '../types'
 import { useMigrateState } from '../MigrateStateProvider'
 import { shadowDepth } from '../../../style/shadow'
 import { useAccountBalances } from '../../../providers/AccountBalances'
 import { parseUnits } from '../../../utils/math-utils'
 import { BigNumber } from 'ethers'
+import ConverterButton from './ConverterButton'
 
 const BLOG_POST_URL = ''
 const AMOUNT_DIGITS = 6
@@ -123,19 +125,6 @@ function ConverterForm(): JSX.Element {
   )
 }
 
-type ValidationStatus =
-  | 'notConnected'
-  | 'insufficientBalance'
-  | 'noAmount'
-  | 'valid'
-
-const BUTTON_MESSAGE: Record<ValidationStatus, string> = {
-  notConnected: 'Connect Wallet',
-  insufficientBalance: 'Insufficient ANT balance',
-  noAmount: 'Enter an amount',
-  valid: 'Continue',
-}
-
 function FormControls() {
   const [amount, setAmount] = useState('')
   const theme = useTheme()
@@ -213,14 +202,12 @@ function FormControls() {
         `}
       >
         <BrandButton wide>Back</BrandButton>
-        <BrandButton
-          onClick={continueToSigning}
-          mode="strong"
-          wide
-          disabled={true}
-        >
-          {BUTTON_MESSAGE[validationStatus]}
-        </BrandButton>
+        <ConverterButton
+          // TODO: Add call to account module
+          onConnect={noop}
+          onContinue={continueToSigning}
+          status={validationStatus}
+        />
       </div>
     </>
   )
