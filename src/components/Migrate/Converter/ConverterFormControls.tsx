@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import {
   blockExplorerUrl,
+  ButtonBase,
   TextInput,
   Link,
   useTheme,
@@ -17,6 +18,9 @@ import { useMigrateState } from '../MigrateStateProvider'
 import ConverterButton from './ConverterButton'
 import useInputValidation from './useInputValidation'
 import { networkEnvironment } from '../../../environment'
+import { shadowDepth } from '../../../style/shadow'
+
+const FLOAT_REGEX = /^\d*[.]?\d*$/
 
 const { contracts, legacyNetworkType } = networkEnvironment
 
@@ -35,6 +39,7 @@ function ConverterFormControls({
   const { layoutName } = useLayout()
   const {
     formattedAmount,
+    maxAmount,
     validationStatus,
     parsedAmountBn,
   } = useInputValidation(amount, amountDigits)
@@ -46,8 +51,16 @@ function ConverterFormControls({
   const stackedButtons = layoutName === 'small'
 
   const handleAmountChange = useCallback((event) => {
-    setAmount(event.target.value)
+    const value = event.target.value
+
+    if (FLOAT_REGEX.test(value)) {
+      setAmount(value)
+    }
   }, [])
+
+  const handleMaxClick = useCallback(() => {
+    setAmount(maxAmount)
+  }, [maxAmount])
 
   const handleSubmit = useCallback(
     (event) => {
@@ -85,16 +98,42 @@ function ConverterFormControls({
         >
           Enter the amount you would like to convert
         </h3>
+
         <TextInput
           wide
           placeholder={`0.0 ${tokenSymbol} v1`}
           value={amount}
-          min="0"
           onChange={handleAmountChange}
-          type="number"
           css={`
             display: block;
           `}
+          adornment={
+            validationStatus !== 'notConnected' && (
+              <ButtonBase
+                onClick={handleMaxClick}
+                css={`
+                  padding: ${0.65 * GU}px ${1.25 * GU}px;
+                  background-color: white;
+                  box-shadow: ${shadowDepth.low};
+                  text-transform: uppercase;
+                  font-weight: ${fontWeight.medium};
+                  color: ${theme.link};
+                  font-size: 12px;
+                  line-height: 1;
+
+                  &:active {
+                    transform: translateY(1px);
+                  }
+                `}
+              >
+                Max
+              </ButtonBase>
+            )
+          }
+          adornmentPosition="end"
+          adornmentSettings={{
+            padding: 1.5 * GU,
+          }}
         />
       </label>
       <p

@@ -9,6 +9,7 @@ import { BigNumber } from 'ethers'
 type InputValidation = {
   parsedAmountBn: BigNumber
   formattedAmount: string
+  maxAmount: string
   validationStatus: ValidationStatus
 }
 
@@ -20,6 +21,12 @@ function useInputValidation(amount: string, digits: number): InputValidation {
     amount,
     decimals,
   ])
+
+  const maxAmount = useMemo((): string => {
+    return new TokenAmount(balance?.toString() || '', decimals).format({
+      digits: decimals,
+    })
+  }, [balance, decimals])
 
   const formattedAmount = useMemo((): string => {
     return new TokenAmount(parsedAmountBn, decimals).format({
@@ -36,7 +43,7 @@ function useInputValidation(amount: string, digits: number): InputValidation {
       return 'insufficientBalance'
     }
 
-    if (parsedAmountBn.isZero()) {
+    if (parsedAmountBn.lt(0) || parsedAmountBn.isZero()) {
       return 'noAmount'
     }
 
@@ -47,6 +54,7 @@ function useInputValidation(amount: string, digits: number): InputValidation {
     parsedAmountBn,
     formattedAmount,
     validationStatus,
+    maxAmount,
   }
 }
 
