@@ -7,18 +7,21 @@ import Routes from './Routes'
 import { breakpoints } from './style/breakpoints'
 import { WalletProvider } from './providers/Wallet'
 import { AccountBalancesProvider } from './providers/AccountBalances'
+import { AccountModuleProvider } from './components/Account/AccountModuleProvider'
 
 function App(): JSX.Element {
   return (
     <WalletProvider>
       <AccountBalancesProvider>
-        <LayoutProvider breakpoints={breakpoints}>
-          <Router>
-            <MainView>
-              <Routes />
-            </MainView>
-          </Router>
-        </LayoutProvider>
+        <AccountModuleProvider>
+          <LayoutProvider breakpoints={breakpoints}>
+            <Router>
+              <MainView>
+                <Routes />
+              </MainView>
+            </Router>
+          </LayoutProvider>
+        </AccountModuleProvider>
       </AccountBalancesProvider>
     </WalletProvider>
   )

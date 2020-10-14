@@ -9,7 +9,6 @@ import {
   Info,
   IconExternal,
   GU,
-  noop,
   // @ts-ignore
 } from '@aragon/ui'
 import BrandButton from '../../BrandButton/BrandButton'
@@ -19,6 +18,7 @@ import ConverterButton from './ConverterButton'
 import useInputValidation from './useInputValidation'
 import { networkEnvironment } from '../../../environment'
 import { shadowDepth } from '../../../style/shadow'
+import { useAccountModule } from '../../Account/AccountModuleProvider'
 
 const FLOAT_REGEX = /^\d*[.]?\d*$/
 
@@ -36,6 +36,7 @@ function ConverterFormControls({
   const [amount, setAmount] = useState('')
   const theme = useTheme()
   const { continueToSigning, updateConvertAmount } = useMigrateState()
+  const { showAccount } = useAccountModule()
   const { layoutName } = useLayout()
   const {
     formattedAmount,
@@ -72,10 +73,10 @@ function ConverterFormControls({
 
       if (validationStatus === 'notConnected') {
         // TODO: Add call to account module
-        noop()
+        showAccount()
       }
     },
-    [validationStatus, continueToSigning]
+    [validationStatus, continueToSigning, showAccount]
   )
 
   // Pass updated amount to context state for use in the signing stepper

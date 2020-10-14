@@ -10,6 +10,7 @@ import ScreenError from './ScreenError'
 import ScreenProviders from './ScreenProviders'
 import { ScreenConfig, WalletConnector } from './types'
 import AccountModal from './AccountModal'
+import { useAccountModule } from './AccountModuleProvider'
 
 const SCREENS: ScreenConfig[] = [
   { id: 'providers', title: 'Use account from' },
@@ -21,7 +22,7 @@ const SCREENS: ScreenConfig[] = [
 function AccountModule(): JSX.Element {
   const wallet = useWallet()
   const { account, connector, error, status } = wallet
-  const [opened, setOpened] = useState(false)
+  const { accountVisible, showAccount, hideAccount } = useAccountModule()
   const [
     activatingDelayed,
     setActivatingDelayed,
@@ -30,7 +31,10 @@ function AccountModule(): JSX.Element {
   const { below } = useViewport()
   const compactMode = below('medium')
 
-  const toggle = useCallback(() => setOpened((opened) => !opened), [])
+  const toggle = useCallback(
+    () => (accountVisible ? hideAccount() : showAccount()),
+    [accountVisible, showAccount, hideAccount]
+  )
 
   useEffect(() => {
     if (status === 'error') {
@@ -70,14 +74,6 @@ function AccountModule(): JSX.Element {
   const screen = SCREENS[screenIndex]
   const screenId = screen.id
 
-  const handlePopoverClose = useCallback(() => {
-    // Reject closing the popover when connecting or on error
-    if (screenId === 'connecting' || screenId === 'error') {
-      return false
-    }
-    setOpened(false)
-  }, [screenId])
-
   return (
     <div
       ref={buttonRef}
@@ -104,7 +100,7 @@ function AccountModule(): JSX.Element {
       <AccountModal
         direction={direction}
         heading={screen.title}
-        onClose={handlePopoverClose}
+        onClose={hideAccount}
         screenId={screenId}
         screenData={{
           account,
@@ -113,7 +109,7 @@ function AccountModule(): JSX.Element {
           status,
           screenId,
         }}
-        visible={opened}
+        visible={accountVisible}
       >
         {({ activating, activationError, screenId }) => {
           if (screenId === 'connecting') {
