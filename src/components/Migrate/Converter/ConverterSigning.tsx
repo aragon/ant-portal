@@ -39,24 +39,23 @@ function ConverterSigning({
           setHash,
         }: StepHandleSignProps): Promise<void> => {
           try {
-            setWorking()
-
-            // convertAmount should have already been validated and exist per form view
-            // but we still want to check here because:
+            // convertAmount should have already been validated and exist
+            // per the form but we still want to check here because:
             // 1. It keeps typescript happy
             // 2. Detailed errors are a good thing
-            if (convertAmount) {
-              const tx = await antTokenV1Contract?.functions.approveAndCall(
-                contracts.migrator,
-                convertAmount,
-                '0x'
-              )
-
-              setHash(tx ? tx.hash : '')
-            } else {
+            if (!convertAmount) {
               throw new Error('No amount was provided!')
             }
 
+            setWorking()
+
+            const tx = await antTokenV1Contract?.functions.approveAndCall(
+              contracts.migrator,
+              convertAmount,
+              '0x'
+            )
+
+            setHash(tx ? tx.hash : '')
             setSuccess()
           } catch (err) {
             console.error(err)
