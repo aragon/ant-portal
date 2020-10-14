@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useRef, ReactNode } from 'react'
-// @ts-ignore
-import { GU, Popover, springs, textStyle, useTheme } from '@aragon/ui'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { Spring, Transition, animated } from 'react-spring/renderprops'
+// @ts-ignore
+import { Modal, textStyle, useTheme, springs, GU } from '@aragon/ui'
 import { ScreenId, WalletError, WalletConnector } from './types'
-
-const AnimatedDiv = animated.div
 
 interface ScreenData {
   account: string | null
@@ -14,27 +12,27 @@ interface ScreenData {
   screenId: ScreenId
 }
 
-type AccountPopoverProps = {
-  children: (screenData: ScreenData) => ReactNode
-  direction: -1 | 1
-  heading: ReactNode
-  onClose: () => void
-  opener: HTMLElement
-  screenData: ScreenData
-  screenId: string
+type AccountModalProps = {
   visible: boolean
+  children: (screenData: ScreenData) => ReactNode
+  onClose: () => void
+  screenData: ScreenData
+  heading: ReactNode
+  screenId: string
+  direction: -1 | 1
 }
 
-function AccountPopover({
-  children,
-  direction,
-  heading,
-  onClose,
-  opener,
-  screenData,
-  screenId,
+const AnimatedDiv = animated.div
+
+function AccountModal({
   visible,
-}: AccountPopoverProps): JSX.Element {
+  children,
+  onClose,
+  screenData,
+  heading,
+  screenId,
+  direction,
+}: AccountModalProps): JSX.Element {
   const theme = useTheme()
 
   const [animate, setAnimate] = useState(false)
@@ -67,16 +65,7 @@ function AccountPopover({
   }, [visible])
 
   return (
-    <Popover
-      closeOnOpenerFocus
-      onClose={onClose}
-      opener={opener}
-      placement="bottom-end"
-      visible={visible}
-      css={`
-        width: ${51 * GU}px;
-      `}
-    >
+    <Modal visible={visible} onClose={onClose}>
       <section
         css={`
           display: flex;
@@ -166,8 +155,8 @@ function AccountPopover({
           )}
         </Spring>
       </section>
-    </Popover>
+    </Modal>
   )
 }
 
-export default AccountPopover
+export default AccountModal

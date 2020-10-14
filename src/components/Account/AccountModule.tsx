@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useWallet } from '../../providers/Wallet'
 // @ts-ignore
-import { GU, IconConnect, useViewport } from '@aragon/ui'
+import { IconConnect, useViewport, GU } from '@aragon/ui'
 import AccountButton from './AccountButton'
-import AccountPopover from './AccountPopover'
 import BrandButton from '../BrandButton/BrandButton'
 import ScreenConnected from './ScreenConnected'
 import ScreenConnecting from './ScreenConnecting'
 import ScreenError from './ScreenError'
 import ScreenProviders from './ScreenProviders'
 import { ScreenConfig, WalletConnector } from './types'
+import AccountModal from './AccountModal'
 
 const SCREENS: ScreenConfig[] = [
   { id: 'providers', title: 'Use account from' },
@@ -100,11 +100,11 @@ function AccountModule(): JSX.Element {
           display={compactMode ? 'icon' : 'all'}
         />
       )}
-      <AccountPopover
+
+      <AccountModal
         direction={direction}
         heading={screen.title}
         onClose={handlePopoverClose}
-        opener={buttonRef.current}
         screenId={screenId}
         screenData={{
           account,
@@ -137,7 +137,7 @@ function AccountModule(): JSX.Element {
           }
           return <ScreenProviders onActivate={handleActivate} />
         }}
-      </AccountPopover>
+      </AccountModal>
     </div>
   )
 }
