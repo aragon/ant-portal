@@ -47,7 +47,7 @@ function BrandButton({
 
         font-weight: ${fontWeight.medium};
         ${!disabled ? `box-shadow: ${shadowDepth.low};` : ''}
-        ${mode === 'strong'
+        ${!disabled && mode === 'strong'
           ? `background: linear-gradient(135deg, ${theme.accentEnd} 0%, ${theme.accentStart} 100%);`
           : ''};
       `}
