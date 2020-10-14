@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import {
   TextInput,
   Link,
@@ -42,18 +42,21 @@ function ConverterFormControls({
     setAmount(event.target.value)
   }, [])
 
-  const handleSubmit = useMemo(() => {
-    if (validationStatus === 'valid') {
-      return continueToSigning
-    }
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault()
 
-    if (validationStatus === 'notConnected') {
-      // TODO: Add call to account module
-      return noop
-    }
+      if (validationStatus === 'valid') {
+        continueToSigning()
+      }
 
-    return noop
-  }, [continueToSigning, validationStatus])
+      if (validationStatus === 'notConnected') {
+        // TODO: Add call to account module
+        noop()
+      }
+    },
+    [continueToSigning, validationStatus]
+  )
 
   return (
     <form onSubmit={handleSubmit}>
