@@ -56,7 +56,7 @@ function ConverterForm(): JSX.Element {
   )
 
   return (
-    <form
+    <div
       css={`
         width: 100%;
         max-width: ${130 * GU}px;
@@ -116,7 +116,7 @@ function ConverterForm(): JSX.Element {
           amountDigits={AMOUNT_DIGITS}
         />
       </div>
-    </form>
+    </div>
   )
 }
 
