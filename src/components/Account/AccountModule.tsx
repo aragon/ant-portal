@@ -37,6 +37,8 @@ function AccountModule(): JSX.Element {
   )
 
   useEffect(() => {
+    let autocloseTimer: number
+
     if (status === 'error') {
       setActivatingDelayed(null)
     }
@@ -44,7 +46,13 @@ function AccountModule(): JSX.Element {
     if (status === 'connecting') {
       setActivatingDelayed(connector)
     }
-  }, [connector, status])
+
+    if (status === 'connected') {
+      autocloseTimer = setTimeout(hideAccount, 500)
+    }
+
+    return () => clearTimeout(autocloseTimer)
+  }, [connector, status, hideAccount])
 
   const handleResetConnection = useCallback(() => {
     wallet.reset()
