@@ -43,7 +43,7 @@ function useInputValidation(amount: string, digits: number): InputValidation {
       return 'insufficientBalance'
     }
 
-    if (parsedAmountBn.lt(0) || parsedAmountBn.isZero()) {
+    if (parsedAmountBn.lte(0)) {
       return 'noAmount'
     }
 
