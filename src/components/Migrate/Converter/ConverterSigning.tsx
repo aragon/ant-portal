@@ -10,6 +10,7 @@ import { StepHandleSignProps } from '../../Stepper/types'
 import { useAntTokenV1Contract } from '../../../hooks/useContract'
 import { networkEnvironment } from '../../../environment'
 import { useMigrateState } from '../MigrateStateProvider'
+import { useWallet } from '../../../providers/Wallet'
 
 const { contracts } = networkEnvironment
 
@@ -19,6 +20,7 @@ type ConverterSigningProps = {
 
 function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
   const { layoutName } = useLayout()
+  const { account } = useWallet()
   const history = useHistory()
   const { convertAmount } = useMigrateState()
   const antTokenV1Contract = useAntTokenV1Contract()
@@ -91,7 +93,13 @@ function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
                 <BrandButton wide onClick={handleBackToHome}>
                   Abandon process
                 </BrandButton>
-                <BrandButton mode="strong" onClick={handleSign} wide>
+                <BrandButton
+                  mode="strong"
+                  onClick={handleSign}
+                  wide
+                  // Cover edge case where a user rejects signing and disconnects the account
+                  disabled={!account}
+                >
                   Repeat transaction
                 </BrandButton>
               </div>

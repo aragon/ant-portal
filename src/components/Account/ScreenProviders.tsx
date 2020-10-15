@@ -62,7 +62,7 @@ function ScreenProviders({ onActivate }: ScreenProvidersProps): JSX.Element {
             line-height: 1;
           `}
         >
-          Don’t have an Ethereum account?
+          What is an Ethereum provider?
         </Link>
       </div>
     </div>
@@ -93,7 +93,7 @@ function ProviderButton({ id, provider, onActivate }: ProviderButtonProps) {
         align-items: center;
         justify-content: center;
         width: 100%;
-        padding: ${3 * GU}px;
+        padding: ${3.5 * GU}px;
         background-color: ${theme.surface};
         box-shadow: ${shadowDepth.low};
         border-radius: ${radius.medium};
@@ -104,11 +104,11 @@ function ProviderButton({ id, provider, onActivate }: ProviderButtonProps) {
         }
       `}
     >
-      <img src={provider.image} alt="" height={5.25 * GU} />
+      <img src={provider.image} alt="" height={6 * GU} />
       <div
         css={`
           margin-top: ${1.5 * GU}px;
-          ${textStyle('body2')};
+          ${textStyle('body1')};
           line-height: 1;
         `}
       >
