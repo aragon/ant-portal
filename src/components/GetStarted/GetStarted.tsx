@@ -1,6 +1,7 @@
 import React from 'react'
 // @ts-ignore
 import { GU } from '@aragon/ui'
+import Features from './Features'
 import LayoutGutter from '../Layout/LayoutGutter'
 import Header from './Header'
 
@@ -14,6 +15,7 @@ function GetStarted(): JSX.Element {
         `}
       >
         <Header />
+        <Features />
       </div>
     </LayoutGutter>
   )
