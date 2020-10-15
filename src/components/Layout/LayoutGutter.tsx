@@ -9,12 +9,12 @@ type LayoutGutterProps = {
 
 function LayoutGutter({
   children,
-  collapseWhenSmall = true,
+  collapseWhenSmall = false,
   ...props
 }: LayoutGutterProps): JSX.Element {
   const { layoutName } = useLayout()
 
-  const smallPaddingAmount = collapseWhenSmall ? 0 : 2 * GU
+  const smallPaddingAmount = collapseWhenSmall ? 0 : 3 * GU
   const paddingAmount =
     layoutName === 'small' ? `${smallPaddingAmount}px` : '5%'
 

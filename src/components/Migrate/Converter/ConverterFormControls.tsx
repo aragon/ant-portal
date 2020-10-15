@@ -143,7 +143,12 @@ function ConverterFormControls({
         `}
       >
         You will receive:{' '}
-        <span css={`font-weight: ${fontWeight.medium}; color ${theme.accent}`}>
+        <span
+          css={`
+            font-weight: ${fontWeight.medium};
+            ${validationStatus === 'valid' ? `color ${theme.accent};` : ''}
+          `}
+        >
           {formattedAmount}
         </span>{' '}
         {tokenSymbol} v2

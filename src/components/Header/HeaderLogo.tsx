@@ -12,7 +12,7 @@ function HeaderLogo(): JSX.Element {
         align-items: center;
       `}
     >
-      <img alt="Aragon Migrate" src={headerLogoSvg} width={6 * GU} />
+      <img alt="Aragon Migrate" src={headerLogoSvg} width={6.5 * GU} />
     </div>
   )
 }
