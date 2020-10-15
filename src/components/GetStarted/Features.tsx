@@ -1,7 +1,7 @@
 import React from 'react'
 // @ts-ignore
 import { GU, Link, useTheme, useLayout } from '@aragon/ui'
-import featuresSvg from '../../assets/antv2-features.svg'
+import featuresPng from '../../assets/antv2-features.png'
 import { fontWeight } from '../../style/font'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 
@@ -75,7 +75,7 @@ function Features(): JSX.Element {
           >
             <img
               alt="ANT v2"
-              src={featuresSvg}
+              src={featuresPng}
               css={`
                 position: absolute;
                 top: 0;
