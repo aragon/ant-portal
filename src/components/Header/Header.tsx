@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 // @ts-ignore
-import { GU } from '@aragon/ui'
+import { Link, GU } from '@aragon/ui'
 import AccountModule from '../Account/AccountModule'
 import HeaderLogo from './HeaderLogo'
 import LayoutGutter from '../Layout/LayoutGutter'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 
 function Header(): JSX.Element {
+  const location = useLocation()
+  const history = useHistory()
+
+  const handleLogoClick = useCallback(() => {
+    if (location.pathname !== '/') {
+      history.push('/')
+    }
+  }, [location.pathname, history])
+
   return (
     <header
       css={`
@@ -23,7 +33,10 @@ function Header(): JSX.Element {
               align-items: center;
             `}
           >
-            <HeaderLogo />
+            <Link onClick={handleLogoClick}>
+              <HeaderLogo />
+            </Link>
+
             <AccountModule />
           </div>
         </LayoutLimiter>

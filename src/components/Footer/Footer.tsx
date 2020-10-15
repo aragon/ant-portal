@@ -10,6 +10,8 @@ const RESOURCES_URL = ''
 const COMMUNITY_URL = ''
 const LEGAL_URL = ''
 
+const ARAGON_WEBSITE_URL = 'https://aragon.org'
+
 function Footer(): JSX.Element {
   const theme = useTheme()
   const { layoutName } = useLayout()
@@ -43,7 +45,9 @@ function Footer(): JSX.Element {
               <FooterLink href={COMMUNITY_URL}>Community</FooterLink>
               <FooterLink href={LEGAL_URL}>Legal terms</FooterLink>
             </div>
-            <FooterLogo />
+            <Link href={ARAGON_WEBSITE_URL}>
+              <FooterLogo />
+            </Link>
           </div>
         </LayoutLimiter>
       </LayoutGutter>

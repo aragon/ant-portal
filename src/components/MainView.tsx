@@ -12,12 +12,14 @@ const MainView = React.memo(function MainView({ children }: Props) {
       css={`
         display: flex;
         flex-direction: column;
-        height: 100%;
+        min-height: 100vh;
       `}
     >
       <Header />
       <main
         css={`
+          display: flex;
+          flex-direction: column;
           flex: 1;
         `}
       >

@@ -3,13 +3,15 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import GetStarted from './components/GetStarted/GetStarted'
 import Migrate from './components/Migrate/Migrate'
 
+export const CONVERTER_PATH = '/ant'
+
 export default function Routes(): JSX.Element {
   return (
     <Switch>
       <Route exact path="/" component={GetStarted} />
       <Route
         exact
-        path="/ant"
+        path={CONVERTER_PATH}
         render={() => <Migrate conversionType="ANT" />}
       />
       <Redirect to="/" />

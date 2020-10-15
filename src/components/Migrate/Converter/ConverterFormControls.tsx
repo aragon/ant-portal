@@ -19,6 +19,7 @@ import useInputValidation from './useInputValidation'
 import { networkEnvironment } from '../../../environment'
 import { shadowDepth } from '../../../style/shadow'
 import { useAccountModule } from '../../Account/AccountModuleProvider'
+import { useHistory } from 'react-router-dom'
 
 const FLOAT_REGEX = /^\d*[.]?\d*$/
 
@@ -33,9 +34,10 @@ function ConverterFormControls({
   tokenSymbol,
   amountDigits,
 }: ConverterFormControlsProps): JSX.Element {
+  const history = useHistory()
   const [amount, setAmount] = useState('')
   const theme = useTheme()
-  const { continueToSigning, updateConvertAmount } = useMigrateState()
+  const { goToSigning, updateConvertAmount } = useMigrateState()
   const { showAccount } = useAccountModule()
   const { layoutName } = useLayout()
   const {
@@ -44,6 +46,10 @@ function ConverterFormControls({
     validationStatus,
     parsedAmountBn,
   } = useInputValidation(amount, amountDigits)
+
+  const handleNavigateHome = useCallback(() => {
+    history.push('/')
+  }, [history])
 
   const antV2ContractUrl = blockExplorerUrl('address', contracts.tokenAntV2, {
     networkType: legacyNetworkType,
@@ -68,14 +74,14 @@ function ConverterFormControls({
       event.preventDefault()
 
       if (validationStatus === 'valid') {
-        continueToSigning()
+        goToSigning()
       }
 
       if (validationStatus === 'notConnected') {
         showAccount()
       }
     },
-    [validationStatus, continueToSigning, showAccount]
+    [validationStatus, goToSigning, showAccount]
   )
 
   // Pass updated amount to context state for use in the signing stepper
@@ -187,7 +193,9 @@ function ConverterFormControls({
           grid-template-columns: ${stackedButtons ? 'auto' : '1fr 1fr'};
         `}
       >
-        <BrandButton wide>Back</BrandButton>
+        <BrandButton wide onClick={handleNavigateHome}>
+          Back
+        </BrandButton>
         <ConverterButton status={validationStatus} />
       </div>
     </form>
