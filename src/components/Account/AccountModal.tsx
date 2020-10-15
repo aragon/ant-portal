@@ -1,10 +1,14 @@
-import React, { useState, useEffect, useRef, ReactNode } from 'react'
-// @ts-ignore
-import { GU, Popover, springs, textStyle, useTheme } from '@aragon/ui'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { Spring, Transition, animated } from 'react-spring/renderprops'
+import {
+  textStyle,
+  springs,
+  GU,
+  // @ts-ignore
+} from '@aragon/ui'
 import { ScreenId, WalletError, WalletConnector } from './types'
-
-const AnimatedDiv = animated.div
+import { fontWeight } from '../../style/font'
+import BrandModal from '../BrandModal/BrandModal'
 
 interface ScreenData {
   account: string | null
@@ -14,29 +18,27 @@ interface ScreenData {
   screenId: ScreenId
 }
 
-type AccountPopoverProps = {
-  children: (screenData: ScreenData) => ReactNode
-  direction: -1 | 1
-  heading: ReactNode
-  onClose: () => void
-  opener: HTMLElement
-  screenData: ScreenData
-  screenId: string
+type AccountModalProps = {
   visible: boolean
+  children: (screenData: ScreenData) => ReactNode
+  onClose: () => void
+  screenData: ScreenData
+  heading: ReactNode
+  screenId: string
+  direction: -1 | 1
 }
 
-function AccountPopover({
-  children,
-  direction,
-  heading,
-  onClose,
-  opener,
-  screenData,
-  screenId,
-  visible,
-}: AccountPopoverProps): JSX.Element {
-  const theme = useTheme()
+const AnimatedDiv = animated.div
 
+function AccountModal({
+  visible,
+  children,
+  onClose,
+  screenData,
+  heading,
+  screenId,
+  direction,
+}: AccountModalProps): JSX.Element {
   const [animate, setAnimate] = useState(false)
   const [height, setHeight] = useState(30 * GU)
   const [measuredHeight, setMeasuredHeight] = useState(true)
@@ -67,34 +69,19 @@ function AccountPopover({
   }, [visible])
 
   return (
-    <Popover
-      closeOnOpenerFocus
-      onClose={onClose}
-      opener={opener}
-      placement="bottom-end"
-      visible={visible}
-      css={`
-        width: ${51 * GU}px;
-      `}
-    >
-      <section
-        css={`
-          display: flex;
-          flex-direction: column;
-          overflow: hidden;
-        `}
-      >
+    <BrandModal visible={visible} onClose={onClose}>
+      <>
         <h1
           css={`
             display: flex;
             flex-grow: 0;
             flex-shrink: 0;
             align-items: center;
-            height: ${4 * GU}px;
-            padding-left: ${2 * GU}px;
-            border-bottom: 1px solid ${theme.border};
-            color: ${theme.surfaceContentSecondary};
-            ${textStyle('label2')};
+            margin-bottom: ${3 * GU}px;
+
+            ${textStyle('body2')};
+            font-weight: ${fontWeight.medium};
+            line-height: 1;
           `}
         >
           {heading}
@@ -115,7 +102,6 @@ function AccountPopover({
                 position: relative;
                 flex-grow: 1;
                 width: 100%;
-                overflow: hidden;
                 outline: 0;
               `}
             >
@@ -165,9 +151,9 @@ function AccountPopover({
             </AnimatedDiv>
           )}
         </Spring>
-      </section>
-    </Popover>
+      </>
+    </BrandModal>
   )
 }
 
-export default AccountPopover
+export default AccountModal

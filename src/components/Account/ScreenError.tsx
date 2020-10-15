@@ -6,6 +6,7 @@ import { getNetworkName } from '../../lib/web3-utils'
 import { networkEnvironment } from '../../environment'
 import connectionError from './assets/connection-error.png'
 import { WalletError } from './types'
+import { fontWeight } from '../../style/font'
 
 type ScreenErrorProps = {
   error: WalletError
@@ -39,7 +40,7 @@ function ScreenError({ error, onBack }: ScreenErrorProps): JSX.Element {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: ${2 * GU}px;
+        margin-top: -${2 * GU}px;
         height: 100%;
       `}
     >
@@ -65,7 +66,8 @@ function ScreenError({ error, onBack }: ScreenErrorProps): JSX.Element {
           css={`
             padding-top: ${2 * GU}px;
             ${textStyle('body1')};
-            font-weight: 600;
+            font-weight: ${fontWeight.medium};
+            margin-bottom: ${0.5 * GU}px;
           `}
         >
           {title}
@@ -74,6 +76,8 @@ function ScreenError({ error, onBack }: ScreenErrorProps): JSX.Element {
           css={`
             width: ${36 * GU}px;
             color: ${theme.surfaceContentSecondary};
+            line-height: 1.4;
+            margin-bottom: ${1 * GU}px;
           `}
         >
           {secondary}

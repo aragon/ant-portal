@@ -7,10 +7,6 @@ export function envVar(name: keyof EnvVariables): string {
   return envVar()
 }
 
-function getEnvNetworkType(): EnvNetworkName {
-  return ENV_VARS.NETWORK_ENVIRONMENT() as EnvNetworkName
-}
-
 function getNetworkEnvironment(environment: EnvNetworkName) {
   const preset = getNetworkConfig(environment)
 
@@ -18,6 +14,10 @@ function getNetworkEnvironment(environment: EnvNetworkName) {
     ...preset,
     ipfsGateway: envVar('IPFS_GATEWAY') || preset.ipfsGateway,
   }
+}
+
+export function getEnvNetworkType(): EnvNetworkName {
+  return ENV_VARS.NETWORK_ENVIRONMENT() as EnvNetworkName
 }
 
 export const networkEnvironment = getNetworkEnvironment(getEnvNetworkType())

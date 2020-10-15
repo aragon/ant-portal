@@ -4,6 +4,7 @@ export const theme = {
   accent: '#00c2ff',
   accentStart: '#01e8f7',
   accentEnd: '#00c2ff',
+  disabledContent: '#a0a8c2',
   positive: '#38ccb6',
   positiveSurface: '#ecfaf8',
   negative: '#ff7163',

@@ -1,17 +1,15 @@
 import React from 'react'
 import {
-  ButtonBase,
   EthIdenticon,
-  IconDown,
   GU,
   RADIUS,
-  textStyle,
   useTheme,
   useLayout,
   // @ts-ignore
 } from '@aragon/ui'
 import { useWallet } from '../../providers/Wallet'
 import { shortenAddress } from '../../lib/web3-utils'
+import BrandButton from '../BrandButton/BrandButton'
 
 type AccountButtonProps = {
   onClick: () => void
@@ -25,22 +23,19 @@ function AccountButton({ onClick }: AccountButtonProps): JSX.Element {
   const compactMode = layoutName === 'small'
 
   return (
-    <ButtonBase
+    <BrandButton
       onClick={onClick}
       css={`
-        height: 100%;
-        padding: 0 ${1 * GU}px;
-        &:active {
-          background: ${theme.surfacePressed};
-        }
+        padding-right: ${compactMode ? 1 * GU : 1.75 * GU}px;
+        padding-left: ${compactMode ? 1 * GU : 1.25 * GU}px;
       `}
     >
       <div
         css={`
-          display: flex;
-          align-items: center;
-          text-align: left;
-          padding: 0 ${1 * GU}px;
+          ${!compactMode
+            ? `
+            margin-right: ${1.4 * GU}px;`
+            : ``}
         `}
       >
         <div
@@ -48,7 +43,13 @@ function AccountButton({ onClick }: AccountButtonProps): JSX.Element {
             position: relative;
           `}
         >
-          <EthIdenticon address={account || ''} radius={RADIUS} />
+          <EthIdenticon
+            address={account || ''}
+            radius={RADIUS}
+            css={`
+              display: block;
+            `}
+          />
           <div
             css={`
               position: absolute;
@@ -62,41 +63,9 @@ function AccountButton({ onClick }: AccountButtonProps): JSX.Element {
             `}
           />
         </div>
-        {!compactMode && (
-          <>
-            <div
-              css={`
-                padding-left: ${1 * GU}px;
-                padding-right: ${0.5 * GU}px;
-              `}
-            >
-              <div
-                css={`
-                  margin-bottom: -5px;
-                  ${textStyle('body2')}
-                `}
-              >
-                {shortenAddress(account)}
-              </div>
-              <div
-                css={`
-                  font-size: 11px; /* doesn’t exist in aragonUI */
-                  color: ${theme.positive};
-                `}
-              >
-                Connected
-              </div>
-            </div>
-            <IconDown
-              size="small"
-              css={`
-                color: ${theme.surfaceIcon};
-              `}
-            />
-          </>
-        )}
       </div>
-    </ButtonBase>
+      {!compactMode && shortenAddress(account)}
+    </BrandButton>
   )
 }
 

@@ -1,7 +1,6 @@
 export type EnvNetworkName = 'ethereum' | 'rinkeby'
 
 export interface EnvVariables {
-  BUILD(): string
   NETWORK_ENVIRONMENT(): string
   IPFS_GATEWAY(): string
   FORTMATIC_API_KEY(): string
@@ -16,4 +15,9 @@ export interface EnvNetworkConfig {
     ethereum: string
   }
   ipfsGateway: string
+  contracts: {
+    tokenAntV1: string
+    tokenAntV2: string
+    migrator: string
+  }
 }

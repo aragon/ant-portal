@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 // @ts-ignore
 import { GU, useTheme } from '@aragon/ui'
+import { fontWeight } from '../../style/font'
 
 type HeadingLevel = '1' | '2'
 
@@ -13,12 +14,12 @@ type PageHeadingProps = {
 const levelProperties = {
   1: {
     tag: 'h1',
-    margin: 1.5 * GU,
-    titleSize: 40,
+    margin: 1.75 * GU,
+    titleSize: 42,
   },
   2: {
     tag: 'h2',
-    margin: 1.5 * GU,
+    margin: 1.75 * GU,
     titleSize: 34,
   },
 }
@@ -53,10 +54,11 @@ function PageHeading({
       {description && (
         <p
           css={`
-            font-size: 22px;
+            font-size: 24px;
             line-height: 1.4;
             margin-top: ${margin}px;
             color: ${theme.contentSecondary};
+            font-weight: ${fontWeight.medium};
             max-width: ${95 * GU}px;
             margin-left: auto;
             margin-right: auto;

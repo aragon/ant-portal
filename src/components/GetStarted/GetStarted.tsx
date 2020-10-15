@@ -1,32 +1,20 @@
-import React, { useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import React from 'react'
+// @ts-ignore
+import { GU } from '@aragon/ui'
 import Features from './Features'
 import LayoutGutter from '../Layout/LayoutGutter'
-import BrandButton from '../BrandButton/BrandButton'
+import Header from './Header'
 
 function GetStarted(): JSX.Element {
-  const history = useHistory()
-
-  const handleNavigateToConverter = useCallback(() => {
-    history.push('/ant')
-  }, [history])
-
   return (
     <LayoutGutter>
       <div
         css={`
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 100%;
+          padding-top: ${7 * GU}px;
+          padding-bottom: ${7 * GU}px;
         `}
       >
-        <div>
-          <h2>Get started page</h2>
-          <BrandButton onClick={handleNavigateToConverter}>
-            Migrate ANT
-          </BrandButton>
-        </div>
+        <Header />
         <Features />
       </div>
     </LayoutGutter>

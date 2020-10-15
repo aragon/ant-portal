@@ -1,8 +1,10 @@
 import React, { AllHTMLAttributes, ReactNode } from 'react'
 // @ts-ignore
-import { Button, useTheme } from '@aragon/ui'
+import { Button, useTheme, GU } from '@aragon/ui'
 import { shadowDepth } from '../../style/shadow'
 import { fontWeight } from '../../style/font'
+import { radius } from '../../style/radius'
+import { css } from 'styled-components'
 
 type NativeButtonProps = AllHTMLAttributes<HTMLButtonElement>
 
@@ -10,7 +12,7 @@ type BrandButtonProps = {
   mode?: 'normal' | 'strong' | 'positive' | 'negative'
   disabled?: boolean
   display?: 'auto' | 'all' | 'icon' | 'label'
-  size?: 'medium' | 'small' | 'mini'
+  size?: 'large' | 'medium' | 'small' | 'mini'
   type?: NativeButtonProps['type']
   onClick?: NativeButtonProps['onClick']
   wide?: boolean
@@ -39,17 +41,21 @@ function BrandButton({
       display={display}
       label={label}
       icon={icon}
-      size={size}
+      // Aragon UI deprecated large, so we shouldn't pass it
+      // Instead we apply our own styles directly in this component
+      size={size === 'large' ? 'medium' : size}
       wide={wide}
       css={`
         border: 0;
-        border-radius: 6px;
+        border-radius: ${radius.medium};
 
         font-weight: ${fontWeight.medium};
         ${!disabled ? `box-shadow: ${shadowDepth.low};` : ''}
-        ${mode === 'strong'
+        ${!disabled && mode === 'strong'
           ? `background: linear-gradient(135deg, ${theme.accentEnd} 0%, ${theme.accentStart} 100%);`
           : ''};
+
+        ${size === 'large' ? largeStyles : ''}
       `}
       {...props}
     >
@@ -57,5 +63,11 @@ function BrandButton({
     </Button>
   )
 }
+
+const largeStyles = css`
+  height: ${6 * GU}px;
+  font-size: 18px;
+  font-weight: ${fontWeight.semiBold};
+`
 
 export default BrandButton

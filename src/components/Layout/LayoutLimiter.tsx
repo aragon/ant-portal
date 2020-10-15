@@ -10,7 +10,7 @@ function LayoutLimiter({ children, ...props }: LayoutGutterProps): JSX.Element {
       css={`
         margin-left: auto;
         margin-right: auto;
-        max-width: 1280px;
+        max-width: 1360px;
       `}
       {...props}
     >
