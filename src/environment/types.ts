@@ -1,7 +1,6 @@
 export type EnvNetworkName = 'ethereum' | 'rinkeby'
 
 export interface EnvVariables {
-  BUILD(): string
   NETWORK_ENVIRONMENT(): string
   IPFS_GATEWAY(): string
   FORTMATIC_API_KEY(): string
