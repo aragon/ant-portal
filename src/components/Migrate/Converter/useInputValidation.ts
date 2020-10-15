@@ -29,9 +29,11 @@ function useInputValidation(amount: string, digits: number): InputValidation {
   }, [balance, decimals])
 
   const formattedAmount = useMemo((): string => {
-    return new TokenAmount(parsedAmountBn, decimals).format({
+    const formatted = new TokenAmount(parsedAmountBn, decimals).format({
       digits,
     })
+
+    return formatted === '0' ? '0.0' : formatted
   }, [parsedAmountBn, decimals, digits])
 
   const validationStatus = useMemo((): ValidationStatus => {
