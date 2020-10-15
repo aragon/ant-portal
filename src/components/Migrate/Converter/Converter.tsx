@@ -8,7 +8,7 @@ function Converter(): JSX.Element {
 
   return (
     <>
-      {conversionStage === 'entering' && <ConverterForm />}
+      {conversionStage === 'form' && <ConverterForm />}
       {conversionStage === 'signing' && <ConverterSigning />}
     </>
   )

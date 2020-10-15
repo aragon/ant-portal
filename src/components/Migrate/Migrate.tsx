@@ -14,7 +14,7 @@ type PageDetails = Record<
 
 const PAGE_DESCRIPTION: PageDetails = {
   ANT: {
-    entering: {
+    form: {
       title: 'Aragon Migrate',
       description: 'How much ANT would you like to upgrade?',
     },

@@ -37,7 +37,7 @@ function ConverterFormControls({
   const history = useHistory()
   const [amount, setAmount] = useState('')
   const theme = useTheme()
-  const { continueToSigning, updateConvertAmount } = useMigrateState()
+  const { goToSigning, updateConvertAmount } = useMigrateState()
   const { showAccount } = useAccountModule()
   const { layoutName } = useLayout()
   const {
@@ -74,14 +74,14 @@ function ConverterFormControls({
       event.preventDefault()
 
       if (validationStatus === 'valid') {
-        continueToSigning()
+        goToSigning()
       }
 
       if (validationStatus === 'notConnected') {
         showAccount()
       }
     },
-    [validationStatus, continueToSigning, showAccount]
+    [validationStatus, goToSigning, showAccount]
   )
 
   // Pass updated amount to context state for use in the signing stepper

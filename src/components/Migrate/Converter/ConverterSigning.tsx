@@ -20,13 +20,13 @@ type ConverterSigningProps = {
 function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
   const { layoutName } = useLayout()
   const { account } = useWallet()
-  const { convertAmount, goToEntering } = useMigrateState()
+  const { convertAmount, goToForm } = useMigrateState()
   const antTokenV1Contract = useAntTokenV1Contract()
   const stackedButtons = layoutName === 'small'
 
   const handleBackToHome = useCallback(() => {
-    goToEntering()
-  }, [goToEntering])
+    goToForm()
+  }, [goToForm])
 
   const transactionSteps = useMemo(
     () => [

@@ -17,8 +17,8 @@ type MigrateStateContext = {
   conversionStage: ConversionStage
   conversionType: TokenConversionType
   convertAmount: BigNumber | null
-  continueToSigning: () => void
-  goToEntering: () => void
+  goToSigning: () => void
+  goToForm: () => void
   updateConvertAmount: (amount: BigNumber | null) => void
 }
 
@@ -32,14 +32,14 @@ function MigrateStateProvider({
 }: MigrateStateProviderProps): JSX.Element {
   const [conversionStage, setConversionStage] = useState<
     MigrateStateContext['conversionStage']
-  >('entering')
+  >('form')
 
   const [convertAmount, setConvertAmount] = useState<
     MigrateStateContext['convertAmount']
   >(null)
 
-  const continueToSigning = useCallback(() => setConversionStage('signing'), [])
-  const goToEntering = useCallback(() => setConversionStage('entering'), [])
+  const goToSigning = useCallback(() => setConversionStage('signing'), [])
+  const goToForm = useCallback(() => setConversionStage('form'), [])
   const updateConvertAmount = useCallback(
     (amount) => setConvertAmount(amount),
     []
@@ -49,18 +49,18 @@ function MigrateStateProvider({
     (): MigrateStateContext => ({
       conversionStage,
       conversionType,
-      continueToSigning,
+      goToSigning,
       convertAmount,
       updateConvertAmount,
-      goToEntering,
+      goToForm,
     }),
     [
       conversionStage,
       conversionType,
-      continueToSigning,
+      goToSigning,
       convertAmount,
       updateConvertAmount,
-      goToEntering,
+      goToForm,
     ]
   )
 
