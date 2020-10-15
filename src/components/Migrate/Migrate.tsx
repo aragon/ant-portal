@@ -47,6 +47,8 @@ function MigrateContent() {
   return (
     <LayoutGutter
       css={`
+        padding-top: ${7 * GU}px;
+        padding-bottom: ${7 * GU}px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -64,7 +66,7 @@ function MigrateContent() {
           description={description}
           css={`
             width: 100%;
-            margin-bottom: ${6 * GU}px;
+            margin-bottom: ${7 * GU}px;
           `}
         />
 
