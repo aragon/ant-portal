@@ -48,7 +48,7 @@ function AccountModule(): JSX.Element {
     }
 
     if (status === 'connected') {
-      autocloseTimer = setTimeout(hideAccount, 500)
+      autocloseTimer = setTimeout(hideAccount, 1000)
     }
 
     return () => clearTimeout(autocloseTimer)

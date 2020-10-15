@@ -6,6 +6,7 @@ import {
   getUseWalletProviders,
 } from './ethereum-providers'
 import { ProviderConfig, WalletConnector } from './types'
+import { shadowDepth } from '../../style/shadow'
 
 const PROVIDERS_INFO: [
   WalletConnector,
@@ -27,7 +28,6 @@ function ScreenProviders({ onActivate }: ScreenProvidersProps): JSX.Element {
         flex-direction: column;
         justify-content: center;
         width: 100%;
-        padding: ${2 * GU}px ${2 * GU}px 0;
       `}
     >
       <div
@@ -51,14 +51,14 @@ function ScreenProviders({ onActivate }: ScreenProvidersProps): JSX.Element {
         css={`
           display: flex;
           justify-content: center;
-          margin-top: ${2 * GU}px;
-          padding-bottom: ${2 * GU}px;
+          margin-top: ${3.5 * GU}px;
         `}
       >
         <Link
           href="https://ethereum.org/wallets/"
           css={`
             text-decoration: none;
+            line-height: 1;
           `}
         >
           Don’t have an Ethereum account?
@@ -92,10 +92,11 @@ function ProviderButton({ id, provider, onActivate }: ProviderButtonProps) {
         align-items: center;
         justify-content: center;
         width: 100%;
-        height: ${12 * GU}px;
-        background: ${theme.surface};
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+        padding: ${3 * GU}px;
+        background-color: ${theme.surface};
+        box-shadow: ${shadowDepth.low};
         border-radius: ${RADIUS}px;
+
         &:active {
           top: 1px;
           box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -105,8 +106,9 @@ function ProviderButton({ id, provider, onActivate }: ProviderButtonProps) {
       <img src={provider.image} alt="" height={5.25 * GU} />
       <div
         css={`
-          margin-top: ${1 * GU}px;
+          margin-top: ${1.25 * GU}px;
           ${textStyle('body1')};
+          line-height: 1;
         `}
       >
         {provider.name}

@@ -19,7 +19,7 @@ function AccountModuleProvider({
 }: {
   children: ReactNode
 }): JSX.Element {
-  const [accountVisible, setAccountVisible] = useState(false)
+  const [accountVisible, setAccountVisible] = useState(true)
 
   const showAccount = useCallback(() => setAccountVisible(true), [])
   const hideAccount = useCallback(() => setAccountVisible(false), [])

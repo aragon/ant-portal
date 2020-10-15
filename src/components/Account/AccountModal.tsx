@@ -1,8 +1,11 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { Spring, Transition, animated } from 'react-spring/renderprops'
 // @ts-ignore
-import { Modal, textStyle, useTheme, springs, GU } from '@aragon/ui'
+import { Modal, textStyle, springs, GU } from '@aragon/ui'
 import { ScreenId, WalletError, WalletConnector } from './types'
+import { fontWeight } from '../../style/font'
+import { shadowDepth } from '../../style/shadow'
+import { rgba } from 'polished'
 
 interface ScreenData {
   account: string | null
@@ -33,8 +36,6 @@ function AccountModal({
   screenId,
   direction,
 }: AccountModalProps): JSX.Element {
-  const theme = useTheme()
-
   const [animate, setAnimate] = useState(false)
   const [height, setHeight] = useState(30 * GU)
   const [measuredHeight, setMeasuredHeight] = useState(true)
@@ -65,12 +66,25 @@ function AccountModal({
   }, [visible])
 
   return (
-    <Modal visible={visible} onClose={onClose}>
+    <Modal
+      visible={visible}
+      onClose={onClose}
+      padding={0}
+      css={`
+        > div > div > div {
+          border-radius: 12px !important;
+          box-shadow: ${shadowDepth.high};
+        }
+
+        background-color: ${rgba('#787c85', 0.25)};
+      `}
+    >
       <section
         css={`
           display: flex;
           flex-direction: column;
           overflow: hidden;
+          padding: ${4 * GU}px;
         `}
       >
         <h1
@@ -79,11 +93,11 @@ function AccountModal({
             flex-grow: 0;
             flex-shrink: 0;
             align-items: center;
-            height: ${4 * GU}px;
-            padding-left: ${2 * GU}px;
-            border-bottom: 1px solid ${theme.border};
-            color: ${theme.surfaceContentSecondary};
-            ${textStyle('label2')};
+            margin-bottom: ${3 * GU}px;
+
+            ${textStyle('body2')};
+            font-weight: ${fontWeight.medium};
+            line-height: 1;
           `}
         >
           {heading}
@@ -104,7 +118,6 @@ function AccountModal({
                 position: relative;
                 flex-grow: 1;
                 width: 100%;
-                overflow: hidden;
                 outline: 0;
               `}
             >

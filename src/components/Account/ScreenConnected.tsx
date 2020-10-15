@@ -28,11 +28,7 @@ function ScreenConnected(): JSX.Element {
   const providerInfo = getProviderFromUseWalletId(connector)
 
   return (
-    <div
-      css={`
-        padding: ${2 * GU}px;
-      `}
-    >
+    <>
       <div
         css={`
           display: flex;
@@ -127,7 +123,7 @@ function ScreenConnected(): JSX.Element {
       >
         Disconnect wallet
       </BrandButton>
-    </div>
+    </>
   )
 }
 

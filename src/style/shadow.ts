@@ -11,8 +11,8 @@ export const shadowDepth = {
     shadowTint,
     0.06
   )}`,
-  high: `0px 5px 10px ${rgba(shadowTint, 0.01)}, 0px 15px 50px ${rgba(
+  high: `0px 5px 10px ${rgba(shadowTint, 0.02)}, 0px 15px 50px ${rgba(
     shadowTint,
-    0.075
+    0.08
   )}`,
 }

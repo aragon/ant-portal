@@ -39,7 +39,7 @@ function ScreenError({ error, onBack }: ScreenErrorProps): JSX.Element {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: ${2 * GU}px;
+        margin-top: -${2 * GU}px;
         height: 100%;
       `}
     >
@@ -74,6 +74,8 @@ function ScreenError({ error, onBack }: ScreenErrorProps): JSX.Element {
           css={`
             width: ${36 * GU}px;
             color: ${theme.surfaceContentSecondary};
+            line-height: 1.4;
+            margin-bottom: ${1 * GU}px;
           `}
         >
           {secondary}
