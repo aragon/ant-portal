@@ -5,11 +5,15 @@ import FooterLogo from './FooterLogo'
 import LayoutGutter from '../Layout/LayoutGutter'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 
+// TODO: Add urls when available
+const RESOURCES_URL = ''
+const COMMUNITY_URL = ''
+const LEGAL_URL = ''
+
 function Footer(): JSX.Element {
   const theme = useTheme()
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
-  // TODO: add links urls when confirmed
 
   return (
     <footer>
@@ -17,12 +21,12 @@ function Footer(): JSX.Element {
         <LayoutLimiter>
           <div
             css={`
-              height: ${8 * GU}px;
               display: flex;
               justify-content: space-between;
               align-items: center;
               flex-direction: ${compactMode ? `column` : `row`};
-              padding: ${4 * GU}px 0 ${8 * GU}px 0;
+              padding-top: ${4 * GU}px;
+              padding-bottom: ${4 * GU}px;
               border-top: 1px solid ${theme.border};
             `}
           >
@@ -31,11 +35,13 @@ function Footer(): JSX.Element {
                 display: inline-grid;
                 grid-auto-flow: column;
                 grid-gap: ${4 * GU}px;
+
+                margin-bottom: ${compactMode ? 2 * GU : `0`}px;
               `}
             >
-              <FooterLink>Resources</FooterLink>
-              <FooterLink>Community</FooterLink>
-              <FooterLink>Legal terms</FooterLink>
+              <FooterLink href={RESOURCES_URL}>Resources</FooterLink>
+              <FooterLink href={COMMUNITY_URL}>Community</FooterLink>
+              <FooterLink href={LEGAL_URL}>Legal terms</FooterLink>
             </div>
             <FooterLogo />
           </div>
@@ -46,11 +52,11 @@ function Footer(): JSX.Element {
 }
 
 type FooterLinkProps = {
-  to?: string
+  href: string
   children?: ReactNode
 }
 
-function FooterLink({ to, children }: FooterLinkProps): JSX.Element {
+function FooterLink({ href, children }: FooterLinkProps): JSX.Element {
   const theme = useTheme()
 
   return (
@@ -59,6 +65,7 @@ function FooterLink({ to, children }: FooterLinkProps): JSX.Element {
         text-decoration: none;
         color: ${theme.surfaceContentSecondary};
       `}
+      href={href}
     >
       {children}
     </Link>
