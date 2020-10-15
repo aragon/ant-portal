@@ -6,6 +6,7 @@ import {
 import { useWallet } from './Wallet'
 import { usePollTokenBalanceOf } from '../hooks/usePollTokenBalanceOf'
 import { BigNumber } from 'ethers'
+import { usePollTokenPriceUsd } from '../hooks/usePollTokenPriceUsd'
 
 const ANT_TOKEN_DECIMALS = 18
 
@@ -14,11 +15,13 @@ type Balance = BigNumber | null
 type BalancesContext = {
   antV1Balance: Balance
   antV2Balance: Balance
+  antTokenPriceUsd: string | null
 }
 
 const AccountBalancesContext = React.createContext<BalancesContext>({
   antV1Balance: null,
   antV2Balance: null,
+  antTokenPriceUsd: null,
 })
 
 function AccountBalancesProvider({
@@ -33,14 +36,16 @@ function AccountBalancesProvider({
 
   const antV1BalanceBn = usePollTokenBalanceOf(account, antTokenV1Contract)
   const antV2BalanceBn = usePollTokenBalanceOf(account, antTokenV2Contract)
+  const antTokenPriceUsd = usePollTokenPriceUsd('ANT')
 
   const contextValue = useMemo(
     () => ({
       antV1Balance: antV1BalanceBn,
       antV2Balance: antV2BalanceBn,
+      antTokenPriceUsd,
     }),
 
-    [antV1BalanceBn, antV2BalanceBn]
+    [antV1BalanceBn, antV2BalanceBn, antTokenPriceUsd]
   )
 
   return (
