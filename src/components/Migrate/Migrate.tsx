@@ -48,16 +48,17 @@ function MigrateContent() {
     <LayoutGutter
       css={`
         padding-top: ${7 * GU}px;
-        padding-bottom: ${7 * GU}px;
+        padding-bottom: ${10 * GU}px;
         display: flex;
         align-items: center;
         justify-content: center;
         height: 100%;
+        flex: 1;
       `}
     >
       <div
         css={`
-          margin-top: -${8 * GU}px;
+          margin-top: -${4 * GU}px;
           width: 100%;
         `}
       >

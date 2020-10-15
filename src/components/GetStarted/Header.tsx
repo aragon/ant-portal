@@ -46,9 +46,8 @@ function Header(): JSX.Element {
           css={`
             font-weight: ${fontWeight.bold};
             line-height: 1.2;
-            font-size: 52px;
             margin-bottom: ${2.5 * GU}px;
-            font-size: ${compactMode ? `44` : `52`}px;
+            font-size: ${compactMode ? `44` : `54`}px;
           `}
         >
           Migrate to ANT&nbsp;v2
