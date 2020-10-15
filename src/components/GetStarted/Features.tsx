@@ -1,70 +1,92 @@
 import React from 'react'
 // @ts-ignore
-import { GU, Link, useTheme, useViewport } from '@aragon/ui'
+import { GU, Link, useTheme, useLayout } from '@aragon/ui'
 import featuresSvg from '../../assets/antv2-features.svg'
+import { fontWeight } from '../../style/font'
+import LayoutLimiter from '../Layout/LayoutLimiter'
+
+// TODO: Add url to blog post when available
+const BLOG_POST_URL = ''
 
 function Features(): JSX.Element {
   const theme = useTheme()
-  const { below } = useViewport()
-  const belowLarge = below('large')
-  const compactMode = below('medium')
+  const { layoutName } = useLayout()
+
+  const compactMode = layoutName === 'small'
+  const stackColumns = layoutName === 'small' || layoutName === 'medium'
 
   return (
-    <div
-      css={`
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: ${compactMode ? `column` : `row`};
-        padding: ${10 * GU}px ${2 * GU}px;
-        width: 100%;
-      `}
-    >
+    <LayoutLimiter size="medium">
       <div
         css={`
-          max-width: ${64 * GU}px;
+          padding-top: ${25 * GU}px;
+          padding-bottom: ${25 * GU}px;
+          display: grid;
+          grid-template-columns: ${stackColumns ? '1fr' : '1fr 1fr'};
+          align-items: center;
+          grid-gap: ${10 * GU}px;
+          text-align: ${stackColumns ? 'center' : 'left'};
         `}
       >
-        <h1
-          css={`
-            font-weight: bold;
-            line-height: 1.2;
-            font-size: ${belowLarge ? `40` : `50`}px;
-            margin-bottom: ${2.5 * GU}px;
-          `}
-        >
-          Why are we modernizing ANT?
-        </h1>
-        <p
-          css={`
-            font-weight: 500;
-            font-size: ${belowLarge ? `20` : `26`}px;
-            color: ${theme.surfaceIcon};
-            margin-bottom: ${3 * GU}px;
-          `}
-        >
-          Switching to a new, simpler token will make ANT transactions 3x
-          cheaper — lowering the barrier to entry and making it a better token
-          to use.
-        </p>
-        <Link
-          css={`
-            font-weight: 500;
-            font-size: ${belowLarge ? `17` : `20`}px;
-          `}
-        >
-          Read the blog post
-        </Link>
+        <div>
+          <h2
+            css={`
+              font-weight: ${fontWeight.bold};
+              line-height: 1.2;
+              font-size: ${compactMode ? `40` : `48`}px;
+              margin-bottom: ${2.5 * GU}px;
+            `}
+          >
+            Why are we modernizing&nbsp;ANT?
+          </h2>
+          <p
+            css={`
+              font-weight: ${fontWeight.medium};
+              font-size: ${compactMode ? `20` : `26`}px;
+              color: ${theme.contentSecondary};
+              margin-bottom: ${3 * GU}px;
+            `}
+          >
+            Switching to a new, simpler token will make ANT transactions 3x
+            cheaper — lowering the barrier to entry and making it a better token
+            to use.
+          </p>
+          <Link
+            href={BLOG_POST_URL}
+            css={`
+              font-weight: ${fontWeight.medium};
+              font-size: ${compactMode ? `17` : `20`}px;
+              text-decoration: none;
+            `}
+          >
+            Read the blog post
+          </Link>
+        </div>
+        <div>
+          <div
+            css={`
+              position: relative;
+              padding-top: 106%;
+              width: 100%;
+              max-width: ${stackColumns ? `${62 * GU}px` : 'auto'};
+              margin-left: auto;
+              margin-right: auto;
+            `}
+          >
+            <img
+              alt="ANT v2"
+              src={featuresSvg}
+              css={`
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+              `}
+            />
+          </div>
+        </div>
       </div>
-      <img
-        alt="ANTv2"
-        src={featuresSvg}
-        css={`
-          margin-top: ${compactMode ? 6 * GU : 0}px;
-        `}
-        width={compactMode ? 35 * GU : 65 * GU}
-      />
-    </div>
+    </LayoutLimiter>
   )
 }
 

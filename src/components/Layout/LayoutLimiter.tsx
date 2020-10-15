@@ -1,16 +1,30 @@
 import React, { ReactNode } from 'react'
 
+type Sizes = 'medium' | 'large'
+
 type LayoutGutterProps = {
   children?: ReactNode
+  size?: Sizes
 }
 
-function LayoutLimiter({ children, ...props }: LayoutGutterProps): JSX.Element {
+const LIMITER_WIDTHS: Record<Sizes, string> = {
+  medium: '1180px',
+  large: '1360px',
+}
+
+function LayoutLimiter({
+  children,
+  size = 'large',
+  ...props
+}: LayoutGutterProps): JSX.Element {
+  const width = LIMITER_WIDTHS[size]
+
   return (
     <div
       css={`
         margin-left: auto;
         margin-right: auto;
-        max-width: 1360px;
+        max-width: ${width};
       `}
       {...props}
     >
