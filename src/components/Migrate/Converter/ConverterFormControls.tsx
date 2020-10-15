@@ -72,7 +72,6 @@ function ConverterFormControls({
       }
 
       if (validationStatus === 'notConnected') {
-        // TODO: Add call to account module
         showAccount()
       }
     },
