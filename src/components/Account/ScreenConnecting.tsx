@@ -9,6 +9,7 @@ import {
 
 import loadingRing from './assets/loading-ring.svg'
 import { WalletConnector } from './types'
+import { fontWeight } from '../../style/font'
 
 const spin = keyframes`
   from {
@@ -40,7 +41,6 @@ function ScreenConnecting({
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: ${2 * GU}px;
         height: 100%;
       `}
     >
@@ -93,7 +93,8 @@ function ScreenConnecting({
           css={`
             padding-top: ${2 * GU}px;
             ${textStyle('body1')};
-            font-weight: 600;
+            font-weight: ${fontWeight.medium};
+            margin-bottom: ${0.5 * GU}px;
           `}
         >
           Connecting to {provider.name}
@@ -102,6 +103,8 @@ function ScreenConnecting({
           css={`
             width: ${36 * GU}px;
             color: ${theme.surfaceContentSecondary};
+            line-height: 1.4;
+            margin-bottom: ${1 * GU}px;
           `}
         >
           Log into {getProviderString('your Ethereum wallet', provider.id)}. You

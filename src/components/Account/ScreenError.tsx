@@ -6,6 +6,7 @@ import { getNetworkName } from '../../lib/web3-utils'
 import { networkEnvironment } from '../../environment'
 import connectionError from './assets/connection-error.png'
 import { WalletError } from './types'
+import { fontWeight } from '../../style/font'
 
 type ScreenErrorProps = {
   error: WalletError
@@ -65,7 +66,8 @@ function ScreenError({ error, onBack }: ScreenErrorProps): JSX.Element {
           css={`
             padding-top: ${2 * GU}px;
             ${textStyle('body1')};
-            font-weight: 600;
+            font-weight: ${fontWeight.medium};
+            margin-bottom: ${0.5 * GU}px;
           `}
         >
           {title}

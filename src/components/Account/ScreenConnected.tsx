@@ -49,11 +49,14 @@ function ScreenConnected(): JSX.Element {
             css={`
               width: ${2.5 * GU}px;
               height: ${2.5 * GU}px;
-              margin-right: ${0.5 * GU}px;
-              transform: translateY(-2px);
+              margin-right: ${1 * GU}px;
             `}
           />
-          <span>
+          <span
+            css={`
+              line-height: 1;
+            `}
+          >
             {providerInfo.id === 'unknown' ? 'Wallet' : providerInfo.name}
           </span>
         </div>
@@ -66,7 +69,9 @@ function ScreenConnected(): JSX.Element {
           `}
         >
           <ButtonBase
-            onClick={() => copy(account ? account : '')}
+            onClick={() =>
+              copy(account ? account : '', 'Address copied to clipboard')
+            }
             focusRingRadius={RADIUS}
             css={`
               display: flex;
@@ -99,7 +104,8 @@ function ScreenConnected(): JSX.Element {
         css={`
           display: flex;
           align-items: center;
-          margin-top: ${1 * GU}px;
+          margin-top: ${1.5 * GU}px;
+          margin-bottom: ${2 * GU}px;
           color: ${theme.positive};
           ${textStyle('label2')};
         `}
@@ -114,13 +120,7 @@ function ScreenConnected(): JSX.Element {
         </span>
       </div>
 
-      <BrandButton
-        onClick={() => reset()}
-        wide
-        css={`
-          margin-top: ${1 * GU}px;
-        `}
-      >
+      <BrandButton onClick={() => reset()} wide>
         Disconnect wallet
       </BrandButton>
     </>

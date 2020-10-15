@@ -99,15 +99,15 @@ function ProviderButton({ id, provider, onActivate }: ProviderButtonProps) {
 
         &:active {
           top: 1px;
-          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+          box-shadow: ${shadowDepth.extraLow};
         }
       `}
     >
       <img src={provider.image} alt="" height={5.25 * GU} />
       <div
         css={`
-          margin-top: ${1.25 * GU}px;
-          ${textStyle('body1')};
+          margin-top: ${1.5 * GU}px;
+          ${textStyle('body2')};
           line-height: 1;
         `}
       >

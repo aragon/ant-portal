@@ -3,6 +3,10 @@ import { rgba } from 'polished'
 const shadowTint = '#1a2130'
 
 export const shadowDepth = {
+  extraLow: `0px 1px 1px ${rgba(shadowTint, 0.1)}, 0px 1px 10px ${rgba(
+    shadowTint,
+    0.025
+  )}`,
   low: `0px 1px 2px ${rgba(shadowTint, 0.1)}, 0px 2px 20px ${rgba(
     shadowTint,
     0.05

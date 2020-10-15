@@ -1,7 +1,15 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { Spring, Transition, animated } from 'react-spring/renderprops'
-// @ts-ignore
-import { Modal, textStyle, springs, GU } from '@aragon/ui'
+import {
+  Modal,
+  textStyle,
+  springs,
+  ButtonIcon,
+  IconCross,
+  useTheme,
+  GU,
+  // @ts-ignore
+} from '@aragon/ui'
 import { ScreenId, WalletError, WalletConnector } from './types'
 import { fontWeight } from '../../style/font'
 import { shadowDepth } from '../../style/shadow'
@@ -36,6 +44,7 @@ function AccountModal({
   screenId,
   direction,
 }: AccountModalProps): JSX.Element {
+  const theme = useTheme()
   const [animate, setAnimate] = useState(false)
   const [height, setHeight] = useState(30 * GU)
   const [measuredHeight, setMeasuredHeight] = useState(true)
@@ -69,6 +78,7 @@ function AccountModal({
     <Modal
       visible={visible}
       onClose={onClose}
+      closeButton={false}
       padding={0}
       css={`
         > div > div > div {
@@ -87,86 +97,109 @@ function AccountModal({
           padding: ${4 * GU}px;
         `}
       >
-        <h1
+        <div
           css={`
-            display: flex;
-            flex-grow: 0;
-            flex-shrink: 0;
-            align-items: center;
-            margin-bottom: ${3 * GU}px;
-
-            ${textStyle('body2')};
-            font-weight: ${fontWeight.medium};
-            line-height: 1;
+            position: relative;
           `}
         >
-          {heading}
-        </h1>
-        <Spring
-          config={springs.smooth}
-          from={{ height: 32 * GU }}
-          to={{ height }}
-          immediate={!animate}
-          native
-        >
-          {({ height }) => (
-            <AnimatedDiv
-              ref={popoverFocusElement}
-              tabIndex={0}
-              style={{ height: measuredHeight ? height : 'auto' }}
+          <ButtonIcon
+            label=""
+            css={`
+              position: absolute;
+              top: -${1 * GU}px;
+              right: -${1 * GU}px;
+              z-index: 2;
+            `}
+            onClick={onClose}
+          >
+            <IconCross
               css={`
-                position: relative;
-                flex-grow: 1;
-                width: 100%;
-                outline: 0;
+                color: ${theme.surfaceContent};
               `}
-            >
-              <Transition
-                native
-                config={springs.smooth}
-                items={screenData}
-                keys={({ account, activating, activationError, screenId }) =>
-                  (activationError ? activationError.name : '') +
-                  account +
-                  activating +
-                  screenId
-                }
-                from={{
-                  opacity: 0,
-                  transform: `translate3d(${3 * GU * direction}px, 0, 0)`,
-                }}
-                enter={{ opacity: 1, transform: `translate3d(0, 0, 0)` }}
-                leave={{
-                  opacity: 0,
-                  transform: `translate3d(${3 * GU * -direction}px, 0, 0)`,
-                }}
-                immediate={!animate}
-                onStart={() => {
-                  setMeasuredHeight(true)
-                }}
+            />
+          </ButtonIcon>
+
+          <h1
+            css={`
+              display: flex;
+              flex-grow: 0;
+              flex-shrink: 0;
+              align-items: center;
+              margin-bottom: ${3 * GU}px;
+
+              ${textStyle('body2')};
+              font-weight: ${fontWeight.medium};
+              line-height: 1;
+            `}
+          >
+            {heading}
+          </h1>
+          <Spring
+            config={springs.smooth}
+            from={{ height: 32 * GU }}
+            to={{ height }}
+            immediate={!animate}
+            native
+          >
+            {({ height }) => (
+              <AnimatedDiv
+                ref={popoverFocusElement}
+                tabIndex={0}
+                style={{ height: measuredHeight ? height : 'auto' }}
+                css={`
+                  position: relative;
+                  flex-grow: 1;
+                  width: 100%;
+                  outline: 0;
+                `}
               >
-                {(screenData) => ({ opacity, transform }) => (
-                  <AnimatedDiv
-                    ref={(elt) => {
-                      if (elt) {
-                        setHeight(elt.clientHeight)
-                      }
-                    }}
-                    style={{ opacity, transform }}
-                    css={`
-                      position: ${measuredHeight ? 'absolute' : 'static'};
-                      top: 0;
-                      left: 0;
-                      right: 0;
-                    `}
-                  >
-                    {children(screenData)}
-                  </AnimatedDiv>
-                )}
-              </Transition>
-            </AnimatedDiv>
-          )}
-        </Spring>
+                <Transition
+                  native
+                  config={springs.smooth}
+                  items={screenData}
+                  keys={({ account, activating, activationError, screenId }) =>
+                    (activationError ? activationError.name : '') +
+                    account +
+                    activating +
+                    screenId
+                  }
+                  from={{
+                    opacity: 0,
+                    transform: `translate3d(${3 * GU * direction}px, 0, 0)`,
+                  }}
+                  enter={{ opacity: 1, transform: `translate3d(0, 0, 0)` }}
+                  leave={{
+                    opacity: 0,
+                    transform: `translate3d(${3 * GU * -direction}px, 0, 0)`,
+                  }}
+                  immediate={!animate}
+                  onStart={() => {
+                    setMeasuredHeight(true)
+                  }}
+                >
+                  {(screenData) => ({ opacity, transform }) => (
+                    <AnimatedDiv
+                      ref={(elt) => {
+                        if (elt) {
+                          setHeight(elt.clientHeight)
+                        }
+                      }}
+                      style={{ opacity, transform }}
+                      css={`
+                        position: ${measuredHeight ? 'absolute' : 'static'};
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                      `}
+                    >
+                      {children(screenData)}
+                    </AnimatedDiv>
+                  )}
+                </Transition>
+              </AnimatedDiv>
+            )}
+          </Spring>
+        </div>
       </section>
     </Modal>
   )
