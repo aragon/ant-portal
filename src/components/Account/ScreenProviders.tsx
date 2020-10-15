@@ -1,12 +1,13 @@
 import React, { useCallback } from 'react'
 // @ts-ignore
-import { ButtonBase, GU, Link, RADIUS, useTheme, textStyle } from '@aragon/ui'
+import { ButtonBase, GU, Link, useTheme, textStyle } from '@aragon/ui'
 import {
   getProviderFromUseWalletId,
   getUseWalletProviders,
 } from './ethereum-providers'
 import { ProviderConfig, WalletConnector } from './types'
 import { shadowDepth } from '../../style/shadow'
+import { radius } from '../../style/radius'
 
 const PROVIDERS_INFO: [
   WalletConnector,
@@ -95,7 +96,7 @@ function ProviderButton({ id, provider, onActivate }: ProviderButtonProps) {
         padding: ${3 * GU}px;
         background-color: ${theme.surface};
         box-shadow: ${shadowDepth.low};
-        border-radius: ${RADIUS}px;
+        border-radius: ${radius.medium};
 
         &:active {
           top: 1px;

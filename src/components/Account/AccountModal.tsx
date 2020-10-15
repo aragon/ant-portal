@@ -14,6 +14,7 @@ import { ScreenId, WalletError, WalletConnector } from './types'
 import { fontWeight } from '../../style/font'
 import { shadowDepth } from '../../style/shadow'
 import { rgba } from 'polished'
+import { radius } from '../../style/radius'
 
 interface ScreenData {
   account: string | null
@@ -82,7 +83,7 @@ function AccountModal({
       padding={0}
       css={`
         > div > div > div {
-          border-radius: 12px !important;
+          border-radius: ${radius.high} !important;
           box-shadow: ${shadowDepth.high};
         }
 
