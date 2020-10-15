@@ -14,6 +14,7 @@ import { useMigrateState } from '../MigrateStateProvider'
 import { shadowDepth } from '../../../style/shadow'
 import { useAccountBalances } from '../../../providers/AccountBalances'
 import ConverterFormControls from './ConverterFormControls'
+import { radius } from '../../../style/radius'
 
 const AMOUNT_DIGITS = 6
 const TOKEN_SYMBOL: Record<TokenConversionType, string> = {
@@ -63,7 +64,7 @@ function ConverterForm(): JSX.Element {
         padding: ${6 * GU}px;
         background-color: ${theme.surface};
         box-shadow: ${shadowDepth.high};
-        border-radius: ${1.5 * GU}px;
+        border-radius: ${radius.high};
         display: grid;
         grid-gap: ${4 * GU}px;
         ${compactMode ? stackedLayout : multiColumnLayout}
@@ -101,7 +102,7 @@ function ConverterForm(): JSX.Element {
           justify-content: center;
           grid-area: rate;
           border: 1px dashed ${theme.border};
-          border-radius: ${1 * GU}px;
+          border-radius: ${radius.high};
         `}
       >
         Conversion Rate

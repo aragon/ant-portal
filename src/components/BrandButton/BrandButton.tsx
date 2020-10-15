@@ -3,6 +3,7 @@ import React, { AllHTMLAttributes, ReactNode } from 'react'
 import { Button, useTheme } from '@aragon/ui'
 import { shadowDepth } from '../../style/shadow'
 import { fontWeight } from '../../style/font'
+import { radius } from '../../style/radius'
 
 type NativeButtonProps = AllHTMLAttributes<HTMLButtonElement>
 
@@ -43,7 +44,7 @@ function BrandButton({
       wide={wide}
       css={`
         border: 0;
-        border-radius: 6px;
+        border-radius: ${radius.medium};
 
         font-weight: ${fontWeight.medium};
         ${!disabled ? `box-shadow: ${shadowDepth.low};` : ''}
