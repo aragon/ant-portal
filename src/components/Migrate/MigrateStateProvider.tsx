@@ -18,6 +18,7 @@ type MigrateStateContext = {
   conversionType: TokenConversionType
   convertAmount: BigNumber | null
   continueToSigning: () => void
+  goToEntering: () => void
   updateConvertAmount: (amount: BigNumber | null) => void
 }
 
@@ -38,18 +39,20 @@ function MigrateStateProvider({
   >(null)
 
   const continueToSigning = useCallback(() => setConversionStage('signing'), [])
+  const goToEntering = useCallback(() => setConversionStage('entering'), [])
   const updateConvertAmount = useCallback(
     (amount) => setConvertAmount(amount),
     []
   )
 
   const contextValue = useMemo(
-    () => ({
+    (): MigrateStateContext => ({
       conversionStage,
       conversionType,
       continueToSigning,
       convertAmount,
       updateConvertAmount,
+      goToEntering,
     }),
     [
       conversionStage,
@@ -57,6 +60,7 @@ function MigrateStateProvider({
       continueToSigning,
       convertAmount,
       updateConvertAmount,
+      goToEntering,
     ]
   )
 

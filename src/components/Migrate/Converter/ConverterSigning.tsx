@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react'
-import { useHistory } from 'react-router-dom'
 // @ts-ignore
 import { useLayout, GU } from '@aragon/ui'
 import BrandButton from '../../BrandButton/BrandButton'
@@ -21,14 +20,13 @@ type ConverterSigningProps = {
 function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
   const { layoutName } = useLayout()
   const { account } = useWallet()
-  const history = useHistory()
-  const { convertAmount } = useMigrateState()
+  const { convertAmount, goToEntering } = useMigrateState()
   const antTokenV1Contract = useAntTokenV1Contract()
   const stackedButtons = layoutName === 'small'
 
   const handleBackToHome = useCallback(() => {
-    history.push('/')
-  }, [history])
+    goToEntering()
+  }, [goToEntering])
 
   const transactionSteps = useMemo(
     () => [

@@ -5,6 +5,7 @@ import { GU, IconArrowRight, useTheme, useLayout } from '@aragon/ui'
 import { fontWeight } from '../../style/font'
 import BrandButton from '../BrandButton/BrandButton'
 import LayoutLimiter from '../Layout/LayoutLimiter'
+import { CONVERTER_PATH } from '../../Routes'
 
 function Header(): JSX.Element {
   const history = useHistory()
@@ -14,7 +15,7 @@ function Header(): JSX.Element {
   const compactMode = layoutName === 'small'
 
   const handleNavigateToConverter = useCallback(() => {
-    history.push('/ant')
+    history.push(CONVERTER_PATH)
   }, [history])
 
   return (
