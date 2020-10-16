@@ -12,11 +12,16 @@ function GetStarted(): JSX.Element {
       <div
         css={`
           padding-top: ${7 * GU}px;
-          padding-bottom: ${7 * GU}px;
+          padding-bottom: ${24 * GU}px;
         `}
       >
         <Header />
-        <Balances />
+        <Balances
+          css={`
+            padding-top: ${14 * GU}px;
+            padding-bottom: ${17 * GU}px;
+          `}
+        />
         <Features />
       </div>
     </LayoutGutter>

@@ -8,7 +8,9 @@ import LayoutLimiter from '../Layout/LayoutLimiter'
 // TODO: Add url to blog post when available
 const BLOG_POST_URL = ''
 
-function Features(): JSX.Element {
+function Features({
+  ...props
+}: React.HTMLAttributes<HTMLElement>): JSX.Element {
   const theme = useTheme()
   const { layoutName } = useLayout()
 
@@ -16,11 +18,9 @@ function Features(): JSX.Element {
   const stackColumns = layoutName === 'small' || layoutName === 'medium'
 
   return (
-    <LayoutLimiter size="medium">
+    <LayoutLimiter size="medium" {...props}>
       <div
         css={`
-          padding-top: ${25 * GU}px;
-          padding-bottom: ${25 * GU}px;
           display: grid;
           grid-template-columns: ${stackColumns ? '1fr' : '1fr 1fr'};
           align-items: center;

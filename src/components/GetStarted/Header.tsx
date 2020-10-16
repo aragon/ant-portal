@@ -7,7 +7,7 @@ import BrandButton from '../BrandButton/BrandButton'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import { CONVERTER_PATH } from '../../Routes'
 
-function Header(): JSX.Element {
+function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
   const history = useHistory()
   const theme = useTheme()
 
@@ -19,7 +19,7 @@ function Header(): JSX.Element {
   }, [history])
 
   return (
-    <LayoutLimiter>
+    <LayoutLimiter {...props}>
       <div
         css={`
           width: 100%;
