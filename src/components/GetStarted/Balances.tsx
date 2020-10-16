@@ -19,8 +19,8 @@ function Balances(): JSX.Element {
           padding-bottom: ${15 * GU}px;
         `}
       >
-        <BalanceCard />
-        <BalanceCard />
+        <BalanceCard tokenVersion="v1" price="3.506" balance="78,924,954.82" />
+        <BalanceCard tokenVersion="v2" price="3.506" balance="78,924,954.82" />
       </div>
     </LayoutLimiter>
   )

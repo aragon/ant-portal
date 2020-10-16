@@ -5,9 +5,47 @@ import TokenAntGraphic from '../TokenAntGraphic/TokenAntGraphic'
 import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
+import { networkEnvironment } from '../../environment'
+const { contracts } = networkEnvironment
 
-function BalanceCard(): JSX.Element {
+type TokenType = 'v1' | 'v2'
+
+type BalanceCardProps = {
+  tokenVersion: TokenType
+  price: string
+  balance: string
+}
+
+type TokenPresentation = Record<
+  TokenType,
+  {
+    tokenType: TokenType
+    suffix: string
+    contractAddress: string
+  }
+>
+
+const TOKEN_PRESENTATION: TokenPresentation = {
+  v1: {
+    tokenType: 'v1',
+    suffix: 'v1',
+    contractAddress: contracts.tokenAntV1,
+  },
+  v2: {
+    tokenType: 'v2',
+    suffix: 'v2',
+    contractAddress: contracts.tokenAntV2,
+  },
+}
+
+function BalanceCard({
+  tokenVersion = 'v1',
+  price,
+  balance,
+}: BalanceCardProps): JSX.Element {
   const theme = useTheme()
+
+  const { tokenType, suffix } = TOKEN_PRESENTATION[tokenVersion]
 
   return (
     <div
@@ -29,7 +67,7 @@ function BalanceCard(): JSX.Element {
       >
         <TokenAntGraphic
           shadow
-          type="v1"
+          type={tokenType}
           css={`
             flex-shrink: 0;
           `}
@@ -47,7 +85,7 @@ function BalanceCard(): JSX.Element {
               margin-bottom: ${0.5 * GU}px;
             `}
           >
-            ANT v1
+            ANT {suffix}
           </h3>
           <p>
             ANT Price
@@ -55,9 +93,10 @@ function BalanceCard(): JSX.Element {
               css={`
                 margin-left: ${0.75 * GU}px;
                 font-variant-numeric: tabular-nums;
+                color: ${theme.positive};
               `}
             >
-              $3.506
+              ${price}
             </span>
           </p>
         </div>
@@ -77,7 +116,7 @@ function BalanceCard(): JSX.Element {
               font-variant-numeric: tabular-nums;
             `}
           >
-            78,924,954.82
+            {balance}
             <span
               css={`
                 color: ${theme.contentSecondary};
