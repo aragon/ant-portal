@@ -121,7 +121,6 @@ function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
         </div>
       )}
       css={`
-        padding-top: ${4 * GU}px;
         width: 100%;
         max-width: ${70 * GU}px;
       `}
