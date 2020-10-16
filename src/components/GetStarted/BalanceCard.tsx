@@ -172,7 +172,6 @@ function Skeleton() {
     <span
       css={`
         display: block;
-        background-color: ${theme.surfaceUnder};
         border-radius: ${radius.medium};
         background: linear-gradient(
           -45deg,
