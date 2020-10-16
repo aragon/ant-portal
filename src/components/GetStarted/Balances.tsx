@@ -47,11 +47,13 @@ function Balances(): JSX.Element {
           tokenVersion="v1"
           price={antTokenPriceUsd}
           balance={formattedAntV1Balance}
+          accountConnected={formattedAntV1Balance}
         />
         <BalanceCard
           tokenVersion="v2"
           price={antTokenPriceUsd}
           balance={formattedAntV2Balance}
+          accountConnected={formattedAntV2Balance}
         />
       </div>
     </LayoutLimiter>
