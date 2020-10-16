@@ -9,7 +9,9 @@ import { useAccountBalances } from '../../providers/AccountBalances'
 
 const FORMATTED_DIGITS = 2
 
-function Balances(): JSX.Element {
+function Balances({
+  ...props
+}: React.HTMLAttributes<HTMLElement>): JSX.Element {
   const { layoutName } = useLayout()
   const { antTokenPriceUsd, antV1, antV2 } = useAccountBalances()
   const stackedCards = layoutName === 'small' || layoutName === 'medium'
@@ -33,14 +35,12 @@ function Balances(): JSX.Element {
   )
 
   return (
-    <LayoutLimiter size="medium">
+    <LayoutLimiter size="medium" {...props}>
       <div
         css={`
           display: grid;
           grid-gap: ${4 * GU}px;
           grid-template-columns: ${stackedCards ? '1fr' : '1fr 1fr'};
-          padding-top: ${15 * GU}px;
-          padding-bottom: ${15 * GU}px;
         `}
       >
         <BalanceCard
