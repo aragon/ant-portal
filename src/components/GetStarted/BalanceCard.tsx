@@ -3,7 +3,6 @@ import {
   useTheme,
   IconExternal,
   ButtonIcon,
-  blockExplorerUrl,
   GU,
   // @ts-ignore
 } from '@aragon/ui'
@@ -13,8 +12,9 @@ import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
 import { networkEnvironment } from '../../environment'
 import { css, keyframes } from 'styled-components'
+import { getEtherscanUrl } from '../../utils/etherscan'
 
-const { contracts, legacyNetworkType } = networkEnvironment
+const { contracts } = networkEnvironment
 
 type TokenType = 'v1' | 'v2'
 
@@ -59,9 +59,7 @@ function BalanceCard({
     tokenVersion
   ]
 
-  const etherscanUrl = blockExplorerUrl('address', contractAddress, {
-    networkType: legacyNetworkType,
-  })
+  const etherscanUrl = getEtherscanUrl(contractAddress)
 
   return (
     <div

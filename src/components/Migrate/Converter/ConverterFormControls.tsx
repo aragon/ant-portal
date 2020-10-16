@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import {
-  blockExplorerUrl,
   ButtonBase,
   TextInput,
   Link,
@@ -20,10 +19,11 @@ import { networkEnvironment } from '../../../environment'
 import { shadowDepth } from '../../../style/shadow'
 import { useAccountModule } from '../../Account/AccountModuleProvider'
 import { useHistory } from 'react-router-dom'
+import { getEtherscanUrl } from '../../../utils/etherscan'
 
 const FLOAT_REGEX = /^\d*[.]?\d*$/
 
-const { contracts, legacyNetworkType } = networkEnvironment
+const { contracts } = networkEnvironment
 
 type ConverterFormControlsProps = {
   tokenSymbol: string
@@ -51,10 +51,7 @@ function ConverterFormControls({
     history.push('/')
   }, [history])
 
-  const antV2ContractUrl = blockExplorerUrl('address', contracts.tokenAntV2, {
-    networkType: legacyNetworkType,
-  })
-
+  const antV2ContractUrl = getEtherscanUrl(contracts.tokenAntV2)
   const stackedButtons = layoutName === 'small'
 
   const handleAmountChange = useCallback((event) => {
