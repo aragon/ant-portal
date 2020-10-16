@@ -10,9 +10,13 @@ const MainView = React.memo(function MainView({ children }: Props) {
   return (
     <div
       css={`
+        position: relative;
         display: flex;
         flex-direction: column;
         min-height: 100vh;
+
+        // Lock stacking context below modal
+        z-index: 0;
       `}
     >
       <Header />
