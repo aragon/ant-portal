@@ -4,6 +4,7 @@ import { GU } from '@aragon/ui'
 import Features from './Features'
 import LayoutGutter from '../Layout/LayoutGutter'
 import Header from './Header'
+import Balances from './Balances'
 
 function GetStarted(): JSX.Element {
   return (
@@ -15,6 +16,7 @@ function GetStarted(): JSX.Element {
         `}
       >
         <Header />
+        <Balances />
         <Features />
       </div>
     </LayoutGutter>
