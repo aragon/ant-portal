@@ -15,6 +15,7 @@ import { shadowDepth } from '../../../style/shadow'
 import { useAccountBalances } from '../../../providers/AccountBalances'
 import ConverterFormControls from './ConverterFormControls'
 import { radius } from '../../../style/radius'
+import ConversionRate from './ConversionRate'
 
 const AMOUNT_DIGITS = 6
 const TOKEN_SYMBOL: Record<TokenConversionType, string> = {
@@ -22,7 +23,7 @@ const TOKEN_SYMBOL: Record<TokenConversionType, string> = {
 }
 
 const multiColumnLayout = css`
-  grid-template-columns: 50% auto;
+  grid-template-columns: 55% auto;
   grid-template-rows: auto auto;
   grid-template-areas:
     'title rate'
@@ -60,7 +61,7 @@ function ConverterForm(): JSX.Element {
     <div
       css={`
         width: 100%;
-        max-width: ${130 * GU}px;
+        max-width: ${120 * GU}px;
         padding: ${6 * GU}px;
         background-color: ${theme.surface};
         box-shadow: ${shadowDepth.high};
@@ -101,11 +102,9 @@ function ConverterForm(): JSX.Element {
           align-items: center;
           justify-content: center;
           grid-area: rate;
-          border: 1px dashed ${theme.border};
-          border-radius: ${radius.high};
         `}
       >
-        Conversion Rate
+        <ConversionRate />
       </div>
       <div
         css={`
