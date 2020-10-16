@@ -16,6 +16,7 @@ function ConversionRate(): JSX.Element {
           padding: ${2 * GU}px;
           background-color: ${theme.surface};
 
+          // Create pill corners
           border-radius: ${100 * GU}px;
           box-shadow: ${shadowDepth.high};
           margin-bottom: ${3.5 * GU}px;
@@ -41,8 +42,11 @@ function ConversionRate(): JSX.Element {
           css={`
             font-size: 60px;
             font-weight: ${fontWeight.semiBold};
+
+            // Optically offset left edge of number 1 for centering
             margin-left: -0.15em;
             letter-spacing: -0.075em;
+
             line-height: 1;
             margin-bottom: ${1.75 * GU}px;
 
