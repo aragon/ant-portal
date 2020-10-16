@@ -106,7 +106,7 @@ function BalanceCard({
               font-variant-numeric: tabular-nums;
             `}
           >
-            {balance}
+            {balance && balance}
             <span
               css={`
                 color: ${theme.contentSecondary};
