@@ -18,8 +18,8 @@ function GetStarted(): JSX.Element {
         <Header />
         <Balances
           css={`
-            padding-top: ${18 * GU}px;
-            padding-bottom: ${20 * GU}px;
+            padding-top: ${14 * GU}px;
+            padding-bottom: ${17 * GU}px;
           `}
         />
         <Features
