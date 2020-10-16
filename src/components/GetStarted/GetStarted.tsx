@@ -12,7 +12,7 @@ function GetStarted(): JSX.Element {
       <div
         css={`
           padding-top: ${7 * GU}px;
-          padding-bottom: ${7 * GU}px;
+          padding-bottom: ${24 * GU}px;
         `}
       >
         <Header />
@@ -22,11 +22,7 @@ function GetStarted(): JSX.Element {
             padding-bottom: ${17 * GU}px;
           `}
         />
-        <Features
-          css={`
-            padding-bottom: ${25 * GU}px;
-          `}
-        />
+        <Features />
       </div>
     </LayoutGutter>
   )
