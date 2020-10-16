@@ -64,7 +64,7 @@ function BalanceCard({
           display: flex;
           align-items: center;
           padding-bottom: ${5 * GU}px;
-          margin-bottom: ${5 * GU}px;
+          margin-bottom: ${4.5 * GU}px;
           border-bottom: 1px solid ${theme.border};
         `}
       >
@@ -96,6 +96,7 @@ function BalanceCard({
       <div
         css={`
           font-size: 18px;
+          line-height: 1;
         `}
       >
         {accountConnected ? (
