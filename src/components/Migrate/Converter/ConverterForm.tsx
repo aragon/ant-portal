@@ -74,6 +74,7 @@ function ConverterForm(): JSX.Element {
       <div
         css={`
           grid-area: title;
+          text-align: ${compactMode ? 'center' : 'left'};
         `}
       >
         <h2
@@ -102,6 +103,7 @@ function ConverterForm(): JSX.Element {
           align-items: center;
           justify-content: center;
           grid-area: rate;
+          padding: ${2 * GU}px;
         `}
       >
         <ConversionRate />
