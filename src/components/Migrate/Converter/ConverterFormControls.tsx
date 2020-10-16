@@ -111,6 +111,7 @@ function ConverterFormControls({
           value={amount}
           onChange={handleAmountChange}
           css={`
+            font-variant-numeric: tabular-nums;
             display: block;
           `}
           adornment={
@@ -152,6 +153,7 @@ function ConverterFormControls({
         <span
           css={`
             font-weight: ${fontWeight.medium};
+            font-variant-numeric: tabular-nums;
             ${validationStatus === 'valid' ? `color ${theme.accent};` : ''}
           `}
         >
