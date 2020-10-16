@@ -1,12 +1,19 @@
 import React from 'react'
-// @ts-ignore
-import { useTheme, GU } from '@aragon/ui'
+import {
+  useTheme,
+  IconExternal,
+  ButtonIcon,
+  GU,
+  // @ts-ignore
+} from '@aragon/ui'
 import TokenAntGraphic from '../TokenAntGraphic/TokenAntGraphic'
 import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
 import { networkEnvironment } from '../../environment'
 import { css, keyframes } from 'styled-components'
+import { getEtherscanUrl } from '../../utils/etherscan'
+
 const { contracts } = networkEnvironment
 
 type TokenType = 'v1' | 'v2'
@@ -48,7 +55,11 @@ function BalanceCard({
 }: BalanceCardProps): JSX.Element {
   const theme = useTheme()
 
-  const { tokenType, suffix } = TOKEN_PRESENTATION[tokenVersion]
+  const { tokenType, suffix, contractAddress } = TOKEN_PRESENTATION[
+    tokenVersion
+  ]
+
+  const etherscanUrl = getEtherscanUrl(contractAddress)
 
   return (
     <div
@@ -62,36 +73,53 @@ function BalanceCard({
       <div
         css={`
           display: flex;
-          align-items: center;
+          justify-content: space-between;
           padding-bottom: ${5 * GU}px;
           margin-bottom: ${4.5 * GU}px;
           border-bottom: 1px solid ${theme.border};
         `}
       >
-        <TokenAntGraphic
-          shadow
-          type={tokenType}
-          css={`
-            flex-shrink: 0;
-          `}
-        />
         <div
           css={`
-            padding-left: ${3 * GU}px;
+            display: flex;
+            align-items: center;
           `}
         >
-          <h3
+          <TokenAntGraphic
+            shadow
+            type={tokenType}
             css={`
-              font-size: 28px;
-              font-weight: ${fontWeight.medium};
-              line-height: 1.3;
-              margin-bottom: ${1 * GU}px;
+              flex-shrink: 0;
+            `}
+          />
+          <div
+            css={`
+              padding-left: ${3 * GU}px;
             `}
           >
-            ANT {suffix}
-          </h3>
-          <PriceWithSkeleton price={price} />
+            <h3
+              css={`
+                font-size: 28px;
+                font-weight: ${fontWeight.medium};
+                line-height: 1.3;
+                margin-bottom: ${1 * GU}px;
+              `}
+            >
+              ANT {suffix}
+            </h3>
+            <PriceWithSkeleton price={price} />
+          </div>
         </div>
+
+        <ButtonIcon
+          label=""
+          href={etherscanUrl}
+          css={`
+            color: ${theme.contentSecondary};
+          `}
+        >
+          <IconExternal size="large" />
+        </ButtonIcon>
       </div>
       <div
         css={`
