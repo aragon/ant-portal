@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
+import { useHistory } from 'react-router-dom'
 // @ts-ignore
 import { useLayout, GU } from '@aragon/ui'
 import BrandButton from '../../BrandButton/BrandButton'
@@ -18,6 +19,7 @@ type ConverterSigningProps = {
 }
 
 function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
+  const history = useHistory()
   const { layoutName } = useLayout()
   const { account } = useWallet()
   const { convertAmount, goToForm } = useMigrateState()
@@ -25,8 +27,8 @@ function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
   const stackedButtons = layoutName === 'small'
 
   const handleBackToHome = useCallback(() => {
-    goToForm()
-  }, [goToForm])
+    history.push('/')
+  }, [history])
 
   const transactionSteps = useMemo(
     () => [
@@ -88,7 +90,7 @@ function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
                   grid-template-columns: ${stackedButtons ? 'auto' : '1fr 1fr'};
                 `}
               >
-                <BrandButton wide onClick={handleBackToHome}>
+                <BrandButton wide onClick={goToForm}>
                   Abandon process
                 </BrandButton>
                 <BrandButton
