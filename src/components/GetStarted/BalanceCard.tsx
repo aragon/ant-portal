@@ -15,6 +15,7 @@ type BalanceCardProps = {
   tokenVersion: TokenType
   price: string | null
   balance: string | null
+  accountConnected?: boolean
 }
 
 type TokenPresentation = Record<
@@ -43,6 +44,7 @@ function BalanceCard({
   tokenVersion = 'v1',
   price,
   balance,
+  accountConnected,
 }: BalanceCardProps): JSX.Element {
   const theme = useTheme()
 
@@ -62,7 +64,7 @@ function BalanceCard({
           display: flex;
           align-items: center;
           padding-bottom: ${5 * GU}px;
-          margin-bottom: ${5 * GU}px;
+          margin-bottom: ${4.5 * GU}px;
           border-bottom: 1px solid ${theme.border};
         `}
       >
@@ -91,33 +93,49 @@ function BalanceCard({
           <PriceWithSkeleton price={price} />
         </div>
       </div>
-      <ul>
-        <li
-          css={`
-            display: flex;
-            justify-content: space-between;
-            font-size: 18px;
-          `}
-        >
-          <h4>Wallet balance</h4>
-          <span
-            css={`
-              letter-spacing: -0.02em;
-              font-variant-numeric: tabular-nums;
-            `}
-          >
-            {balance}
-            <span
+      <div
+        css={`
+          font-size: 18px;
+          line-height: 1;
+        `}
+      >
+        {accountConnected ? (
+          <ul>
+            <li
               css={`
-                color: ${theme.contentSecondary};
-                margin-left: ${0.75 * GU}px;
+                display: flex;
+                justify-content: space-between;
               `}
             >
-              ANT
-            </span>
-          </span>
-        </li>
-      </ul>
+              <h4>Wallet balance</h4>
+              <span
+                css={`
+                  letter-spacing: -0.02em;
+                  font-variant-numeric: tabular-nums;
+                `}
+              >
+                {balance && balance}
+                <span
+                  css={`
+                    color: ${theme.contentSecondary};
+                    margin-left: ${0.75 * GU}px;
+                  `}
+                >
+                  ANT
+                </span>
+              </span>
+            </li>
+          </ul>
+        ) : (
+          <p
+            css={`
+              color: ${theme.contentSecondary};
+            `}
+          >
+            Enable account to see your balance
+          </p>
+        )}
+      </div>
     </div>
   )
 }
