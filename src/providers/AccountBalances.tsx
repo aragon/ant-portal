@@ -63,10 +63,13 @@ type BalanceWithDecimals = {
 type AccountBalances = {
   antV1: BalanceWithDecimals
   antV2: BalanceWithDecimals
+  antTokenPriceUsd: string | null
 }
 
 function useAccountBalances(): AccountBalances {
-  const { antV1Balance, antV2Balance } = useContext(AccountBalancesContext)
+  const { antV1Balance, antV2Balance, antTokenPriceUsd } = useContext(
+    AccountBalancesContext
+  )
 
   return {
     antV1: {
@@ -79,6 +82,7 @@ function useAccountBalances(): AccountBalances {
       balance: antV2Balance,
       decimals: ANT_TOKEN_DECIMALS,
     },
+    antTokenPriceUsd,
   }
 }
 

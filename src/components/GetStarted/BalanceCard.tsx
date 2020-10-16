@@ -6,14 +6,15 @@ import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
 import { networkEnvironment } from '../../environment'
+import { css, keyframes } from 'styled-components'
 const { contracts } = networkEnvironment
 
 type TokenType = 'v1' | 'v2'
 
 type BalanceCardProps = {
   tokenVersion: TokenType
-  price: string
-  balance: string
+  price: string | null
+  balance: string | null
 }
 
 type TokenPresentation = Record<
@@ -82,23 +83,12 @@ function BalanceCard({
               font-size: 28px;
               font-weight: ${fontWeight.medium};
               line-height: 1.3;
-              margin-bottom: ${0.5 * GU}px;
+              margin-bottom: ${1 * GU}px;
             `}
           >
             ANT {suffix}
           </h3>
-          <p>
-            ANT Price
-            <span
-              css={`
-                margin-left: ${0.75 * GU}px;
-                font-variant-numeric: tabular-nums;
-                color: ${theme.positive};
-              `}
-            >
-              ${price}
-            </span>
-          </p>
+          <PriceWithSkeleton price={price} />
         </div>
       </div>
       <ul>
@@ -129,6 +119,72 @@ function BalanceCard({
         </li>
       </ul>
     </div>
+  )
+}
+
+function PriceWithSkeleton({ price }: { price: string | null }) {
+  const theme = useTheme()
+
+  return (
+    <p
+      css={`
+        min-width: ${18 * GU}px;
+        line-height: 1;
+        color: ${theme.surfaceContentSecondary};
+      `}
+    >
+      {price ? (
+        <>
+          ANT Price
+          <span
+            css={`
+              margin-left: ${0.75 * GU}px;
+              font-variant-numeric: tabular-nums;
+              color: ${theme.positive};
+            `}
+          >
+            ${price}
+          </span>
+        </>
+      ) : (
+        <Skeleton />
+      )}
+    </p>
+  )
+}
+
+const shimmerAnimation = css`
+  background-size: 400% 400%;
+  animation: ${keyframes`
+  from {
+    background-position: 100% 50%;
+  }
+  to {
+    background-position: 0% 50%;
+  }
+  `} 1s linear infinite;
+`
+
+function Skeleton() {
+  const theme = useTheme()
+
+  return (
+    <span
+      css={`
+        display: block;
+        border-radius: ${radius.medium};
+        background: linear-gradient(
+          -45deg,
+          ${theme.surfaceUnder},
+          ${theme.border},
+          ${theme.surfaceUnder},
+          ${theme.border}
+        );
+        ${shimmerAnimation}
+      `}
+    >
+      &nbsp;
+    </span>
   )
 }
 

@@ -3,9 +3,11 @@ import React from 'react'
 import { useLayout, GU } from '@aragon/ui'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import BalanceCard from './BalanceCard'
+import { useAccountBalances } from '../../providers/AccountBalances'
 
 function Balances(): JSX.Element {
   const { layoutName } = useLayout()
+  const { antTokenPriceUsd } = useAccountBalances()
   const stackedCards = layoutName === 'small' || layoutName === 'medium'
 
   return (
@@ -19,8 +21,16 @@ function Balances(): JSX.Element {
           padding-bottom: ${15 * GU}px;
         `}
       >
-        <BalanceCard tokenVersion="v1" price="3.506" balance="78,924,954.82" />
-        <BalanceCard tokenVersion="v2" price="3.506" balance="78,924,954.82" />
+        <BalanceCard
+          tokenVersion="v1"
+          price={antTokenPriceUsd}
+          balance="78,924,954.82"
+        />
+        <BalanceCard
+          tokenVersion="v2"
+          price={antTokenPriceUsd}
+          balance="78,924,954.82"
+        />
       </div>
     </LayoutLimiter>
   )
