@@ -7,7 +7,7 @@ import { useMounted } from './useMounted'
 const API_BASE = 'https://api.0x.org'
 const SELL_TOKEN = 'USDC'
 
-const POLL_INTERVAL = 10000
+const POLL_INTERVAL = 60000
 
 type Prices = { records: Record<string, string>[] }
 
