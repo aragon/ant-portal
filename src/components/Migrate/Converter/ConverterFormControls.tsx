@@ -23,6 +23,8 @@ import { getEtherscanUrl } from '../../../utils/etherscan'
 import { useAntTokenV1Contract } from '../../../hooks/useContract'
 import { useWallet } from '../../../providers/Wallet'
 import { BigNumber } from 'ethers'
+import { mockPromiseLatency } from '../../../mock'
+import { useMounted } from '../../../hooks/useMounted'
 
 const FLOAT_REGEX = /^\d*[.]?\d*$/
 
@@ -49,9 +51,10 @@ function ConverterFormControls({
     validationStatus,
     parsedAmountBn,
   } = useInputValidation(amount, amountDigits)
-  const handleCheckAllowanceAndProceed = useCheckAllowanceAndProceed(
-    parsedAmountBn
-  )
+  const {
+    handleCheckAllowanceAndProceed,
+    allowanceCheckLoading,
+  } = useCheckAllowanceAndProceed(parsedAmountBn)
 
   const handleNavigateHome = useCallback(() => {
     history.push('/')
@@ -201,18 +204,22 @@ function ConverterFormControls({
         <BrandButton wide onClick={handleNavigateHome}>
           Back
         </BrandButton>
-        <ConverterButton status={validationStatus} />
+        <ConverterButton
+          status={allowanceCheckLoading ? 'loading' : validationStatus}
+        />
       </div>
     </form>
   )
 }
 
 function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
+  const mounted = useMounted()
   const { account } = useWallet()
+  const [allowanceCheckLoading, setAllowanceCheckLoading] = useState(false)
   const { goToSigning, changeSigningConfiguration } = useMigrateState()
   const antTokenV1Contract = useAntTokenV1Contract()
 
-  return useCallback(async () => {
+  const handleCheckAllowanceAndProceed = useCallback(async () => {
     try {
       if (!account) {
         throw new Error('No account is connected!')
@@ -222,12 +229,23 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
         throw new Error('The ANT v1 token contract is not defined!')
       }
 
+      setAllowanceCheckLoading(true)
+
+      // This is intentional latency to give a consistent / solid feel when the allowance response occurs very very quickly
+      // Without it the flicker can feel very subtly jarring
+      await mockPromiseLatency(500)
+
       const {
         remaining: allowanceRemaining,
       } = await antTokenV1Contract.functions.allowance(
         account,
         contracts.migrator
       )
+
+      // Prevent async set state errors if component is unmounted before promise resolves
+      if (!mounted()) {
+        return
+      }
 
       // Update the signing steps configuration based on the allowance state
       // 1: directApproveAndCall – Allow is zero and we can proceed with the happy path
@@ -251,9 +269,13 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
     antTokenV1Contract,
     goToSigning,
     account,
+    mounted,
+    setAllowanceCheckLoading,
     changeSigningConfiguration,
     parsedAmountBn,
   ])
+
+  return { handleCheckAllowanceAndProceed, allowanceCheckLoading }
 }
 
 export default ConverterFormControls
