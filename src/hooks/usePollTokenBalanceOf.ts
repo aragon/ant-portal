@@ -5,13 +5,14 @@ import { useMounted } from './useMounted'
 import { useInterval } from './useInterval'
 import { TokenAntV1 } from '../abi/types/TokenAntV1'
 import { TokenAntV2 } from '../abi/types/TokenAntV2'
+import { useWallet } from '../providers/Wallet'
 
 const POLL_INTERVAL = 3000
 
 export function usePollTokenBalanceOf(
-  account: string | null,
   tokenContract: TokenAntV1 | TokenAntV2 | null
 ): BigNumber | null {
+  const { account } = useWallet()
   const mounted = useMounted()
   const [tokenBalance, setTokenBalance] = useState<BigNumber | null>(null)
 

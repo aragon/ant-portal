@@ -3,24 +3,26 @@ import {
   useAntTokenV1Contract,
   useAntTokenV2Contract,
 } from '../hooks/useContract'
-import { useWallet } from './Wallet'
 import { usePollTokenBalanceOf } from '../hooks/usePollTokenBalanceOf'
 import { BigNumber } from 'ethers'
 import { usePollTokenPriceUsd } from '../hooks/usePollTokenPriceUsd'
+import { usePollUniswapPool } from '../hooks/usePollUniswapPool'
 
 const ANT_TOKEN_DECIMALS = 18
 
-type Balance = BigNumber | null
+type PolledValue = BigNumber | null
 
 type BalancesContext = {
-  antV1Balance: Balance
-  antV2Balance: Balance
+  antV1Balance: PolledValue
+  antV2Balance: PolledValue
+  antInUniswapPool: PolledValue
   antTokenPriceUsd: string | null
 }
 
 const AccountBalancesContext = React.createContext<BalancesContext>({
   antV1Balance: null,
   antV2Balance: null,
+  antInUniswapPool: null,
   antTokenPriceUsd: null,
 })
 
@@ -29,23 +31,23 @@ function AccountBalancesProvider({
 }: {
   children: ReactNode
 }): JSX.Element {
-  const { account } = useWallet()
-
   const antTokenV1Contract = useAntTokenV1Contract()
   const antTokenV2Contract = useAntTokenV2Contract()
 
-  const antV1BalanceBn = usePollTokenBalanceOf(account, antTokenV1Contract)
-  const antV2BalanceBn = usePollTokenBalanceOf(account, antTokenV2Contract)
+  const antV1BalanceBn = usePollTokenBalanceOf(antTokenV1Contract)
+  const antV2BalanceBn = usePollTokenBalanceOf(antTokenV2Contract)
   const antTokenPriceUsd = usePollTokenPriceUsd('ANT')
+  const antInUniswapPoolBn = usePollUniswapPool({ mockAccount: true })
 
   const contextValue = useMemo(
-    () => ({
+    (): BalancesContext => ({
       antV1Balance: antV1BalanceBn,
       antV2Balance: antV2BalanceBn,
+      antInUniswapPool: antInUniswapPoolBn,
       antTokenPriceUsd,
     }),
 
-    [antV1BalanceBn, antV2BalanceBn, antTokenPriceUsd]
+    [antV1BalanceBn, antV2BalanceBn, antTokenPriceUsd, antInUniswapPoolBn]
   )
 
   return (
@@ -56,20 +58,24 @@ function AccountBalancesProvider({
 }
 
 type BalanceWithDecimals = {
-  balance: Balance
+  balance: PolledValue
   decimals: number
 }
 
 type AccountBalances = {
   antV1: BalanceWithDecimals
   antV2: BalanceWithDecimals
+  antInUniswapPool: PolledValue
   antTokenPriceUsd: string | null
 }
 
 function useAccountBalances(): AccountBalances {
-  const { antV1Balance, antV2Balance, antTokenPriceUsd } = useContext(
-    AccountBalancesContext
-  )
+  const {
+    antV1Balance,
+    antV2Balance,
+    antTokenPriceUsd,
+    antInUniswapPool,
+  } = useContext(AccountBalancesContext)
 
   return {
     antV1: {
@@ -82,6 +88,7 @@ function useAccountBalances(): AccountBalances {
       balance: antV2Balance,
       decimals: ANT_TOKEN_DECIMALS,
     },
+    antInUniswapPool,
     antTokenPriceUsd,
   }
 }
