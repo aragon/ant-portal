@@ -66,9 +66,15 @@ function ConverterSigning({
     const steps = [
       {
         title: 'Initiate migration',
+        descriptions: {
+          waiting: 'Waiting for signature…',
+          prompting: 'Sign transaction…',
+          working: 'Sign transaction…',
+          success: 'Transaction signed',
+          error: 'An error has occured',
+        },
         handleSign: async ({
           setSuccess,
-          setWorking,
           setError,
           setHash,
         }: StepHandleSignProps): Promise<void> => {
@@ -80,8 +86,6 @@ function ConverterSigning({
             if (!convertAmount) {
               throw new Error('No amount was provided!')
             }
-
-            setWorking()
 
             const tx = await migrationContractInteraction()
 
@@ -100,6 +104,13 @@ function ConverterSigning({
     if (signingConfiguration === 'requiresReset') {
       steps.unshift({
         title: 'Reset approval',
+        descriptions: {
+          waiting: 'Waiting for signature…',
+          prompting: 'Sign transaction…',
+          working: 'Transaction mining…',
+          success: 'Transaction mined',
+          error: 'An error has occured',
+        },
         handleSign: async ({
           setSuccess,
           setWorking,
@@ -107,12 +118,12 @@ function ConverterSigning({
           setHash,
         }: StepHandleSignProps): Promise<void> => {
           try {
-            setWorking()
-
             const tx = await antTokenV1Contract?.functions.approve(
               contracts.migrator,
               '0'
             )
+
+            setWorking()
 
             setHash(tx ? tx.hash : '')
 
@@ -190,7 +201,10 @@ function ConverterSigning({
               </BrandButton>
             )}
           </div>
-          <SigningInfo status={stepperStatus} />
+          <SigningInfo
+            status={stepperStatus}
+            multipleTransactions={signingConfiguration === 'requiresReset'}
+          />
         </div>
       )}
       css={`

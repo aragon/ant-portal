@@ -29,18 +29,6 @@ const spinAnimation = css`
   `} 1.25s linear infinite;
 `
 
-const pulseAnimation = css`
-  animation: ${keyframes`
-    from {
-      opacity: 1;
-    }
-
-    to {
-      opacity: 0.1;
-    }
-  `} 0.75s linear alternate infinite;
-`
-
 type StatusVisualProps = {
   status: StepStatus
   color: string
@@ -162,10 +150,8 @@ function StatusVisual({
             border-radius: 100%;
             border: 3px solid ${status === 'waiting' ? 'transparent' : color};
 
-            ${status === 'prompting' ? pulseAnimation : ''}
-            ${status === 'working' ? spinAnimation : ''}
-            ${status === 'prompting'
-              ? `background-color: ${theme.background};`
+            ${status === 'prompting' || status === 'working'
+              ? spinAnimation
               : ''}
           `}
         />
@@ -192,6 +178,10 @@ function StepIllustration({ number, status }: StepIllustrationProps) {
     }
 
     if (status === 'working') {
+      return 'active'
+    }
+
+    if (status === 'prompting') {
       return 'active'
     }
 
