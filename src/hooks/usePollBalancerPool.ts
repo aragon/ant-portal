@@ -4,20 +4,23 @@ import { captureErrorWithSentry } from '../sentry'
 import { useMounted } from './useMounted'
 import { useInterval } from './useInterval'
 import { useWallet } from '../providers/Wallet'
-import { useUniswapPoolContract } from './useContract'
-import { MOCK_UNISWAP_POOL_ACCOUNT } from '../mock'
+import { useBalancerPoolContract } from './useContract'
+import { MOCK_BALANCER_POOL_ACCOUNT } from '../mock'
+import { networkEnvironment } from '../environment'
+
+const { contracts } = networkEnvironment
 
 const POLL_INTERVAL = 3000
 
-export function usePollUniswapPool({
+export function usePollBalancerPool({
   mockAccount,
 }: {
   mockAccount: boolean
 }): BigNumber | null {
   const wallet = useWallet()
-  const account = mockAccount ? MOCK_UNISWAP_POOL_ACCOUNT : wallet.account
+  const account = mockAccount ? MOCK_BALANCER_POOL_ACCOUNT : wallet.account
   const mounted = useMounted()
-  const contract = useUniswapPoolContract()
+  const contract = useBalancerPoolContract()
   const [antInPool, setAntInPool] = useState<BigNumber | null>(null)
 
   const getBalance = useCallback(
@@ -34,20 +37,20 @@ export function usePollUniswapPool({
         const {
           balanceOf,
           totalSupply: getTotalSupply,
-          getReserves,
+          getBalance,
         } = contract.functions
 
         const [
           { 0: userBalance },
           { 0: totalSupply },
-          { 0: antReserve },
+          { 0: poolAntBalance },
         ] = await Promise.all([
           balanceOf(account),
           getTotalSupply(),
-          getReserves(),
+          getBalance(contracts.tokenAntV1),
         ])
 
-        const amount = userBalance.mul(antReserve).div(totalSupply)
+        const amount = userBalance.mul(poolAntBalance).div(totalSupply)
 
         // Avoid unnessesary re-renders by only updating value when it has actually changed
         if (mounted() && (!antInPool || !amount.eq(antInPool))) {

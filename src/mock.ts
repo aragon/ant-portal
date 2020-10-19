@@ -10,6 +10,9 @@ export const MOCK_HASH =
 export const MOCK_UNISWAP_POOL_ACCOUNT =
   '0x5a168ccbc4754fbaf66a2f1d5d3e28acf45a542b'
 
+export const MOCK_BALANCER_POOL_ACCOUNT =
+  '0x307B543b90F0B5D83B90994B6ba83927d8B28A41'
+
 export async function mockPromiseLatency(ms: number): Promise<boolean> {
   return new Promise((resolve) => setTimeout(() => resolve(true), ms))
 }

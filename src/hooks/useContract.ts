@@ -10,15 +10,15 @@ import { networkEnvironment } from '../environment'
 import tokenAntV1Abi from '../abi/token-ant-v1.json'
 import tokenAntV2Abi from '../abi/token-ant-v1.json'
 import migratorAbi from '../abi/migrator.json'
-import antEthUniswapPoolAbi from '../abi/ant-eth-uniswap-pool.json'
-import antUniIncentivePoolAbi from '../abi/ant-uni-incentive-pool.json'
-import antEthBalancerPoolAbi from '../abi/ant-eth-balancer-pool.json'
+import uniswapPoolAbi from '../abi/uniswap-pool.json'
+import incentivePoolAbi from '../abi/incentive-pool.json'
+import balancerPoolAbi from '../abi/balancer-pool.json'
 import { TokenAntV1 } from '../abi/types/TokenAntV1'
 import { TokenAntV2 } from '../abi/types/TokenAntV2'
 import { Migrator } from '../abi/types/Migrator'
-import { AntEthUniswapPool } from '../abi/types/AntEthUniswapPool'
-import { AntUniIncentivePool } from '../abi/types/AntUniIncentivePool'
-import { AntEthBalancerPool } from '../abi/types/AntEthBalancerPool'
+import { UniswapPool } from '../abi/types/UniswapPool'
+import { IncentivePool } from '../abi/types/IncentivePool'
+import { BalancerPool } from '../abi/types/BalancerPool'
 
 const { endpoints, contracts } = networkEnvironment
 
@@ -82,29 +82,29 @@ export function useAntTokenV2Contract(): TokenAntV2 | null {
   })
 }
 
-export function useAntEthUniswapPool(): AntEthUniswapPool | null {
+export function useUniswapPoolContract(): UniswapPool | null {
   const { antEthUniswapPool } = contracts
 
-  return useContract<AntEthUniswapPool>({
+  return useContract<UniswapPool>({
     address: antEthUniswapPool,
-    abi: antEthUniswapPoolAbi as any,
+    abi: uniswapPoolAbi as any,
   })
 }
 
-export function useAntUniIncentivePool(): AntUniIncentivePool | null {
+export function useIncentivePoolContract(): IncentivePool | null {
   const { antUniIncentivePool } = contracts
 
-  return useContract<AntUniIncentivePool>({
+  return useContract<IncentivePool>({
     address: antUniIncentivePool,
-    abi: antUniIncentivePoolAbi as any,
+    abi: incentivePoolAbi as any,
   })
 }
 
-export function useAntEthBalancerPool(): AntEthBalancerPool | null {
+export function useBalancerPoolContract(): BalancerPool | null {
   const { antEthBalancerPool } = contracts
 
-  return useContract<AntEthBalancerPool>({
+  return useContract<BalancerPool>({
     address: antEthBalancerPool,
-    abi: antEthBalancerPoolAbi as any,
+    abi: balancerPoolAbi as any,
   })
 }

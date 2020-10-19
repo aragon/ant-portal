@@ -7,6 +7,7 @@ import { usePollTokenBalanceOf } from '../hooks/usePollTokenBalanceOf'
 import { BigNumber } from 'ethers'
 import { usePollTokenPriceUsd } from '../hooks/usePollTokenPriceUsd'
 import { usePollUniswapPool } from '../hooks/usePollUniswapPool'
+import { usePollBalancerPool } from '../hooks/usePollBalancerPool'
 
 const ANT_TOKEN_DECIMALS = 18
 
@@ -16,6 +17,7 @@ type BalancesContext = {
   antV1Balance: PolledValue
   antV2Balance: PolledValue
   antInUniswapPool: PolledValue
+  antInBalancerPool: PolledValue
   antTokenPriceUsd: string | null
 }
 
@@ -23,6 +25,7 @@ const AccountBalancesContext = React.createContext<BalancesContext>({
   antV1Balance: null,
   antV2Balance: null,
   antInUniswapPool: null,
+  antInBalancerPool: null,
   antTokenPriceUsd: null,
 })
 
@@ -38,16 +41,24 @@ function AccountBalancesProvider({
   const antV2BalanceBn = usePollTokenBalanceOf(antTokenV2Contract)
   const antTokenPriceUsd = usePollTokenPriceUsd('ANT')
   const antInUniswapPoolBn = usePollUniswapPool({ mockAccount: true })
+  const antInBalancerPoolBn = usePollBalancerPool({ mockAccount: true })
 
   const contextValue = useMemo(
     (): BalancesContext => ({
       antV1Balance: antV1BalanceBn,
       antV2Balance: antV2BalanceBn,
       antInUniswapPool: antInUniswapPoolBn,
+      antInBalancerPool: antInBalancerPoolBn,
       antTokenPriceUsd,
     }),
 
-    [antV1BalanceBn, antV2BalanceBn, antTokenPriceUsd, antInUniswapPoolBn]
+    [
+      antV1BalanceBn,
+      antV2BalanceBn,
+      antTokenPriceUsd,
+      antInUniswapPoolBn,
+      antInBalancerPoolBn,
+    ]
   )
 
   return (
@@ -66,6 +77,7 @@ type AccountBalances = {
   antV1: BalanceWithDecimals
   antV2: BalanceWithDecimals
   antInUniswapPool: PolledValue
+  antInBalancerPool: PolledValue
   antTokenPriceUsd: string | null
 }
 
@@ -75,6 +87,7 @@ function useAccountBalances(): AccountBalances {
     antV2Balance,
     antTokenPriceUsd,
     antInUniswapPool,
+    antInBalancerPool,
   } = useContext(AccountBalancesContext)
 
   return {
@@ -89,6 +102,7 @@ function useAccountBalances(): AccountBalances {
       decimals: ANT_TOKEN_DECIMALS,
     },
     antInUniswapPool,
+    antInBalancerPool,
     antTokenPriceUsd,
   }
 }
