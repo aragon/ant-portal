@@ -20,6 +20,8 @@ import { shadowDepth } from '../../../style/shadow'
 import { useAccountModule } from '../../Account/AccountModuleProvider'
 import { useHistory } from 'react-router-dom'
 import { getEtherscanUrl } from '../../../utils/etherscan'
+import { useAntTokenV1Contract } from '../../../hooks/useContract'
+import { useWallet } from '../../../providers/Wallet'
 
 const FLOAT_REGEX = /^\d*[.]?\d*$/
 
@@ -34,10 +36,16 @@ function ConverterFormControls({
   tokenSymbol,
   amountDigits,
 }: ConverterFormControlsProps): JSX.Element {
+  const { account } = useWallet()
   const history = useHistory()
   const [amount, setAmount] = useState('')
   const theme = useTheme()
-  const { goToSigning, updateConvertAmount } = useMigrateState()
+  const {
+    goToSigning,
+    updateConvertAmount,
+    updateRequiresApprovalReset,
+  } = useMigrateState()
+  const antTokenV1Contract = useAntTokenV1Contract()
   const { showAccount } = useAccountModule()
   const { layoutName } = useLayout()
   const {
@@ -66,19 +74,60 @@ function ConverterFormControls({
     setAmount(maxAmount)
   }, [maxAmount])
 
+  const handleCheckAllowanceAndProgress = useCallback(async () => {
+    try {
+      if (!account) {
+        throw new Error('No account is connected!')
+      }
+
+      if (!antTokenV1Contract) {
+        throw new Error('The ANT v1 token contract is not defined!')
+      }
+
+      const {
+        remaining: allowanceRemaining,
+      } = await antTokenV1Contract.functions.allowance(
+        account,
+        contracts.migrator
+      )
+
+      // Inform the signing stage whether we need an additional approval reset step
+      if (
+        !allowanceRemaining.isZero() &&
+        parsedAmountBn.gt(allowanceRemaining)
+      ) {
+        console.log('Requires reset')
+        updateRequiresApprovalReset(true)
+      } else {
+        console.log('No reset')
+        updateRequiresApprovalReset(false)
+      }
+
+      goToSigning()
+    } catch (err) {
+      console.error(err)
+    }
+  }, [
+    antTokenV1Contract,
+    goToSigning,
+    account,
+    updateRequiresApprovalReset,
+    parsedAmountBn,
+  ])
+
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault()
 
       if (validationStatus === 'valid') {
-        goToSigning()
+        handleCheckAllowanceAndProgress()
       }
 
       if (validationStatus === 'notConnected') {
         showAccount()
       }
     },
-    [validationStatus, goToSigning, showAccount]
+    [validationStatus, handleCheckAllowanceAndProgress, showAccount]
   )
 
   // Pass updated amount to context state for use in the signing stepper

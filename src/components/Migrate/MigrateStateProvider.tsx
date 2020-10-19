@@ -17,9 +17,11 @@ type MigrateStateContext = {
   conversionStage: ConversionStage
   conversionType: TokenConversionType
   convertAmount: BigNumber | null
+  requiresApprovalReset: boolean
   goToSigning: () => void
   goToForm: () => void
   updateConvertAmount: (amount: BigNumber | null) => void
+  updateRequiresApprovalReset: (resetRequired: boolean) => void
 }
 
 const UseMigrateStateContext = React.createContext<MigrateStateContext | null>(
@@ -38,10 +40,18 @@ function MigrateStateProvider({
     MigrateStateContext['convertAmount']
   >(null)
 
+  const [requiresApprovalReset, setRequiresApprovalReset] = useState<
+    MigrateStateContext['requiresApprovalReset']
+  >(false)
+
   const goToSigning = useCallback(() => setConversionStage('signing'), [])
   const goToForm = useCallback(() => setConversionStage('form'), [])
   const updateConvertAmount = useCallback(
     (amount) => setConvertAmount(amount),
+    []
+  )
+  const updateRequiresApprovalReset = useCallback(
+    (resetRequired) => setRequiresApprovalReset(resetRequired),
     []
   )
 
@@ -49,6 +59,8 @@ function MigrateStateProvider({
     (): MigrateStateContext => ({
       conversionStage,
       conversionType,
+      requiresApprovalReset,
+      updateRequiresApprovalReset,
       goToSigning,
       convertAmount,
       updateConvertAmount,
@@ -57,6 +69,8 @@ function MigrateStateProvider({
     [
       conversionStage,
       conversionType,
+      requiresApprovalReset,
+      updateRequiresApprovalReset,
       goToSigning,
       convertAmount,
       updateConvertAmount,

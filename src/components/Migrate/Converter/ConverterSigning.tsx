@@ -22,7 +22,7 @@ function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
   const history = useHistory()
   const { layoutName } = useLayout()
   const { account } = useWallet()
-  const { convertAmount, goToForm } = useMigrateState()
+  const { convertAmount, goToForm, requiresApprovalReset } = useMigrateState()
   const antTokenV1Contract = useAntTokenV1Contract()
   const stackedButtons = layoutName === 'small'
 
@@ -30,10 +30,10 @@ function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
     history.push('/')
   }, [history])
 
-  const transactionSteps = useMemo(
-    () => [
+  const transactionSteps = useMemo(() => {
+    const steps = [
       {
-        title: 'Initiate ANT migration',
+        title: 'Initiate migration',
         handleSign: async ({
           setSuccess,
           setWorking,
@@ -65,9 +65,37 @@ function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
           }
         },
       },
-    ],
-    [antTokenV1Contract, convertAmount]
-  )
+    ]
+
+    if (requiresApprovalReset) {
+      steps.unshift({
+        title: 'Reset approval',
+        handleSign: async ({
+          setSuccess,
+          setWorking,
+          setError,
+          setHash,
+        }: StepHandleSignProps): Promise<void> => {
+          try {
+            setWorking()
+
+            const tx = await antTokenV1Contract?.functions.approve(
+              contracts.migrator,
+              '0'
+            )
+
+            setHash(tx ? tx.hash : '')
+            setSuccess()
+          } catch (err) {
+            console.error(err)
+            setError()
+          }
+        },
+      })
+    }
+
+    return steps
+  }, [antTokenV1Contract, convertAmount, requiresApprovalReset])
   return (
     <Stepper
       steps={mockSigning ? getMockSteps(1) : transactionSteps}
