@@ -22,6 +22,7 @@ import { useHistory } from 'react-router-dom'
 import { getEtherscanUrl } from '../../../utils/etherscan'
 import { useAntTokenV1Contract } from '../../../hooks/useContract'
 import { useWallet } from '../../../providers/Wallet'
+import { BigNumber } from 'ethers'
 
 const FLOAT_REGEX = /^\d*[.]?\d*$/
 
@@ -36,16 +37,10 @@ function ConverterFormControls({
   tokenSymbol,
   amountDigits,
 }: ConverterFormControlsProps): JSX.Element {
-  const { account } = useWallet()
   const history = useHistory()
   const [amount, setAmount] = useState('')
   const theme = useTheme()
-  const {
-    goToSigning,
-    updateConvertAmount,
-    changeSigningConfiguration,
-  } = useMigrateState()
-  const antTokenV1Contract = useAntTokenV1Contract()
+  const { updateConvertAmount } = useMigrateState()
   const { showAccount } = useAccountModule()
   const { layoutName } = useLayout()
   const {
@@ -54,6 +49,9 @@ function ConverterFormControls({
     validationStatus,
     parsedAmountBn,
   } = useInputValidation(amount, amountDigits)
+  const handleCheckAllowanceAndProceed = useCheckAllowanceAndProceed(
+    parsedAmountBn
+  )
 
   const handleNavigateHome = useCallback(() => {
     history.push('/')
@@ -74,59 +72,19 @@ function ConverterFormControls({
     setAmount(maxAmount)
   }, [maxAmount])
 
-  const handleCheckAllowanceAndProgress = useCallback(async () => {
-    try {
-      if (!account) {
-        throw new Error('No account is connected!')
-      }
-
-      if (!antTokenV1Contract) {
-        throw new Error('The ANT v1 token contract is not defined!')
-      }
-
-      const {
-        remaining: allowanceRemaining,
-      } = await antTokenV1Contract.functions.allowance(
-        account,
-        contracts.migrator
-      )
-
-      // Inform the signing stage whether we need an additional approval reset step
-      if (allowanceRemaining.isZero()) {
-        changeSigningConfiguration('directApproveAndCall')
-      } else {
-        if (parsedAmountBn.gt(allowanceRemaining)) {
-          changeSigningConfiguration('requiresReset')
-        } else {
-          changeSigningConfiguration('withinAnExistingAllowance')
-        }
-      }
-
-      goToSigning()
-    } catch (err) {
-      console.error(err)
-    }
-  }, [
-    antTokenV1Contract,
-    goToSigning,
-    account,
-    changeSigningConfiguration,
-    parsedAmountBn,
-  ])
-
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault()
 
-      if (validationStatus === 'valid') {
-        handleCheckAllowanceAndProgress()
-      }
-
       if (validationStatus === 'notConnected') {
         showAccount()
       }
+
+      if (validationStatus === 'valid') {
+        handleCheckAllowanceAndProceed()
+      }
     },
-    [validationStatus, handleCheckAllowanceAndProgress, showAccount]
+    [validationStatus, handleCheckAllowanceAndProceed, showAccount]
   )
 
   // Pass updated amount to context state for use in the signing stepper
@@ -247,6 +205,55 @@ function ConverterFormControls({
       </div>
     </form>
   )
+}
+
+function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
+  const { account } = useWallet()
+  const { goToSigning, changeSigningConfiguration } = useMigrateState()
+  const antTokenV1Contract = useAntTokenV1Contract()
+
+  return useCallback(async () => {
+    try {
+      if (!account) {
+        throw new Error('No account is connected!')
+      }
+
+      if (!antTokenV1Contract) {
+        throw new Error('The ANT v1 token contract is not defined!')
+      }
+
+      const {
+        remaining: allowanceRemaining,
+      } = await antTokenV1Contract.functions.allowance(
+        account,
+        contracts.migrator
+      )
+
+      // Update the signing steps configuration based on the allowance state
+      // 1: directApproveAndCall – Allow is zero and we can proceed with the happy path
+      // 2: requiresReset – Upgrade amount exceeds approved allowance and must be reset
+      // 3: withinAnExistingAllowance – There is an allowance, but the upgrade amount is within it so we must call the migrator contract directly
+      if (allowanceRemaining.isZero()) {
+        changeSigningConfiguration('directApproveAndCall')
+      } else {
+        if (parsedAmountBn.gt(allowanceRemaining)) {
+          changeSigningConfiguration('requiresReset')
+        } else {
+          changeSigningConfiguration('withinAnExistingAllowance')
+        }
+      }
+
+      goToSigning()
+    } catch (err) {
+      console.error(err)
+    }
+  }, [
+    antTokenV1Contract,
+    goToSigning,
+    account,
+    changeSigningConfiguration,
+    parsedAmountBn,
+  ])
 }
 
 export default ConverterFormControls
