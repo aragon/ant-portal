@@ -20,6 +20,11 @@ import { shadowDepth } from '../../../style/shadow'
 import { useAccountModule } from '../../Account/AccountModuleProvider'
 import { useHistory } from 'react-router-dom'
 import { getEtherscanUrl } from '../../../utils/etherscan'
+import { useAntTokenV1Contract } from '../../../hooks/useContract'
+import { useWallet } from '../../../providers/Wallet'
+import { BigNumber } from 'ethers'
+import { mockPromiseLatency } from '../../../mock'
+import { useMounted } from '../../../hooks/useMounted'
 
 const FLOAT_REGEX = /^\d*[.]?\d*$/
 
@@ -37,7 +42,7 @@ function ConverterFormControls({
   const history = useHistory()
   const [amount, setAmount] = useState('')
   const theme = useTheme()
-  const { goToSigning, updateConvertAmount } = useMigrateState()
+  const { updateConvertAmount } = useMigrateState()
   const { showAccount } = useAccountModule()
   const { layoutName } = useLayout()
   const {
@@ -46,6 +51,10 @@ function ConverterFormControls({
     validationStatus,
     parsedAmountBn,
   } = useInputValidation(amount, amountDigits)
+  const {
+    handleCheckAllowanceAndProceed,
+    allowanceCheckLoading,
+  } = useCheckAllowanceAndProceed(parsedAmountBn)
 
   const handleNavigateHome = useCallback(() => {
     history.push('/')
@@ -70,15 +79,15 @@ function ConverterFormControls({
     (event) => {
       event.preventDefault()
 
-      if (validationStatus === 'valid') {
-        goToSigning()
-      }
-
       if (validationStatus === 'notConnected') {
         showAccount()
       }
+
+      if (validationStatus === 'valid') {
+        handleCheckAllowanceAndProceed()
+      }
     },
-    [validationStatus, goToSigning, showAccount]
+    [validationStatus, handleCheckAllowanceAndProceed, showAccount]
   )
 
   // Pass updated amount to context state for use in the signing stepper
@@ -195,10 +204,78 @@ function ConverterFormControls({
         <BrandButton wide onClick={handleNavigateHome}>
           Back
         </BrandButton>
-        <ConverterButton status={validationStatus} />
+        <ConverterButton
+          status={allowanceCheckLoading ? 'loading' : validationStatus}
+        />
       </div>
     </form>
   )
+}
+
+function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
+  const mounted = useMounted()
+  const { account } = useWallet()
+  const [allowanceCheckLoading, setAllowanceCheckLoading] = useState(false)
+  const { goToSigning, changeSigningConfiguration } = useMigrateState()
+  const antTokenV1Contract = useAntTokenV1Contract()
+
+  const handleCheckAllowanceAndProceed = useCallback(async () => {
+    try {
+      if (!account) {
+        throw new Error('No account is connected!')
+      }
+
+      if (!antTokenV1Contract) {
+        throw new Error('The ANT v1 token contract is not defined!')
+      }
+
+      setAllowanceCheckLoading(true)
+
+      // This is intentional latency to give a consistent / solid feel when the allowance response occurs very very quickly
+      // Without it the flicker can feel very subtly jarring
+      await mockPromiseLatency(500)
+
+      const {
+        remaining: allowanceRemaining,
+      } = await antTokenV1Contract.functions.allowance(
+        account,
+        contracts.migrator
+      )
+
+      // Prevent async set state errors if component is unmounted before promise resolves
+      if (!mounted()) {
+        return
+      }
+
+      // Update the signing steps configuration based on the allowance state
+      // 1: directApproveAndCall – Allow is zero and we can proceed with the happy path
+      // 2: requiresReset – Upgrade amount exceeds approved allowance and must be reset
+      // 3: withinAnExistingAllowance – There is an allowance, but the upgrade amount is within it so we must call the migrator contract directly
+      if (allowanceRemaining.isZero()) {
+        changeSigningConfiguration('directApproveAndCall')
+      } else {
+        if (parsedAmountBn.gt(allowanceRemaining)) {
+          changeSigningConfiguration('requiresReset')
+        } else {
+          changeSigningConfiguration('withinAnExistingAllowance')
+        }
+      }
+
+      goToSigning()
+    } catch (err) {
+      console.error(err)
+    }
+  }, [
+    antTokenV1Contract,
+    goToSigning,
+    account,
+    mounted,
+    setAllowanceCheckLoading,
+    changeSigningConfiguration,
+    parsedAmountBn,
+  ])
+
+  return { handleCheckAllowanceAndProceed, allowanceCheckLoading }
 }
 
 export default ConverterFormControls

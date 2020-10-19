@@ -7,36 +7,74 @@ import Stepper from '../../Stepper/Stepper'
 import { getMockSteps } from '../../../mock'
 import SigningInfo from './SigningInfo'
 import { StepHandleSignProps } from '../../Stepper/types'
-import { useAntTokenV1Contract } from '../../../hooks/useContract'
+import {
+  useAntTokenV1Contract,
+  useMigratorContract,
+} from '../../../hooks/useContract'
 import { networkEnvironment } from '../../../environment'
 import { useMigrateState } from '../MigrateStateProvider'
 import { useWallet } from '../../../providers/Wallet'
+import { ContractTransaction } from 'ethers'
 
 const { contracts } = networkEnvironment
 
 type ConverterSigningProps = {
-  mockSigning?: boolean
+  mockSigningSteps?: 1 | 2 | 3
 }
 
-function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
+function ConverterSigning({
+  mockSigningSteps,
+}: ConverterSigningProps): JSX.Element {
   const history = useHistory()
   const { layoutName } = useLayout()
   const { account } = useWallet()
-  const { convertAmount, goToForm } = useMigrateState()
+  const { convertAmount, goToForm, signingConfiguration } = useMigrateState()
   const antTokenV1Contract = useAntTokenV1Contract()
+  const migratorContract = useMigratorContract()
   const stackedButtons = layoutName === 'small'
 
   const handleBackToHome = useCallback(() => {
     history.push('/')
   }, [history])
 
-  const transactionSteps = useMemo(
-    () => [
+  const migrationContractInteraction = useCallback(():
+    | Promise<ContractTransaction>
+    | undefined => {
+    if (!convertAmount) {
+      throw new Error('No amount was provided!')
+    }
+
+    // We need to call the "migrate" method directly when there is an existing
+    // allowance amount, otherwise we can use "appoveAndCall" on the v1 contract
+    if (signingConfiguration === 'withinAnExistingAllowance') {
+      return migratorContract?.functions.migrate(convertAmount)
+    }
+
+    return antTokenV1Contract?.functions.approveAndCall(
+      contracts.migrator,
+      convertAmount,
+      '0x'
+    )
+  }, [
+    antTokenV1Contract,
+    migratorContract,
+    convertAmount,
+    signingConfiguration,
+  ])
+
+  const transactionSteps = useMemo(() => {
+    const steps = [
       {
-        title: 'Initiate ANT migration',
+        title: 'Initiate migration',
+        descriptions: {
+          waiting: 'Waiting for signature…',
+          prompting: 'Sign transaction…',
+          working: 'Sign transaction…',
+          success: 'Transaction signed',
+          error: 'An error has occured',
+        },
         handleSign: async ({
           setSuccess,
-          setWorking,
           setError,
           setHash,
         }: StepHandleSignProps): Promise<void> => {
@@ -49,13 +87,7 @@ function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
               throw new Error('No amount was provided!')
             }
 
-            setWorking()
-
-            const tx = await antTokenV1Contract?.functions.approveAndCall(
-              contracts.migrator,
-              convertAmount,
-              '0x'
-            )
+            const tx = await migrationContractInteraction()
 
             setHash(tx ? tx.hash : '')
             setSuccess()
@@ -65,16 +97,68 @@ function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
           }
         },
       },
-    ],
-    [antTokenV1Contract, convertAmount]
-  )
+    ]
+
+    // When the requested migration amount exceeds an existing allowance we need to add a step
+    // to reset it to 0 before using "approveAndCall"
+    if (signingConfiguration === 'requiresReset') {
+      steps.unshift({
+        title: 'Reset approval',
+        descriptions: {
+          waiting: 'Waiting for signature…',
+          prompting: 'Sign transaction…',
+          working: 'Transaction mining…',
+          success: 'Transaction mined',
+          error: 'An error has occured',
+        },
+        handleSign: async ({
+          setSuccess,
+          setWorking,
+          setError,
+          setHash,
+        }: StepHandleSignProps): Promise<void> => {
+          try {
+            const tx = await antTokenV1Contract?.functions.approve(
+              contracts.migrator,
+              '0'
+            )
+
+            setWorking()
+
+            setHash(tx ? tx.hash : '')
+
+            // We must wait for the approval tx to be mined before the next migration
+            // step can verify as valid
+            await tx?.wait()
+
+            setSuccess()
+          } catch (err) {
+            console.error(err)
+            setError()
+          }
+        },
+      })
+    }
+
+    return steps
+  }, [
+    antTokenV1Contract,
+    convertAmount,
+    signingConfiguration,
+    migrationContractInteraction,
+  ])
   return (
     <Stepper
-      steps={mockSigning ? getMockSteps(1) : transactionSteps}
+      steps={
+        mockSigningSteps ? getMockSteps(mockSigningSteps) : transactionSteps
+      }
       renderInfo={({ stepperStatus, handleSign }) => (
         <div
           css={`
             margin-top: ${4 * GU}px;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: ${70 * GU}px;
           `}
         >
           <div
@@ -117,12 +201,14 @@ function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
               </BrandButton>
             )}
           </div>
-          <SigningInfo status={stepperStatus} />
+          <SigningInfo
+            status={stepperStatus}
+            multipleTransactions={signingConfiguration === 'requiresReset'}
+          />
         </div>
       )}
       css={`
         width: 100%;
-        max-width: ${70 * GU}px;
       `}
     />
   )

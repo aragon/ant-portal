@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { rgba } from 'polished'
 
-type TokenIllustrationMode = 'neutral' | 'negative' | 'positive'
+type TokenIllustrationMode = 'neutral' | 'active' | 'negative' | 'positive'
 
 type TokenIllustrationProps = {
   mode: TokenIllustrationMode
@@ -18,6 +18,13 @@ type Apperance = {
 
 const appearance: Record<TokenIllustrationMode, Apperance> = {
   neutral: {
+    tokenGradient: ['#dcdde3', '#999ca7'],
+    headGradient: ['#f1fdfd', '#ffffff'],
+    beakColor: '#e2e4eb',
+    bodyColor: '#e2e4eb',
+    shadowColor: '#6c6e75',
+  },
+  active: {
     tokenGradient: ['#02f0ff', '#00aadf'],
     headGradient: ['#f1fdfd', '#ffffff'],
     beakColor: '#9ff9ff',

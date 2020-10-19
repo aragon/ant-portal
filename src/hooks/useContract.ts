@@ -9,8 +9,10 @@ import { useWallet } from '../providers/Wallet'
 import { networkEnvironment } from '../environment'
 import tokenAntV1Abi from '../abi/token-ant-v1.json'
 import tokenAntV2Abi from '../abi/token-ant-v1.json'
+import migratorAbi from '../abi/migrator.json'
 import { TokenAntV1 } from '../abi/types/TokenAntV1'
 import { TokenAntV2 } from '../abi/types/TokenAntV2'
+import { Migrator } from '../abi/types/Migrator'
 
 const { endpoints, contracts } = networkEnvironment
 
@@ -42,6 +44,12 @@ function useContract<T>(
 
     return getContract(address, abi, signer ? ethers.getSigner() : ethers)
   }, [abi, account, address, ethers, signer]) as ExtendedContract<T> | null
+}
+
+export function useMigratorContract(): Migrator | null {
+  const { migrator } = contracts
+
+  return useContract<Migrator>(migrator, migratorAbi as any)
 }
 
 export function useAntTokenV1Contract(): TokenAntV1 | null {

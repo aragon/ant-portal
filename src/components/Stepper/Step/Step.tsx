@@ -72,7 +72,7 @@ function Step({
           flex-direction: column;
           align-items: center;
 
-          width: ${35 * GU}px;
+          width: ${38 * GU}px;
         `}
         {...props}
       >
@@ -217,7 +217,7 @@ function Step({
             color={visualColor}
             css={`
               position: absolute;
-              top: ${6 * GU}px;
+              top: ${7.5 * GU}px;
               right: 0;
 
               transform: translateX(50%);

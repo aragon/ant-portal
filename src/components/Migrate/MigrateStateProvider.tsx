@@ -13,13 +13,20 @@ type MigrateStateProviderProps = {
   children: ReactNode
 }
 
+type SigningConfiguration =
+  | 'requiresReset'
+  | 'withinAnExistingAllowance'
+  | 'directApproveAndCall'
+
 type MigrateStateContext = {
   conversionStage: ConversionStage
   conversionType: TokenConversionType
   convertAmount: BigNumber | null
+  signingConfiguration: SigningConfiguration
   goToSigning: () => void
   goToForm: () => void
   updateConvertAmount: (amount: BigNumber | null) => void
+  changeSigningConfiguration: (config: SigningConfiguration) => void
 }
 
 const UseMigrateStateContext = React.createContext<MigrateStateContext | null>(
@@ -38,10 +45,18 @@ function MigrateStateProvider({
     MigrateStateContext['convertAmount']
   >(null)
 
+  const [signingConfiguration, setSigningConfiguration] = useState<
+    MigrateStateContext['signingConfiguration']
+  >('directApproveAndCall')
+
   const goToSigning = useCallback(() => setConversionStage('signing'), [])
   const goToForm = useCallback(() => setConversionStage('form'), [])
   const updateConvertAmount = useCallback(
     (amount) => setConvertAmount(amount),
+    []
+  )
+  const changeSigningConfiguration = useCallback(
+    (config) => setSigningConfiguration(config),
     []
   )
 
@@ -49,6 +64,8 @@ function MigrateStateProvider({
     (): MigrateStateContext => ({
       conversionStage,
       conversionType,
+      signingConfiguration,
+      changeSigningConfiguration,
       goToSigning,
       convertAmount,
       updateConvertAmount,
@@ -57,6 +74,8 @@ function MigrateStateProvider({
     [
       conversionStage,
       conversionType,
+      signingConfiguration,
+      changeSigningConfiguration,
       goToSigning,
       convertAmount,
       updateConvertAmount,

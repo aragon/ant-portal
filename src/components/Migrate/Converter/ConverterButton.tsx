@@ -1,27 +1,41 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
   IconConnect,
   // @ts-ignore
 } from '@aragon/ui'
 import BrandButton from '../../BrandButton/BrandButton'
 import { ValidationStatus } from '../types'
+import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner'
 
-const BUTTON_MESSAGES: Record<ValidationStatus, string> = {
+type ButtonStatus = ValidationStatus | 'loading'
+
+const BUTTON_MESSAGES: Record<ButtonStatus, string> = {
   notConnected: 'Enable account',
   insufficientBalance: 'Insufficient ANT balance',
   noAmount: 'Enter an amount',
   valid: 'Continue',
+  loading: 'Loading…',
 }
 
 type ConverterButtonProps = {
-  status: ValidationStatus
+  status: ButtonStatus
 }
 
 function ConverterButton({ status }: ConverterButtonProps): JSX.Element {
   const disableButton =
-    status === 'insufficientBalance' || status === 'noAmount'
+    status === 'insufficientBalance' ||
+    status === 'noAmount' ||
+    status === 'loading'
 
-  const showConnectIcon = status === 'notConnected'
+  const icon = useMemo(() => {
+    if (status === 'notConnected') {
+      return <IconConnect />
+    }
+
+    if (status === 'loading') {
+      return <LoadingSpinner />
+    }
+  }, [status])
 
   return (
     <BrandButton
@@ -29,7 +43,7 @@ function ConverterButton({ status }: ConverterButtonProps): JSX.Element {
       wide
       type="submit"
       disabled={disableButton}
-      icon={showConnectIcon && <IconConnect />}
+      icon={icon}
       label={BUTTON_MESSAGES[status]}
     />
   )

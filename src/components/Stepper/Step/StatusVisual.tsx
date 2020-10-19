@@ -7,6 +7,7 @@ import TokenIllustration from './TokenIllustration'
 import { springs } from '../../../style/springs'
 import { useDisableAnimation } from '../../../hooks/useDisableAnimation'
 import { StepStatus } from '../types'
+import { fontWeight } from '../../../style/font'
 
 const STATUS_ICONS: { [key: string]: any } = {
   error: IconCross,
@@ -26,18 +27,6 @@ const spinAnimation = css`
       transform: rotate(360deg);
     }
   `} 1.25s linear infinite;
-`
-
-const pulseAnimation = css`
-  animation: ${keyframes`
-    from {
-      opacity: 1;
-    }
-
-    to {
-      opacity: 0.1;
-    }
-  `} 0.75s linear alternate infinite;
 `
 
 type StatusVisualProps = {
@@ -161,10 +150,8 @@ function StatusVisual({
             border-radius: 100%;
             border: 3px solid ${status === 'waiting' ? 'transparent' : color};
 
-            ${status === 'prompting' ? pulseAnimation : ''}
-            ${status === 'working' ? spinAnimation : ''}
-            ${status === 'prompting'
-              ? `background-color: ${theme.background};`
+            ${status === 'prompting' || status === 'working'
+              ? spinAnimation
               : ''}
           `}
         />
@@ -190,11 +177,19 @@ function StepIllustration({ number, status }: StepIllustrationProps) {
       return 'positive'
     }
 
+    if (status === 'working') {
+      return 'active'
+    }
+
+    if (status === 'prompting') {
+      return 'active'
+    }
+
     return 'neutral'
   }, [status])
 
-  const renderIllustration =
-    status === 'working' || status === 'error' || status === 'success'
+  // Keep this flag just in case we decide to use the numbered presentation again
+  const renderIllustration = true
 
   return (
     <div
@@ -217,7 +212,7 @@ function StepIllustration({ number, status }: StepIllustrationProps) {
             color: ${theme.accentContent};
 
             ${textStyle('title3')}
-            font-weight: 600;
+            font-weight: ${fontWeight.semiBold};
           `}
         >
           {number}
