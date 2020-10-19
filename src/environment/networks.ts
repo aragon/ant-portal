@@ -12,8 +12,8 @@ const networks = new Map<EnvNetworkName, EnvNetworkConfig>([
       ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
       contracts: {
         tokenAntV1: '0x960b236A07cf122663c4303350609A66A7B288C0',
-        tokenAntV2: '0xa117000000e374afd3689c684010fb13418a6b25',
-        migrator: '0xb2dbeb75051ff6eaadc485d1ff10ff788c0d567c',
+        tokenAntV2: '0xa117000000f279D81A1D3cc75430fAA017FA5A2e',
+        migrator: '0x078BEbC744B819657e1927bF41aB8C74cBBF912D',
       },
     },
   ],
@@ -27,9 +27,9 @@ const networks = new Map<EnvNetworkName, EnvNetworkConfig>([
       },
       ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
       contracts: {
-        tokenAntV1: '0xbB5D1487E74Feb5791Df39C0b52BA43A29794Ef2',
-        tokenAntV2: '0xa117000000e374afd3689c684010fb13418a6b25',
-        migrator: '0xb2dbeb75051ff6eaadc485d1ff10ff788c0d567c',
+        tokenAntV1: '0x7278e85BfFCE26A1C9f21b879595BD63F6289297',
+        tokenAntV2: '0xa117000000f279D81A1D3cc75430fAA017FA5A2e',
+        migrator: '0x078BEbC744B819657e1927bF41aB8C74cBBF912D',
       },
     },
   ],
