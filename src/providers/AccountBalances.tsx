@@ -8,6 +8,7 @@ import { BigNumber } from 'ethers'
 import { usePollTokenPriceUsd } from '../hooks/usePollTokenPriceUsd'
 import { usePollUniswapPool } from '../hooks/usePollUniswapPool'
 import { usePollBalancerPool } from '../hooks/usePollBalancerPool'
+import { usePollIncentivePool } from '../hooks/usePollIncentivePool'
 
 const ANT_TOKEN_DECIMALS = 18
 
@@ -18,6 +19,7 @@ type BalancesContext = {
   antV2Balance: PolledValue
   antInUniswapPool: PolledValue
   antInBalancerPool: PolledValue
+  antInIncentivePool: PolledValue
   antTokenPriceUsd: string | null
 }
 
@@ -26,6 +28,7 @@ const AccountBalancesContext = React.createContext<BalancesContext>({
   antV2Balance: null,
   antInUniswapPool: null,
   antInBalancerPool: null,
+  antInIncentivePool: null,
   antTokenPriceUsd: null,
 })
 
@@ -42,6 +45,7 @@ function AccountBalancesProvider({
   const antTokenPriceUsd = usePollTokenPriceUsd('ANT')
   const antInUniswapPoolBn = usePollUniswapPool({ mockAccount: true })
   const antInBalancerPoolBn = usePollBalancerPool({ mockAccount: true })
+  const antInIncentivePoolBn = usePollIncentivePool({ mockAccount: true })
 
   const contextValue = useMemo(
     (): BalancesContext => ({
@@ -49,6 +53,7 @@ function AccountBalancesProvider({
       antV2Balance: antV2BalanceBn,
       antInUniswapPool: antInUniswapPoolBn,
       antInBalancerPool: antInBalancerPoolBn,
+      antInIncentivePool: antInIncentivePoolBn,
       antTokenPriceUsd,
     }),
 
@@ -58,6 +63,7 @@ function AccountBalancesProvider({
       antTokenPriceUsd,
       antInUniswapPoolBn,
       antInBalancerPoolBn,
+      antInIncentivePoolBn,
     ]
   )
 
@@ -78,6 +84,7 @@ type AccountBalances = {
   antV2: BalanceWithDecimals
   antInUniswapPool: PolledValue
   antInBalancerPool: PolledValue
+  antInIncentivePool: PolledValue
   antTokenPriceUsd: string | null
 }
 
@@ -88,6 +95,7 @@ function useAccountBalances(): AccountBalances {
     antTokenPriceUsd,
     antInUniswapPool,
     antInBalancerPool,
+    antInIncentivePool,
   } = useContext(AccountBalancesContext)
 
   return {
@@ -103,6 +111,7 @@ function useAccountBalances(): AccountBalances {
     },
     antInUniswapPool,
     antInBalancerPool,
+    antInIncentivePool,
     antTokenPriceUsd,
   }
 }

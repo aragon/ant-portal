@@ -13,6 +13,9 @@ export const MOCK_UNISWAP_POOL_ACCOUNT =
 export const MOCK_BALANCER_POOL_ACCOUNT =
   '0x307B543b90F0B5D83B90994B6ba83927d8B28A41'
 
+export const MOCK_INCENTIVE_POOL_ACCOUNT =
+  '0x2aeb0d72bcda72ea0d71c00e12a64d9467026556'
+
 export async function mockPromiseLatency(ms: number): Promise<boolean> {
   return new Promise((resolve) => setTimeout(() => resolve(true), ms))
 }
