@@ -7,6 +7,7 @@ import TokenIllustration from './TokenIllustration'
 import { springs } from '../../../style/springs'
 import { useDisableAnimation } from '../../../hooks/useDisableAnimation'
 import { StepStatus } from '../types'
+import { fontWeight } from '../../../style/font'
 
 const STATUS_ICONS: { [key: string]: any } = {
   error: IconCross,
@@ -190,11 +191,15 @@ function StepIllustration({ number, status }: StepIllustrationProps) {
       return 'positive'
     }
 
+    if (status === 'working') {
+      return 'active'
+    }
+
     return 'neutral'
   }, [status])
 
-  const renderIllustration =
-    status === 'working' || status === 'error' || status === 'success'
+  // Keep this flag just in case we decide to use the numbered presentation again
+  const renderIllustration = true
 
   return (
     <div
@@ -217,7 +222,7 @@ function StepIllustration({ number, status }: StepIllustrationProps) {
             color: ${theme.accentContent};
 
             ${textStyle('title3')}
-            font-weight: 600;
+            font-weight: ${fontWeight.semiBold};
           `}
         >
           {number}

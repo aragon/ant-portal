@@ -15,10 +15,12 @@ import { useWallet } from '../../../providers/Wallet'
 const { contracts } = networkEnvironment
 
 type ConverterSigningProps = {
-  mockSigning?: boolean
+  mockSigningSteps?: 1 | 2 | 3
 }
 
-function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
+function ConverterSigning({
+  mockSigningSteps,
+}: ConverterSigningProps): JSX.Element {
   const history = useHistory()
   const { layoutName } = useLayout()
   const { account } = useWallet()
@@ -98,11 +100,16 @@ function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
   }, [antTokenV1Contract, convertAmount, requiresApprovalReset])
   return (
     <Stepper
-      steps={mockSigning ? getMockSteps(1) : transactionSteps}
+      steps={
+        mockSigningSteps ? getMockSteps(mockSigningSteps) : transactionSteps
+      }
       renderInfo={({ stepperStatus, handleSign }) => (
         <div
           css={`
             margin-top: ${4 * GU}px;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: ${70 * GU}px;
           `}
         >
           <div
@@ -150,7 +157,6 @@ function ConverterSigning({ mockSigning }: ConverterSigningProps): JSX.Element {
       )}
       css={`
         width: 100%;
-        max-width: ${70 * GU}px;
       `}
     />
   )

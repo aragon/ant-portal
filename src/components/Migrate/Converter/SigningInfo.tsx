@@ -44,7 +44,10 @@ const DESCRIPTIONS: Descriptions = {
     'Success! The transaction has been sent to the network for processing. You can review other migration options.',
 }
 
-function SigningInfo({ status = 'working' }: SigningInfoProps): JSX.Element {
+function SigningInfo({
+  status = 'working',
+  ...props
+}: SigningInfoProps): JSX.Element {
   const theme = useTheme()
   const description = DESCRIPTIONS[status]
 
@@ -59,6 +62,7 @@ function SigningInfo({ status = 'working' }: SigningInfoProps): JSX.Element {
           border-color: ${theme.positive};
         `
       }
+      {...props}
     >
       {description}
     </Info>
