@@ -43,6 +43,8 @@ function AccountBalancesProvider({
   const antV1BalanceBn = usePollTokenBalanceOf(antTokenV1Contract)
   const antV2BalanceBn = usePollTokenBalanceOf(antTokenV2Contract)
   const antTokenPriceUsd = usePollTokenPriceUsd('ANT')
+
+  // TODO: Remove mockAccount flag
   const antInUniswapPoolBn = usePollUniswapPool({ mockAccount: true })
   const antInBalancerPoolBn = usePollBalancerPool({ mockAccount: true })
   const antInIncentivePoolBn = usePollIncentivePool({ mockAccount: true })
