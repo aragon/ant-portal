@@ -19,5 +19,8 @@ export interface EnvNetworkConfig {
     tokenAntV1: string
     tokenAntV2: string
     migrator: string
+    antEthUniswapPool?: string
+    antUniIncentivePool?: string
+    antEthBalancerPool?: string
   }
 }
