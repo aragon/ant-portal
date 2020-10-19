@@ -43,7 +43,7 @@ function ConverterFormControls({
   const {
     goToSigning,
     updateConvertAmount,
-    updateRequiresApprovalReset,
+    changeSigningConfiguration,
   } = useMigrateState()
   const antTokenV1Contract = useAntTokenV1Contract()
   const { showAccount } = useAccountModule()
@@ -92,15 +92,14 @@ function ConverterFormControls({
       )
 
       // Inform the signing stage whether we need an additional approval reset step
-      if (
-        !allowanceRemaining.isZero() &&
-        parsedAmountBn.gt(allowanceRemaining)
-      ) {
-        console.log('Requires reset')
-        updateRequiresApprovalReset(true)
+      if (allowanceRemaining.isZero()) {
+        changeSigningConfiguration('directApproveAndCall')
       } else {
-        console.log('No reset')
-        updateRequiresApprovalReset(false)
+        if (parsedAmountBn.gt(allowanceRemaining)) {
+          changeSigningConfiguration('requiresReset')
+        } else {
+          changeSigningConfiguration('withinAnExistingAllowance')
+        }
       }
 
       goToSigning()
@@ -111,7 +110,7 @@ function ConverterFormControls({
     antTokenV1Contract,
     goToSigning,
     account,
-    updateRequiresApprovalReset,
+    changeSigningConfiguration,
     parsedAmountBn,
   ])
 

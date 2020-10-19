@@ -13,15 +13,20 @@ type MigrateStateProviderProps = {
   children: ReactNode
 }
 
+type SigningConfiguration =
+  | 'requiresReset'
+  | 'withinAnExistingAllowance'
+  | 'directApproveAndCall'
+
 type MigrateStateContext = {
   conversionStage: ConversionStage
   conversionType: TokenConversionType
   convertAmount: BigNumber | null
-  requiresApprovalReset: boolean
+  signingConfiguration: SigningConfiguration
   goToSigning: () => void
   goToForm: () => void
   updateConvertAmount: (amount: BigNumber | null) => void
-  updateRequiresApprovalReset: (resetRequired: boolean) => void
+  changeSigningConfiguration: (config: SigningConfiguration) => void
 }
 
 const UseMigrateStateContext = React.createContext<MigrateStateContext | null>(
@@ -40,9 +45,9 @@ function MigrateStateProvider({
     MigrateStateContext['convertAmount']
   >(null)
 
-  const [requiresApprovalReset, setRequiresApprovalReset] = useState<
-    MigrateStateContext['requiresApprovalReset']
-  >(false)
+  const [signingConfiguration, setSigningConfiguration] = useState<
+    MigrateStateContext['signingConfiguration']
+  >('directApproveAndCall')
 
   const goToSigning = useCallback(() => setConversionStage('signing'), [])
   const goToForm = useCallback(() => setConversionStage('form'), [])
@@ -50,8 +55,8 @@ function MigrateStateProvider({
     (amount) => setConvertAmount(amount),
     []
   )
-  const updateRequiresApprovalReset = useCallback(
-    (resetRequired) => setRequiresApprovalReset(resetRequired),
+  const changeSigningConfiguration = useCallback(
+    (config) => setSigningConfiguration(config),
     []
   )
 
@@ -59,8 +64,8 @@ function MigrateStateProvider({
     (): MigrateStateContext => ({
       conversionStage,
       conversionType,
-      requiresApprovalReset,
-      updateRequiresApprovalReset,
+      signingConfiguration,
+      changeSigningConfiguration,
       goToSigning,
       convertAmount,
       updateConvertAmount,
@@ -69,8 +74,8 @@ function MigrateStateProvider({
     [
       conversionStage,
       conversionType,
-      requiresApprovalReset,
-      updateRequiresApprovalReset,
+      signingConfiguration,
+      changeSigningConfiguration,
       goToSigning,
       convertAmount,
       updateConvertAmount,
