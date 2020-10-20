@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { ReactNode, useMemo } from 'react'
 import {
   useTheme,
   IconExternal,
   ButtonIcon,
+  ButtonBase,
   GU,
   // @ts-ignore
 } from '@aragon/ui'
@@ -22,7 +23,11 @@ type BalanceCardProps = {
   tokenVersion: TokenType
   price: string | null
   balance: string | null
-  accountConnected?: boolean
+  accountConnected: boolean
+  lpTotalBalance?: string | null
+  showLpBalance?: boolean
+  lpInfoAvailable?: boolean
+  onLpClick?: (() => void) | null
 }
 
 type TokenPresentation = Record<
@@ -52,6 +57,10 @@ function BalanceCard({
   price,
   balance,
   accountConnected,
+  lpTotalBalance,
+  lpInfoAvailable,
+  showLpBalance,
+  onLpClick,
 }: BalanceCardProps): JSX.Element {
   const theme = useTheme()
 
@@ -60,6 +69,37 @@ function BalanceCard({
   ]
 
   const etherscanUrl = getEtherscanUrl(contractAddress)
+
+  const lpModalButton = useMemo(() => {
+    const title = 'Liquidity pool distribution'
+    return onLpClick ? (
+      <div
+        css={`
+          margin: -${1 * GU}px;
+        `}
+      >
+        <ButtonBase
+          onClick={onLpClick}
+          css={`
+            font-size: 18px;
+            line-height: 1;
+            padding: ${1 * GU}px;
+            color: ${theme.link};
+          `}
+        >
+          {title}
+        </ButtonBase>
+      </div>
+    ) : (
+      <div
+        css={`
+          color: ${theme.contentSecondary};
+        `}
+      >
+        {title}
+      </div>
+    )
+  }, [onLpClick, theme])
 
   return (
     <div
@@ -129,30 +169,36 @@ function BalanceCard({
       >
         {accountConnected ? (
           <ul>
-            <li
-              css={`
-                display: flex;
-                justify-content: space-between;
-              `}
-            >
-              <h4>Wallet balance</h4>
-              <span
-                css={`
-                  letter-spacing: -0.02em;
-                  font-variant-numeric: tabular-nums;
-                `}
-              >
-                {balance && balance}
+            <BalanceItem title="Wallet balance" amount={balance} />
+
+            {showLpBalance &&
+              (lpInfoAvailable ? (
+                <BalanceItem
+                  title={lpModalButton}
+                  amount={
+                    lpTotalBalance && (
+                      <span
+                        css={`
+                          color: ${lpTotalBalance === '0'
+                            ? theme.contentSecondary
+                            : theme.surfaceContent};
+                        `}
+                      >
+                        {lpTotalBalance}
+                      </span>
+                    )
+                  }
+                  skeletonWidth={18 * GU}
+                />
+              ) : (
                 <span
                   css={`
                     color: ${theme.contentSecondary};
-                    margin-left: ${0.75 * GU}px;
                   `}
                 >
-                  ANT
+                  Distribution unavailable on Rinkeby
                 </span>
-              </span>
-            </li>
+              ))}
           </ul>
         ) : (
           <p
@@ -165,6 +211,60 @@ function BalanceCard({
         )}
       </div>
     </div>
+  )
+}
+
+function BalanceItem({
+  title,
+  amount,
+  skeletonWidth = 14 * GU,
+}: {
+  title: ReactNode
+  amount: ReactNode
+  skeletonWidth?: number
+}) {
+  const theme = useTheme()
+
+  return (
+    <li
+      css={`
+        display: flex;
+        justify-content: space-between;
+
+        &:not(:last-child) {
+          margin-bottom: ${2 * GU}px;
+        }
+      `}
+    >
+      <h4>{title}</h4>
+      {amount ? (
+        <span
+          css={`
+            letter-spacing: -0.02em;
+            font-variant-numeric: tabular-nums;
+          `}
+        >
+          {amount}
+          <span
+            css={`
+              color: ${theme.contentSecondary};
+              margin-left: ${0.75 * GU}px;
+            `}
+          >
+            ANT
+          </span>
+        </span>
+      ) : (
+        <span
+          css={`
+            width: 100%;
+            max-width: ${skeletonWidth}px;
+          `}
+        >
+          <Skeleton />
+        </span>
+      )}
+    </li>
   )
 }
 
