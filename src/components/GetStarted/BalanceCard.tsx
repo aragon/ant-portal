@@ -15,6 +15,8 @@ import { fontWeight } from '../../style/font'
 import { networkEnvironment } from '../../environment'
 import { css, keyframes } from 'styled-components'
 import { getEtherscanUrl } from '../../utils/etherscan'
+import AntAmount from '../AntAmount/AntAmount'
+import UsdAmount from '../UsdAmount/UsdAmount'
 
 const { contracts } = networkEnvironment
 
@@ -186,19 +188,7 @@ function BalanceCard({
               (lpInfoAvailable ? (
                 <BalanceItem
                   title={lpModalButton}
-                  amount={
-                    lpTotalBalance && (
-                      <span
-                        css={`
-                          color: ${lpTotalBalance === '0'
-                            ? theme.contentSecondary
-                            : theme.surfaceContent};
-                        `}
-                      >
-                        {lpTotalBalance}
-                      </span>
-                    )
-                  }
+                  amount={lpTotalBalance}
                   skeletonWidth={18 * GU}
                   compactMode={compactMode}
                 />
@@ -229,7 +219,7 @@ function BalanceCard({
 
 type BalanceItemType = {
   title: ReactNode
-  amount: ReactNode
+  amount?: string | null
   skeletonWidth?: number
   compactMode: boolean
 }
@@ -240,8 +230,6 @@ function BalanceItem({
   skeletonWidth = 14 * GU,
   compactMode,
 }: BalanceItemType) {
-  const theme = useTheme()
-
   return (
     <li
       css={`
@@ -263,22 +251,7 @@ function BalanceItem({
         {title}
       </h4>
       {amount ? (
-        <span
-          css={`
-            letter-spacing: -0.02em;
-            font-variant-numeric: tabular-nums;
-          `}
-        >
-          {amount}
-          <span
-            css={`
-              color: ${theme.contentSecondary};
-              margin-left: ${0.75 * GU}px;
-            `}
-          >
-            ANT
-          </span>
-        </span>
+        <AntAmount amount={amount} />
       ) : (
         <span
           css={`
@@ -306,15 +279,13 @@ function PriceWithSkeleton({ price }: { price: string | null }) {
       {price ? (
         <>
           ANT Price
-          <span
+          <UsdAmount
+            amount={price}
             css={`
               margin-left: ${0.75 * GU}px;
-              font-variant-numeric: tabular-nums;
               color: ${theme.positive};
             `}
-          >
-            ${price}
-          </span>
+          />
         </>
       ) : (
         <span

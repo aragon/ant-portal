@@ -1,8 +1,10 @@
+import { BigNumber } from 'ethers'
 import {
   StepHandleSignProps,
   StepItem,
   StepItems,
 } from './components/Stepper/types'
+import { parseUnits } from './utils/math-utils'
 
 export const MOCK_HASH =
   '0xaa1eff68a2d66769c0bf51f28ed4d9c7723805d2c253ecfc898d31977e8c92b7'
@@ -22,6 +24,15 @@ export const MOCK_PARAGRAPH_CONTENT =
 export async function mockPromiseLatency(ms: number): Promise<boolean> {
   return new Promise((resolve) => setTimeout(() => resolve(true), ms))
 }
+
+export const MOCK_LP_BALANCES: [
+  'balancer' | 'uniswap' | 'incentive',
+  BigNumber
+][] = [
+  ['balancer', parseUnits('1', 18)],
+  ['uniswap', parseUnits('234.342423', 18)],
+  ['incentive', parseUnits('8532', 18)],
+]
 
 const mockStepItem: StepItem = {
   title: 'Initiate ANT migration',

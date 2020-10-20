@@ -6,14 +6,14 @@ import TokenAmount from 'token-amount'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import BalanceCard from './BalanceCard'
 import { useAccountBalances } from '../../providers/AccountBalances'
-import LpInfoModal from './LpInfoModal'
+import LpInfoModal from './LpInfoModal/LpInfoModal'
 import { bigNum } from '../../utils/math-utils'
 import { useWallet } from '../../providers/Wallet'
 import { networkEnvironment } from '../../environment'
 
-const { legacyNetworkType } = networkEnvironment
+const { chainId } = networkEnvironment
 
-const LP_INFO_AVAILABLE_ON_NETWORK = legacyNetworkType === 'main'
+const LP_INFO_AVAILABLE_ON_NETWORK = chainId === 1
 const FORMATTED_DIGITS = 2
 
 function Balances({
@@ -24,6 +24,8 @@ function Balances({
   const { layoutName } = useLayout()
   const { antTokenPriceUsd, antV1, antV2, lpBalances } = useAccountBalances()
   const stackedCards = layoutName === 'small' || layoutName === 'medium'
+
+  const formattedUsdAmount = Number(antTokenPriceUsd).toFixed(2)
 
   const formattedAntV1Balance = useMemo(
     (): string | null =>
@@ -78,7 +80,7 @@ function Balances({
       >
         <BalanceCard
           tokenVersion="v1"
-          price={antTokenPriceUsd}
+          price={formattedUsdAmount}
           balance={formattedAntV1Balance}
           accountConnected={accountConnected}
           showLpBalance
@@ -88,7 +90,7 @@ function Balances({
         />
         <BalanceCard
           tokenVersion="v2"
-          price={antTokenPriceUsd}
+          price={formattedUsdAmount}
           balance={formattedAntV2Balance}
           accountConnected={accountConnected}
         />

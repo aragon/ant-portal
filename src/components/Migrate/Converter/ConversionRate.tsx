@@ -4,6 +4,7 @@ import { useTheme, GU } from '@aragon/ui'
 import { shadowDepth } from '../../../style/shadow'
 import { fontWeight } from '../../../style/font'
 import TokenAntGraphic from '../../TokenAntGraphic/TokenAntGraphic'
+import { radius } from '../../../style/radius'
 
 function ConversionRate(): JSX.Element {
   const theme = useTheme()
@@ -17,7 +18,7 @@ function ConversionRate(): JSX.Element {
           background-color: ${theme.surface};
 
           // Create pill corners
-          border-radius: ${100 * GU}px;
+          border-radius: ${radius.pill};
           box-shadow: ${shadowDepth.high};
           margin-bottom: ${3.5 * GU}px;
         `}
