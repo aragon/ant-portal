@@ -21,18 +21,18 @@ type PolledValue = BigNumber | null
 type BalancesContext = {
   antV1Balance: PolledValue
   antV2Balance: PolledValue
-  antInUniswapPool: PolledValue
-  antInBalancerPool: PolledValue
-  antInIncentivePool: PolledValue
+  uniswapPoolBalance: PolledValue
+  balancerPoolBalance: PolledValue
+  incentivePoolBalance: PolledValue
   antTokenPriceUsd: string | null
 }
 
 const AccountBalancesContext = React.createContext<BalancesContext>({
   antV1Balance: null,
   antV2Balance: null,
-  antInUniswapPool: null,
-  antInBalancerPool: null,
-  antInIncentivePool: null,
+  uniswapPoolBalance: null,
+  balancerPoolBalance: null,
+  incentivePoolBalance: null,
   antTokenPriceUsd: null,
 })
 
@@ -56,15 +56,13 @@ function AccountBalancesProvider({
     MOCK_INCENTIVE_POOL_ACCOUNT
   )
 
-  console.log({ antInUniswapPoolBn, antInBalancerPoolBn, antInIncentivePoolBn })
-
   const contextValue = useMemo(
     (): BalancesContext => ({
       antV1Balance: antV1BalanceBn,
       antV2Balance: antV2BalanceBn,
-      antInUniswapPool: antInUniswapPoolBn,
-      antInBalancerPool: antInBalancerPoolBn,
-      antInIncentivePool: antInIncentivePoolBn,
+      uniswapPoolBalance: antInUniswapPoolBn,
+      balancerPoolBalance: antInBalancerPoolBn,
+      incentivePoolBalance: antInIncentivePoolBn,
       antTokenPriceUsd,
     }),
 
@@ -93,9 +91,9 @@ type BalanceWithDecimals = {
 type AccountBalances = {
   antV1: BalanceWithDecimals
   antV2: BalanceWithDecimals
-  antInUniswapPool: PolledValue
-  antInBalancerPool: PolledValue
-  antInIncentivePool: PolledValue
+  uniswapPoolBalance: PolledValue
+  balancerPoolBalance: PolledValue
+  incentivePoolBalance: PolledValue
   antTokenPriceUsd: string | null
 }
 
@@ -104,9 +102,9 @@ function useAccountBalances(): AccountBalances {
     antV1Balance,
     antV2Balance,
     antTokenPriceUsd,
-    antInUniswapPool,
-    antInBalancerPool,
-    antInIncentivePool,
+    uniswapPoolBalance,
+    balancerPoolBalance,
+    incentivePoolBalance,
   } = useContext(AccountBalancesContext)
 
   return {
@@ -120,9 +118,9 @@ function useAccountBalances(): AccountBalances {
       balance: antV2Balance,
       decimals: ANT_TOKEN_DECIMALS,
     },
-    antInUniswapPool,
-    antInBalancerPool,
-    antInIncentivePool,
+    uniswapPoolBalance,
+    balancerPoolBalance,
+    incentivePoolBalance,
     antTokenPriceUsd,
   }
 }
