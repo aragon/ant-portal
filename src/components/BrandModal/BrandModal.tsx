@@ -1,12 +1,22 @@
 import React, { ReactNode } from 'react'
-// @ts-ignore
-import { Modal, IconCross, ButtonIcon, useTheme, GU } from '@aragon/ui'
+import {
+  Modal,
+  IconCross,
+  ButtonIcon,
+  useTheme,
+  useViewport,
+  GU,
+  // @ts-ignore
+} from '@aragon/ui'
 import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { rgba } from 'polished'
 
+const SPACE_AROUND = 4 * GU
+
 type BrandModalProps = {
   visible: boolean
+  width?: number
   onClose: () => void
   children: ReactNode
 }
@@ -15,9 +25,12 @@ function BrandModal({
   children,
   visible,
   onClose,
+  width = 600,
 }: BrandModalProps): JSX.Element {
   const theme = useTheme()
+  const { width: viewportWidth } = useViewport()
 
+  const modalWidth = Math.min(viewportWidth - SPACE_AROUND * 2, width)
   const scrimColor = rgba(`#${theme.disabledContent.hexColor}`, 0.3)
 
   return (
@@ -26,10 +39,11 @@ function BrandModal({
       onClose={onClose}
       closeButton={false}
       padding={0}
+      width={modalWidth}
       css={`
         > div > div > div {
           border-radius: ${radius.high} !important;
-          box-shadow: ${shadowDepth.high};
+          box-shadow: ${shadowDepth.overlay};
         }
 
         background-color: ${scrimColor};
