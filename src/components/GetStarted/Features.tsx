@@ -33,7 +33,7 @@ function Features({
             css={`
               font-weight: ${fontWeight.bold};
               line-height: 1.2;
-              font-size: ${compactMode ? `40` : `48`}px;
+              font-size: ${compactMode ? `35` : `48`}px;
               margin-bottom: ${2.5 * GU}px;
             `}
           >
@@ -42,7 +42,7 @@ function Features({
           <p
             css={`
               font-weight: ${fontWeight.medium};
-              font-size: ${compactMode ? `20` : `26`}px;
+              font-size: ${compactMode ? `18` : `26`}px;
               color: ${theme.contentSecondary};
               margin-bottom: ${3 * GU}px;
             `}
@@ -66,7 +66,7 @@ function Features({
           <div
             css={`
               position: relative;
-              padding-top: 106%;
+              padding-top: 136%;
               width: 100%;
               max-width: ${stackColumns ? `${62 * GU}px` : 'auto'};
               margin-left: auto;

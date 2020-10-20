@@ -5,6 +5,7 @@ import Features from './Features'
 import LayoutGutter from '../Layout/LayoutGutter'
 import Header from './Header'
 import Balances from './Balances'
+import Faqs from './Faqs'
 
 function GetStarted(): JSX.Element {
   return (
@@ -23,6 +24,7 @@ function GetStarted(): JSX.Element {
           `}
         />
         <Features />
+        <Faqs />
       </div>
     </LayoutGutter>
   )
