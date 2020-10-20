@@ -1,15 +1,14 @@
 import { useCallback, useState } from 'react'
 import { captureErrorWithSentry } from '../sentry'
-import { round } from '../utils/math-utils'
 import { useInterval } from './useInterval'
 import { useMounted } from './useMounted'
 
 const API_BASE = 'https://api.0x.org'
+const BUY_TOKEN = 'ANT'
 const SELL_TOKEN = 'USDC'
+const SELL_AMOUNT = '1000000000000000000'
 
 const POLL_INTERVAL = 60000
-
-type Prices = { records: Record<string, string>[] }
 
 export function usePollTokenPriceUsd(symbol: string): string | null {
   const mounted = useMounted()
@@ -18,25 +17,13 @@ export function usePollTokenPriceUsd(symbol: string): string | null {
   const fetchPrice = useCallback(async () => {
     try {
       const res = await fetch(
-        `${API_BASE}/swap/v0/prices?sellToken=${SELL_TOKEN}`
+        `${API_BASE}/swap/v1/price?sellAmount=${SELL_AMOUNT}&sellToken=${BUY_TOKEN}&buyToken=${SELL_TOKEN}`
       )
 
-      const prices = (await res.json()) as Prices
+      const { price } = (await res.json()) as any
 
-      if (!prices?.records?.length) {
-        return
-      }
-
-      const priceRecord = prices.records.find(
-        (price) => price.symbol === symbol
-      )
-
-      if (!priceRecord) {
-        return
-      }
-
-      // Add trailing zeros to stored amount
-      const formattedAmount = Number(round(priceRecord.price, 2)).toFixed(2)
+      // Clamp to two decimals
+      const formattedAmount = Number(price).toFixed(2)
 
       if (mounted()) {
         setAmountInUsd(formattedAmount)

@@ -19,4 +19,8 @@ export const shadowDepth = {
     shadowTint,
     0.08
   )}`,
+  overlay: `0px 5px 10px ${rgba(shadowTint, 0.05)}, 0px 5px 50px ${rgba(
+    shadowTint,
+    0.15
+  )}`,
 }
