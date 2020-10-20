@@ -12,7 +12,7 @@ import {
 import { useInterval } from './useInterval'
 import { useMounted } from './useMounted'
 
-const POLL_INTERVAL = 3000
+const POLL_INTERVAL = 5000
 
 export function useIncentiveStakedBalance(
   account: string | null
@@ -23,10 +23,11 @@ export function useIncentiveStakedBalance(
   )
 
   const incentivePoolContract = useIncentivePoolContract()
+  const uniswapPoolContract = useUniswapPoolContract()
 
   const getStakedBalance = useCallback(
     async (clear) => {
-      if (!incentivePoolContract || !account) {
+      if (!incentivePoolContract || !uniswapPoolContract || !account) {
         // Clear any residual value
         if (mounted()) {
           setLastStakedBalance(null)
@@ -37,70 +38,22 @@ export function useIncentiveStakedBalance(
       try {
         const { balanceOf } = incentivePoolContract.functions
 
-        const [{ 0: userBalance }] = await Promise.all([balanceOf(account)])
-
-        // Avoid unnessesary re-renders by only updating value when it has actually changed
-        if (
-          mounted() &&
-          (!lastStakedBalance || !userBalance.eq(lastStakedBalance))
-        ) {
-          setLastStakedBalance(userBalance)
-        }
-      } catch (err) {
-        captureErrorWithSentry(err)
-        clear()
-
-        if (mounted()) {
-          setLastStakedBalance(null)
-        }
-      }
-    },
-    [account, mounted, incentivePoolContract, lastStakedBalance]
-  )
-
-  useInterval(getStakedBalance, POLL_INTERVAL)
-
-  return lastStakedBalance
-}
-
-export function useBalancerStakedBalance(
-  account: string | null
-): BigNumber | null {
-  const mounted = useMounted()
-  const [lastStakedBalance, setLastStakedBalance] = useState<BigNumber | null>(
-    null
-  )
-
-  const balancerPoolContract = useBalancerPoolContract()
-
-  const getStakedBalance = useCallback(
-    async (clear) => {
-      if (!balancerPoolContract || !account) {
-        // Clear any residual value
-        if (mounted()) {
-          setLastStakedBalance(null)
-        }
-        return
-      }
-
-      try {
         const {
-          balanceOf,
           totalSupply: getTotalSupply,
-          getBalance,
-        } = balancerPoolContract.functions
+          getReserves,
+        } = uniswapPoolContract.functions
 
         const [
           { 0: userBalance },
           { 0: totalSupply },
-          { 0: poolAntBalance },
+          { 0: antReserve },
         ] = await Promise.all([
           balanceOf(account),
           getTotalSupply(),
-          getBalance(networkEnvironment.contracts.tokenAntV1),
+          getReserves(),
         ])
 
-        const stakedBalance = userBalance.mul(poolAntBalance).div(totalSupply)
+        const stakedBalance = userBalance.mul(antReserve).div(totalSupply)
 
         // Avoid unnessesary re-renders by only updating value when it has actually changed
         if (
@@ -118,7 +71,13 @@ export function useBalancerStakedBalance(
         }
       }
     },
-    [account, mounted, lastStakedBalance, balancerPoolContract]
+    [
+      account,
+      mounted,
+      incentivePoolContract,
+      lastStakedBalance,
+      uniswapPoolContract,
+    ]
   )
 
   useInterval(getStakedBalance, POLL_INTERVAL)
@@ -182,6 +141,69 @@ export function useUniswapStakedBalance(
       }
     },
     [account, mounted, lastStakedBalance, uniswapPoolContract]
+  )
+
+  useInterval(getStakedBalance, POLL_INTERVAL)
+
+  return lastStakedBalance
+}
+
+export function useBalancerStakedBalance(
+  account: string | null
+): BigNumber | null {
+  const mounted = useMounted()
+  const [lastStakedBalance, setLastStakedBalance] = useState<BigNumber | null>(
+    null
+  )
+
+  const balancerPoolContract = useBalancerPoolContract()
+
+  const getStakedBalance = useCallback(
+    async (clear) => {
+      if (!balancerPoolContract || !account) {
+        // Clear any residual value
+        if (mounted()) {
+          setLastStakedBalance(null)
+        }
+        return
+      }
+
+      try {
+        const {
+          balanceOf,
+          totalSupply: getTotalSupply,
+          getBalance,
+        } = balancerPoolContract.functions
+
+        const [
+          { 0: userBalance },
+          { 0: totalSupply },
+          { 0: poolAntBalance },
+        ] = await Promise.all([
+          balanceOf(account),
+          getTotalSupply(),
+          getBalance(networkEnvironment.contracts.tokenAntV1),
+        ])
+
+        const stakedBalance = userBalance.mul(poolAntBalance).div(totalSupply)
+
+        // Avoid unnessesary re-renders by only updating value when it has actually changed
+        if (
+          mounted() &&
+          (!lastStakedBalance || !stakedBalance.eq(lastStakedBalance))
+        ) {
+          setLastStakedBalance(stakedBalance)
+        }
+      } catch (err) {
+        captureErrorWithSentry(err)
+        clear()
+
+        if (mounted()) {
+          setLastStakedBalance(null)
+        }
+      }
+    },
+    [account, mounted, lastStakedBalance, balancerPoolContract]
   )
 
   useInterval(getStakedBalance, POLL_INTERVAL)
