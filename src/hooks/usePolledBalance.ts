@@ -1,6 +1,12 @@
 import { BigNumber } from 'ethers'
 import { useCallback, useMemo, useState } from 'react'
 import { networkEnvironment } from '../environment'
+import {
+  MOCK_BALANCER_POOL_ACCOUNT,
+  MOCK_INCENTIVE_POOL_ACCOUNT,
+  MOCK_UNISWAP_POOL_ACCOUNT,
+} from '../mock'
+import { useWallet } from '../providers/Wallet'
 import { captureErrorWithSentry } from '../sentry'
 import {
   useAntTokenV1Contract,
@@ -15,13 +21,15 @@ import { useMounted } from './useMounted'
 const POLL_INTERVAL = 5000
 
 export function useIncentiveStakedBalance(
-  account: string | null
+  mockedAccount?: boolean
 ): BigNumber | null {
+  const wallet = useWallet()
   const mounted = useMounted()
   const [lastStakedBalance, setLastStakedBalance] = useState<BigNumber | null>(
     null
   )
 
+  const account = mockedAccount ? MOCK_INCENTIVE_POOL_ACCOUNT : wallet.account
   const incentivePoolContract = useIncentivePoolContract()
   const uniswapPoolContract = useUniswapPoolContract()
 
@@ -86,13 +94,15 @@ export function useIncentiveStakedBalance(
 }
 
 export function useUniswapStakedBalance(
-  account: string | null
+  mockedAccount?: boolean
 ): BigNumber | null {
+  const wallet = useWallet()
   const mounted = useMounted()
   const [lastStakedBalance, setLastStakedBalance] = useState<BigNumber | null>(
     null
   )
 
+  const account = mockedAccount ? MOCK_UNISWAP_POOL_ACCOUNT : wallet.account
   const uniswapPoolContract = useUniswapPoolContract()
 
   const getStakedBalance = useCallback(
@@ -149,13 +159,15 @@ export function useUniswapStakedBalance(
 }
 
 export function useBalancerStakedBalance(
-  account: string | null
+  mockedAccount?: boolean
 ): BigNumber | null {
+  const wallet = useWallet()
   const mounted = useMounted()
   const [lastStakedBalance, setLastStakedBalance] = useState<BigNumber | null>(
     null
   )
 
+  const account = mockedAccount ? MOCK_BALANCER_POOL_ACCOUNT : wallet.account
   const balancerPoolContract = useBalancerPoolContract()
 
   const getStakedBalance = useCallback(
@@ -212,9 +224,9 @@ export function useBalancerStakedBalance(
 }
 
 export function useTokenBalance(
-  account: string | null,
   tokenVersion: 'antV1' | 'antV2'
 ): BigNumber | null {
+  const { account } = useWallet()
   const antTokenV1Contract = useAntTokenV1Contract()
   const antTokenV2Contract = useAntTokenV2Contract()
   const mounted = useMounted()

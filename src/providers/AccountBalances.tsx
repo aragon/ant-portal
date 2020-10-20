@@ -7,12 +7,6 @@ import {
   useTokenBalance,
   useUniswapStakedBalance,
 } from '../hooks/usePolledBalance'
-import {
-  MOCK_BALANCER_POOL_ACCOUNT,
-  MOCK_INCENTIVE_POOL_ACCOUNT,
-  MOCK_UNISWAP_POOL_ACCOUNT,
-} from '../mock'
-import { useWallet } from 'use-wallet'
 
 const ANT_TOKEN_DECIMALS = 18
 
@@ -41,20 +35,14 @@ function AccountBalancesProvider({
 }: {
   children: ReactNode
 }): JSX.Element {
-  const { account } = useWallet()
-
-  const antV1BalanceBn = useTokenBalance(account, 'antV1')
-  const antV2BalanceBn = useTokenBalance(account, 'antV2')
+  const antV1BalanceBn = useTokenBalance('antV1')
+  const antV2BalanceBn = useTokenBalance('antV2')
   const antTokenPriceUsd = usePollTokenPriceUsd()
 
-  // TODO: Remove mockAccount flag
-  const antInUniswapPoolBn = useUniswapStakedBalance(MOCK_UNISWAP_POOL_ACCOUNT)
-  const antInBalancerPoolBn = useBalancerStakedBalance(
-    MOCK_BALANCER_POOL_ACCOUNT
-  )
-  const antInIncentivePoolBn = useIncentiveStakedBalance(
-    MOCK_INCENTIVE_POOL_ACCOUNT
-  )
+  // TODO: Remove mockedAccount flag
+  const antInUniswapPoolBn = useUniswapStakedBalance(true)
+  const antInBalancerPoolBn = useBalancerStakedBalance(true)
+  const antInIncentivePoolBn = useIncentiveStakedBalance(true)
 
   const contextValue = useMemo(
     (): BalancesContext => ({
