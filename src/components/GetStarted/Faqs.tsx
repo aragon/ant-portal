@@ -15,7 +15,6 @@ function Faqs(): JSX.Element {
       <div
         css={`
           magin-top: 100px;
-          text-align: center;
         `}
       >
         <PageHeading
@@ -42,17 +41,22 @@ function Faqs(): JSX.Element {
           content="What is the conversion rate?"
           expansion="This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action."
         />
-
-        <Link
-          href={FAQS_URL}
+        <div
           css={`
-            margin-top: ${6 * GU}px;
-            font-weight: ${fontWeight.medium};
-            font-size: 20px;
+            text-align: center;
           `}
         >
-          Go to all FAQs
-        </Link>
+          <Link
+            href={FAQS_URL}
+            css={`
+              margin-top: ${6 * GU}px;
+              font-weight: ${fontWeight.medium};
+              font-size: 20px;
+            `}
+          >
+            Go to all FAQs
+          </Link>
+        </div>
       </div>
     </LayoutLimiter>
   )

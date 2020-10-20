@@ -3,6 +3,8 @@ import React, { ReactNode, useState, useCallback } from 'react'
 import { ButtonIcon, GU, RADIUS, useLayout, useTheme } from '@aragon/ui'
 import { Transition, animated } from 'react-spring/renderprops'
 import { fontWeight } from '../../style/font'
+import { shadowDepth } from '../../style/shadow'
+import { radius } from '../../style/radius'
 import arrow from '../../assets/arrow.svg'
 
 const AnimatedDiv = animated.div
@@ -32,7 +34,7 @@ function Faq({ content, expansion }: FaqProps): JSX.Element {
     <div
       css={`
         position: relative;
-        margin-bottom: ${RADIUS}px;
+        margin-bottom: ${GU}px;
       `}
     >
       <div
@@ -42,8 +44,8 @@ function Faq({ content, expansion }: FaqProps): JSX.Element {
           height: auto;
           padding: ${3 * GU}px ${8.5 * GU}px ${3 * GU}px ${3 * GU}px;
           background: ${theme.surface};
-          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
-          border-radius: 8px;
+          box-shadow: ${shadowDepth.medium};
+          border-radius: ${radius.medium};
           font-weight: ${fontWeight.medium};
           font-size: ${compactMode ? `19` : `24`}px;
           color: ${theme.content};
@@ -70,6 +72,7 @@ function Faq({ content, expansion }: FaqProps): JSX.Element {
                 z-index: 1;
                 margin-top: 10px;
                 margin-bottom: 20px;
+                border-radius: ${radius.high};
               `}
               style={props}
             >
@@ -78,9 +81,7 @@ function Faq({ content, expansion }: FaqProps): JSX.Element {
                   width: 100%;
                   overflow: hidden;
                   color: ${theme.tagIdentifier};
-
-                  padding: 30px 36px 25px;
-                  border-radius: 12px;
+                  padding: ${3.75 * GU}px ${4.5 * GU}px ${3.2 * GU}px;
                 `}
               >
                 {expansion}
@@ -120,7 +121,6 @@ function ToggleButton({ onClick, opened }: ToggleButtonProps) {
     >
       <div
         css={`
-          transform: rotate3d(${opened ? 1 : 0}, 0, 0, 90deg);
           transform: rotate3d(0, 0, ${opened ? 1 : 0}, 90deg);
         `}
       >
