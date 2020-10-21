@@ -111,7 +111,7 @@ function BalanceCard({
         background-color: ${theme.surface};
         box-shadow: ${shadowDepth.high};
         border-radius: ${radius.high};
-        padding: ${compactMode ? 3 * GU : 5 * GU}px;
+        padding: ${compactMode ? 4 * GU : 5 * GU}px;
       `}
     >
       <div
@@ -127,6 +127,7 @@ function BalanceCard({
           css={`
             display: flex;
             align-items: center;
+            flex: 1;
           `}
         >
           <TokenAntGraphic
@@ -139,12 +140,13 @@ function BalanceCard({
           />
           <div
             css={`
+              flex: 1;
               padding-left: ${3 * GU}px;
             `}
           >
             <h3
               css={`
-                font-size: 28px;
+                font-size: ${compactMode ? 24 : 28}px;
                 font-weight: ${fontWeight.medium};
                 line-height: 1.3;
                 margin-bottom: ${1 * GU}px;
@@ -174,7 +176,11 @@ function BalanceCard({
       >
         {accountConnected ? (
           <ul>
-            <BalanceItem title="Wallet balance" amount={balance} />
+            <BalanceItem
+              title="Wallet balance"
+              amount={balance}
+              compactMode={compactMode}
+            />
 
             {showLpBalance &&
               (lpInfoAvailable ? (
@@ -194,6 +200,7 @@ function BalanceCard({
                     )
                   }
                   skeletonWidth={18 * GU}
+                  compactMode={compactMode}
                 />
               ) : (
                 <span
@@ -220,15 +227,19 @@ function BalanceCard({
   )
 }
 
+type BalanceItemType = {
+  title: ReactNode
+  amount: ReactNode
+  skeletonWidth?: number
+  compactMode: boolean
+}
+
 function BalanceItem({
   title,
   amount,
   skeletonWidth = 14 * GU,
-}: {
-  title: ReactNode
-  amount: ReactNode
-  skeletonWidth?: number
-}) {
+  compactMode,
+}: BalanceItemType) {
   const theme = useTheme()
 
   return (
@@ -237,12 +248,20 @@ function BalanceItem({
         display: flex;
         justify-content: space-between;
 
+        flex-direction: ${compactMode ? 'column' : 'row'};
+
         &:not(:last-child) {
-          margin-bottom: ${2 * GU}px;
+          margin-bottom: ${compactMode ? 3 * GU : 2 * GU}px;
         }
       `}
     >
-      <h4>{title}</h4>
+      <h4
+        css={`
+          margin-bottom: ${compactMode ? 1.25 * GU : 0}px;
+        `}
+      >
+        {title}
+      </h4>
       {amount ? (
         <span
           css={`
@@ -280,7 +299,6 @@ function PriceWithSkeleton({ price }: { price: string | null }) {
   return (
     <p
       css={`
-        min-width: ${18 * GU}px;
         line-height: 1;
         color: ${theme.surfaceContentSecondary};
       `}
@@ -299,7 +317,14 @@ function PriceWithSkeleton({ price }: { price: string | null }) {
           </span>
         </>
       ) : (
-        <Skeleton />
+        <span
+          css={`
+            display: block;
+            max-width: ${15 * GU}px;
+          `}
+        >
+          <Skeleton />
+        </span>
       )}
     </p>
   )
