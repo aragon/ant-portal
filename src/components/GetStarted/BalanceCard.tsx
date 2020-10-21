@@ -5,6 +5,7 @@ import {
   ButtonIcon,
   ButtonBase,
   GU,
+  useLayout,
   // @ts-ignore
 } from '@aragon/ui'
 import TokenAntGraphic from '../TokenAntGraphic/TokenAntGraphic'
@@ -63,6 +64,9 @@ function BalanceCard({
   onLpClick,
 }: BalanceCardProps): JSX.Element {
   const theme = useTheme()
+  const { layoutName } = useLayout()
+
+  const compactMode = layoutName === 'small'
 
   const { tokenType, suffix, contractAddress } = TOKEN_PRESENTATION[
     tokenVersion
@@ -107,7 +111,7 @@ function BalanceCard({
         background-color: ${theme.surface};
         box-shadow: ${shadowDepth.high};
         border-radius: ${radius.high};
-        padding: ${5 * GU}px;
+        padding: ${compactMode ? 3 * GU : 5 * GU}px;
       `}
     >
       <div
@@ -128,6 +132,7 @@ function BalanceCard({
           <TokenAntGraphic
             shadow
             type={tokenType}
+            size={compactMode ? '75' : '100'}
             css={`
               flex-shrink: 0;
             `}
