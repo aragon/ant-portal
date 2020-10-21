@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, useCallback } from 'react'
 // @ts-ignore
-import { ButtonBase, ButtonIcon, GU, useLayout, useTheme } from '@aragon/ui'
+import { ButtonBase, GU, useLayout, useTheme } from '@aragon/ui'
 import { Transition, animated } from 'react-spring/renderprops'
 import { fontWeight } from '../../style/font'
 import { shadowDepth } from '../../style/shadow'
@@ -101,11 +101,10 @@ function ToggleButton({ opened }: ToggleButtonProps) {
   const compactMode = layoutName === 'small'
 
   return (
-    <ButtonIcon
-      label={opened ? 'Close' : 'Open'}
+    <div
       css={`
         position: absolute;
-        top: ${3.5 * GU}px;
+        top: ${1.87 * GU}px;
         right: ${3.5 * GU}px;
         display: flex;
         flex-direction: column;
@@ -124,7 +123,7 @@ function ToggleButton({ opened }: ToggleButtonProps) {
       >
         <img alt="" src={arrow} width={compactMode ? `36` : `51`} />
       </div>
-    </ButtonIcon>
+    </div>
   )
 }
 
