@@ -63,10 +63,11 @@ function Item({ title, description }: ItemProps): JSX.Element {
           font-size: ${compactMode ? `19` : `24`}px;
           text-align: left;
           color: ${theme.content};
+          white-space: break-spaces;
         `}
       >
         <ToggleButton opened={opened} />
-        {title}
+        <p>{title}</p>
       </ButtonBase>
 
       <Transition
@@ -118,7 +119,7 @@ function ToggleButton({ opened }: ToggleButtonProps) {
     <div
       css={`
         position: absolute;
-        top: ${1.87 * GU}px;
+        top: ${compactMode ? 2.75 * GU : 1.87 * GU}px;
         right: ${3.5 * GU}px;
         display: flex;
         flex-direction: column;
