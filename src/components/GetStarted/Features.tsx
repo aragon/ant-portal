@@ -66,7 +66,7 @@ function Features({
           <div
             css={`
               position: relative;
-              padding-top: 136%;
+              padding-top: 108%;
               width: 100%;
               max-width: ${stackColumns ? `${62 * GU}px` : 'auto'};
               margin-left: auto;

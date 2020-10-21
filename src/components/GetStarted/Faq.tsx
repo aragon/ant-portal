@@ -10,7 +10,7 @@ import arrow from '../../assets/arrow.svg'
 const AnimatedDiv = animated.div
 
 type FaqProps = {
-  items: string[][]
+  items: [string, string][]
 }
 
 type ItemProps = {

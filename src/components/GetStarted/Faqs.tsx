@@ -8,7 +8,7 @@ import PageHeading from '../PageHeading/PageHeading'
 
 // TODO: Add url when available
 const FAQS_URL = ''
-const FAQS_ITEMS = [
+const FAQS_ITEMS: [string, string][] = [
   [
     'What is ANT v2?',
     'This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action.',

@@ -23,7 +23,11 @@ function GetStarted(): JSX.Element {
             padding-bottom: ${17 * GU}px;
           `}
         />
-        <Features />
+        <Features
+          css={`
+            padding-bottom: ${20 * GU}px;
+          `}
+        />
         <Faqs />
       </div>
     </LayoutGutter>
