@@ -5,9 +5,10 @@ import Features from './Features'
 import LayoutGutter from '../Layout/LayoutGutter'
 import Header from './Header'
 import Balances from './Balances'
+import useDeviceDetect from '../../hooks/useDeviceDetect'
 
 function GetStarted(): JSX.Element {
-  const isMobile = false
+  const isMobile = useDeviceDetect()
   return (
     <LayoutGutter>
       <div
