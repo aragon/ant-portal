@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 
-type Sizes = 'medium' | 'large'
+type Sizes = 'small' | 'medium' | 'large'
 
 type LayoutGutterProps = {
   children?: ReactNode
@@ -8,6 +8,7 @@ type LayoutGutterProps = {
 }
 
 const LIMITER_WIDTHS: Record<Sizes, string> = {
+  small: '960px',
   medium: '1180px',
   large: '1360px',
 }
