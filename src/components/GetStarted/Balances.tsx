@@ -45,9 +45,9 @@ function Balances({
 
   const formattedLpBalanceTotal = useMemo((): string | null => {
     const totalStakedBalance = lpBalances
-      ? lpBalances.reduce((a, b) => {
-          const [, balance] = b
-          return a.add(balance)
+      ? lpBalances.reduce((total, item) => {
+          const [, balance] = item
+          return total.add(balance)
         }, bigNum('0'))
       : null
 

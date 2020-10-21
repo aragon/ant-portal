@@ -196,6 +196,7 @@ function BalanceCard({
                     color: ${theme.contentSecondary};
                   `}
                 >
+                  {/* TODO: Potentially remove this, though I can't imagine we'd have any external visitors to our staging deploy */}
                   Distribution unavailable on Rinkeby
                 </span>
               ))}
