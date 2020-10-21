@@ -29,7 +29,7 @@ const FAQS_ITEMS: [string, string][] = [
 
 function Faqs(): JSX.Element {
   return (
-    <LayoutLimiter size="medium">
+    <LayoutLimiter size="small">
       <div
         css={`
           magin-top: 100px;
