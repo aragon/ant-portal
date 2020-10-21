@@ -1,5 +1,7 @@
 export type EnvNetworkName = 'ethereum' | 'rinkeby'
 
+type LegacyNetworkType = 'main' | 'rinkeby'
+
 export interface EnvVariables {
   NETWORK_ENVIRONMENT(): string
   IPFS_GATEWAY(): string
@@ -10,7 +12,7 @@ export interface EnvVariables {
 
 export interface EnvNetworkConfig {
   chainId: number
-  legacyNetworkType: string
+  legacyNetworkType: LegacyNetworkType
   endpoints: {
     ethereum: string
   }
