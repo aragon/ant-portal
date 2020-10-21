@@ -65,24 +65,31 @@ function Features({
         <div>
           <div
             css={`
-              position: relative;
-              padding-top: 108%;
-              width: 100%;
               max-width: ${stackColumns ? `${62 * GU}px` : 'auto'};
-              margin-left: auto;
-              margin-right: auto;
+              margin: auto;
             `}
           >
-            <img
-              alt="ANT v2"
-              src={featuresPng}
+            <div
               css={`
-                position: absolute;
-                top: 0;
-                left: 0;
+                position: relative;
+                padding-top: 108%;
                 width: 100%;
+
+                margin-left: auto;
+                margin-right: auto;
               `}
-            />
+            >
+              <img
+                alt="ANT v2"
+                src={featuresPng}
+                css={`
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                `}
+              />
+            </div>
           </div>
         </div>
       </div>
