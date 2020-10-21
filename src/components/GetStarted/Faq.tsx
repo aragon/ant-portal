@@ -10,15 +10,15 @@ import arrow from '../../assets/arrow.svg'
 const AnimatedDiv = animated.div
 
 type FaqProps = {
-  content: ReactNode
-  expansion: ReactNode
+  title: ReactNode
+  description: ReactNode
 }
 
 type ToggleButtonProps = {
   opened: boolean
 }
 
-function Faq({ content, expansion }: FaqProps): JSX.Element {
+function Faq({ title, description }: FaqProps): JSX.Element {
   const [opened, setOpened] = useState(false)
   const theme = useTheme()
   const { layoutName } = useLayout()
@@ -52,7 +52,7 @@ function Faq({ content, expansion }: FaqProps): JSX.Element {
         `}
       >
         <ToggleButton opened={opened} />
-        {content}
+        {title}
       </ButtonBase>
 
       <Transition
@@ -84,7 +84,7 @@ function Faq({ content, expansion }: FaqProps): JSX.Element {
                   padding: ${3.75 * GU}px ${4.5 * GU}px ${3.2 * GU}px;
                 `}
               >
-                {expansion}
+                {description}
               </div>
             </AnimatedDiv>
           ))
