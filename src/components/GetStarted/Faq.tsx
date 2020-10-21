@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 // @ts-ignore
 import { ButtonBase, GU, useLayout, useTheme } from '@aragon/ui'
 import { Transition, animated } from 'react-spring/renderprops'
@@ -10,15 +10,29 @@ import arrow from '../../assets/arrow.svg'
 const AnimatedDiv = animated.div
 
 type FaqProps = {
-  title: ReactNode
-  description: ReactNode
+  items: string[][]
+}
+
+type ItemProps = {
+  title: string
+  description: string
 }
 
 type ToggleButtonProps = {
   opened: boolean
 }
 
-function Faq({ title, description }: FaqProps): JSX.Element {
+function Faq({ items }: FaqProps): JSX.Element {
+  return (
+    <>
+      {items.map(([title, description], index) => (
+        <Item key={index} title={title} description={description} />
+      ))}
+    </>
+  )
+}
+
+function Item({ title, description }: ItemProps): JSX.Element {
   const [opened, setOpened] = useState(false)
   const theme = useTheme()
   const { layoutName } = useLayout()

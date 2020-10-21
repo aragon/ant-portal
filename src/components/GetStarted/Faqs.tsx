@@ -8,26 +8,26 @@ import PageHeading from '../PageHeading/PageHeading'
 
 // TODO: Add url when available
 const FAQS_URL = ''
+const FAQS_ITEMS = [
+  [
+    'What is ANT v2?',
+    'This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action.',
+  ],
+  [
+    'Why should I migrate my ANT?',
+    'This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action.',
+  ],
+  [
+    'For how long will this migration last?',
+    'This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action.',
+  ],
+  [
+    'What is the conversion rate?',
+    'This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action.',
+  ],
+]
 
 function Faqs(): JSX.Element {
-  const items = [
-    [
-      'What is ANT v2?',
-      'This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action.',
-    ],
-    [
-      'Why should I migrate my ANT?',
-      'This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action.',
-    ],
-    [
-      'For how long will this migration last?',
-      'This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action.',
-    ],
-    [
-      'What is the conversion rate?',
-      'This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action.',
-    ],
-  ]
   return (
     <LayoutLimiter size="medium">
       <div
@@ -43,9 +43,7 @@ function Faqs(): JSX.Element {
             margin-bottom: ${7 * GU}px;
           `}
         />
-        {items.map(([title, description, index]) => (
-          <Faq key={index} title={title} description={description} />
-        ))}
+        <Faq items={FAQS_ITEMS} />
         <div
           css={`
             text-align: center;
