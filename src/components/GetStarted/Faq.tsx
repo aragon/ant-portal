@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, useCallback } from 'react'
 // @ts-ignore
-import { ButtonIcon, GU, RADIUS, useLayout, useTheme } from '@aragon/ui'
+import { ButtonBase, ButtonIcon, GU, useLayout, useTheme } from '@aragon/ui'
 import { Transition, animated } from 'react-spring/renderprops'
 import { fontWeight } from '../../style/font'
 import { shadowDepth } from '../../style/shadow'
@@ -15,7 +15,6 @@ type FaqProps = {
 }
 
 type ToggleButtonProps = {
-  onClick: () => void
   opened: boolean
 }
 
@@ -37,7 +36,8 @@ function Faq({ content, expansion }: FaqProps): JSX.Element {
         margin-bottom: ${GU}px;
       `}
     >
-      <div
+      <ButtonBase
+        onClick={toggleButton}
         css={`
           width: 100%;
           z-index: 2;
@@ -51,9 +51,9 @@ function Faq({ content, expansion }: FaqProps): JSX.Element {
           color: ${theme.content};
         `}
       >
-        <ToggleButton onClick={toggleButton} opened={opened} />
+        <ToggleButton opened={opened} />
         {content}
-      </div>
+      </ButtonBase>
 
       <Transition
         native
@@ -94,7 +94,7 @@ function Faq({ content, expansion }: FaqProps): JSX.Element {
   )
 }
 
-function ToggleButton({ onClick, opened }: ToggleButtonProps) {
+function ToggleButton({ opened }: ToggleButtonProps) {
   const theme = useTheme()
   const { layoutName } = useLayout()
 
@@ -103,8 +103,6 @@ function ToggleButton({ onClick, opened }: ToggleButtonProps) {
   return (
     <ButtonIcon
       label={opened ? 'Close' : 'Open'}
-      focusRingRadius={RADIUS}
-      onClick={onClick}
       css={`
         position: absolute;
         top: ${3.5 * GU}px;
