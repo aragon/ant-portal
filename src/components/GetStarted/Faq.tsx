@@ -62,6 +62,7 @@ function Item({ title, description }: ItemProps): JSX.Element {
           border-radius: ${radius.medium};
           font-weight: ${fontWeight.medium};
           font-size: ${compactMode ? `19` : `24`}px;
+          text-align: left;
           color: ${theme.content};
         `}
       >
