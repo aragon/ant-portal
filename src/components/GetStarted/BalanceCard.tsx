@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { ReactNode, useMemo } from 'react'
 import {
   useTheme,
   IconExternal,
   ButtonIcon,
+  ButtonBase,
   GU,
   useLayout,
   // @ts-ignore
@@ -23,7 +24,11 @@ type BalanceCardProps = {
   tokenVersion: TokenType
   price: string | null
   balance: string | null
-  accountConnected?: boolean
+  accountConnected: boolean
+  lpTotalBalance?: string | null
+  showLpBalance?: boolean
+  lpInfoAvailable?: boolean
+  onLpClick?: (() => void) | null
 }
 
 type TokenPresentation = Record<
@@ -53,6 +58,10 @@ function BalanceCard({
   price,
   balance,
   accountConnected,
+  lpTotalBalance,
+  lpInfoAvailable,
+  showLpBalance,
+  onLpClick,
 }: BalanceCardProps): JSX.Element {
   const theme = useTheme()
   const { layoutName } = useLayout()
@@ -65,13 +74,44 @@ function BalanceCard({
 
   const etherscanUrl = getEtherscanUrl(contractAddress)
 
+  const lpModalButton = useMemo(() => {
+    const title = 'Liquidity pool distribution'
+    return onLpClick ? (
+      <div
+        css={`
+          margin: -${1 * GU}px;
+        `}
+      >
+        <ButtonBase
+          onClick={onLpClick}
+          css={`
+            font-size: 18px;
+            line-height: 1;
+            padding: ${1 * GU}px;
+            color: ${theme.link};
+          `}
+        >
+          {title}
+        </ButtonBase>
+      </div>
+    ) : (
+      <div
+        css={`
+          color: ${theme.contentSecondary};
+        `}
+      >
+        {title}
+      </div>
+    )
+  }, [onLpClick, theme])
+
   return (
     <div
       css={`
         background-color: ${theme.surface};
         box-shadow: ${shadowDepth.high};
         border-radius: ${radius.high};
-        padding: ${compactMode ? 3 * GU : 5 * GU}px;
+        padding: ${compactMode ? 4 * GU : 5 * GU}px;
       `}
     >
       <div
@@ -87,6 +127,7 @@ function BalanceCard({
           css={`
             display: flex;
             align-items: center;
+            flex: 1;
           `}
         >
           <TokenAntGraphic
@@ -99,12 +140,13 @@ function BalanceCard({
           />
           <div
             css={`
+              flex: 1;
               padding-left: ${3 * GU}px;
             `}
           >
             <h3
               css={`
-                font-size: 28px;
+                font-size: ${compactMode ? 24 : 28}px;
                 font-weight: ${fontWeight.medium};
                 line-height: 1.3;
                 margin-bottom: ${1 * GU}px;
@@ -134,30 +176,42 @@ function BalanceCard({
       >
         {accountConnected ? (
           <ul>
-            <li
-              css={`
-                display: flex;
-                justify-content: space-between;
-              `}
-            >
-              <h4>Wallet balance</h4>
-              <span
-                css={`
-                  letter-spacing: -0.02em;
-                  font-variant-numeric: tabular-nums;
-                `}
-              >
-                {balance && balance}
+            <BalanceItem
+              title="Wallet balance"
+              amount={balance}
+              compactMode={compactMode}
+            />
+
+            {showLpBalance &&
+              (lpInfoAvailable ? (
+                <BalanceItem
+                  title={lpModalButton}
+                  amount={
+                    lpTotalBalance && (
+                      <span
+                        css={`
+                          color: ${lpTotalBalance === '0'
+                            ? theme.contentSecondary
+                            : theme.surfaceContent};
+                        `}
+                      >
+                        {lpTotalBalance}
+                      </span>
+                    )
+                  }
+                  skeletonWidth={18 * GU}
+                  compactMode={compactMode}
+                />
+              ) : (
                 <span
                   css={`
                     color: ${theme.contentSecondary};
-                    margin-left: ${0.75 * GU}px;
                   `}
                 >
-                  ANT
+                  {/* TODO: Potentially remove this, though I can't imagine we'd have any external visitors to our staging deploy */}
+                  Distribution unavailable on Rinkeby
                 </span>
-              </span>
-            </li>
+              ))}
           </ul>
         ) : (
           <p
@@ -173,13 +227,78 @@ function BalanceCard({
   )
 }
 
+type BalanceItemType = {
+  title: ReactNode
+  amount: ReactNode
+  skeletonWidth?: number
+  compactMode: boolean
+}
+
+function BalanceItem({
+  title,
+  amount,
+  skeletonWidth = 14 * GU,
+  compactMode,
+}: BalanceItemType) {
+  const theme = useTheme()
+
+  return (
+    <li
+      css={`
+        display: flex;
+        justify-content: space-between;
+
+        flex-direction: ${compactMode ? 'column' : 'row'};
+
+        &:not(:last-child) {
+          margin-bottom: ${compactMode ? 3 * GU : 2 * GU}px;
+        }
+      `}
+    >
+      <h4
+        css={`
+          margin-bottom: ${compactMode ? 1.25 * GU : 0}px;
+        `}
+      >
+        {title}
+      </h4>
+      {amount ? (
+        <span
+          css={`
+            letter-spacing: -0.02em;
+            font-variant-numeric: tabular-nums;
+          `}
+        >
+          {amount}
+          <span
+            css={`
+              color: ${theme.contentSecondary};
+              margin-left: ${0.75 * GU}px;
+            `}
+          >
+            ANT
+          </span>
+        </span>
+      ) : (
+        <span
+          css={`
+            width: 100%;
+            max-width: ${skeletonWidth}px;
+          `}
+        >
+          <Skeleton />
+        </span>
+      )}
+    </li>
+  )
+}
+
 function PriceWithSkeleton({ price }: { price: string | null }) {
   const theme = useTheme()
 
   return (
     <p
       css={`
-        min-width: ${18 * GU}px;
         line-height: 1;
         color: ${theme.surfaceContentSecondary};
       `}
@@ -198,7 +317,14 @@ function PriceWithSkeleton({ price }: { price: string | null }) {
           </span>
         </>
       ) : (
-        <Skeleton />
+        <span
+          css={`
+            display: block;
+            max-width: ${15 * GU}px;
+          `}
+        >
+          <Skeleton />
+        </span>
       )}
     </p>
   )
