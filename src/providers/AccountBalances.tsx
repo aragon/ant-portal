@@ -53,7 +53,6 @@ function AccountBalancesProvider({
       incentivePoolBalance: antInIncentivePoolBn,
       antTokenPriceUsd,
     }),
-
     [
       antV1BalanceBn,
       antV2BalanceBn,
@@ -76,12 +75,12 @@ type BalanceWithDecimals = {
   decimals: number
 }
 
+type LpPool = 'balancer' | 'uniswap' | 'incentive'
+
 type AccountBalances = {
   antV1: BalanceWithDecimals
   antV2: BalanceWithDecimals
-  uniswapPoolBalance: PolledValue
-  balancerPoolBalance: PolledValue
-  incentivePoolBalance: PolledValue
+  lpBalances: [LpPool, BigNumber][] | null
   antTokenPriceUsd: string | null
 }
 
@@ -95,6 +94,25 @@ function useAccountBalances(): AccountBalances {
     incentivePoolBalance,
   } = useContext(AccountBalancesContext)
 
+  const lpBalances = useMemo((): [LpPool, BigNumber][] | null => {
+    const balances: [LpPool, PolledValue][] = [
+      ['balancer', balancerPoolBalance],
+      ['uniswap', uniswapPoolBalance],
+      ['incentive', incentivePoolBalance],
+    ]
+
+    const availableBalances = balances.filter(
+      ([, balance]) => balance && !balance.isZero()
+    ) as [LpPool, BigNumber][] | []
+
+    // To prevent value jumps within the UI we only want to
+    // return the values after they have all been fetched
+    const allBalancesFetched = balances.every((item) => Boolean(item[1]))
+    const hasBalances = availableBalances.length > 0
+
+    return hasBalances && allBalancesFetched ? availableBalances : null
+  }, [balancerPoolBalance, uniswapPoolBalance, incentivePoolBalance])
+
   return {
     antV1: {
       balance: antV1Balance,
@@ -106,9 +124,7 @@ function useAccountBalances(): AccountBalances {
       balance: antV2Balance,
       decimals: ANT_TOKEN_DECIMALS,
     },
-    uniswapPoolBalance,
-    balancerPoolBalance,
-    incentivePoolBalance,
+    lpBalances,
     antTokenPriceUsd,
   }
 }
