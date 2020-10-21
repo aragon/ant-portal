@@ -1,11 +1,10 @@
 import React, { useState, useCallback } from 'react'
 // @ts-ignore
-import { ButtonBase, GU, useLayout, useTheme } from '@aragon/ui'
+import { ButtonBase, IconRight, GU, useLayout, useTheme } from '@aragon/ui'
 import { Transition, animated } from 'react-spring/renderprops'
 import { fontWeight } from '../../style/font'
 import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
-import arrow from '../../assets/arrow.svg'
 
 const AnimatedDiv = animated.div
 
@@ -136,7 +135,26 @@ function ToggleButton({ opened }: ToggleButtonProps) {
           transform: rotate3d(0, 0, ${opened ? 1 : 0}, 90deg);
         `}
       >
-        <img alt="" src={arrow} width={compactMode ? `36` : `51`} />
+        <div
+          css={`
+            background: #dfebf766;
+            border-radius: ${compactMode ? 4 * GU : 6.25 * GU}px;
+            width: ${compactMode ? 4 * GU : 6.25 * GU}px;
+            height: ${compactMode ? 4 * GU : 6.25 * GU}px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          `}
+        >
+          <IconRight
+            size={compactMode ? 'small' : 'medium'}
+            css={`
+              stroke: currentColor;
+              stroke-width: 1px;
+              color: black;
+            `}
+          />
+        </div>
       </div>
     </div>
   )
