@@ -181,26 +181,25 @@ function PoolTable({ items }: { items: PoolItem[] }) {
         </tr>
       </thead>
       <tbody>
-        {items &&
-          items.map((item, i) => {
-            const { amount, value, tokenPair, title, url } = item
+        {items.map((item, i) => {
+          const { amount, value, tokenPair, title, url } = item
 
-            return (
-              <tr key={i}>
-                <td>
-                  <PoolInformation
-                    tokenPair={tokenPair}
-                    title={title}
-                    url={url}
-                  />
-                </td>
-                <td>
-                  <AntAmount amount={amount} />
-                </td>
-                <td>{value && <UsdAmount amount={value} />}</td>
-              </tr>
-            )
-          })}
+          return (
+            <tr key={i}>
+              <td>
+                <PoolInformation
+                  tokenPair={tokenPair}
+                  title={title}
+                  url={url}
+                />
+              </td>
+              <td>
+                <AntAmount amount={amount} />
+              </td>
+              <td>{value && <UsdAmount amount={value} />}</td>
+            </tr>
+          )
+        })}
       </tbody>
     </table>
   )
@@ -211,54 +210,53 @@ function PoolList({ items }: { items: PoolItem[] }) {
 
   return (
     <>
-      {items &&
-        items.map((item, i) => {
-          const { amount, value, tokenPair, title, url } = item
+      {items.map((item, i) => {
+        const { amount, value, tokenPair, title, url } = item
 
-          return (
-            <div
-              key={i}
+        return (
+          <div
+            key={i}
+            css={`
+              &:not(:last-child) {
+                padding-bottom: ${3 * GU}px;
+                margin-bottom: ${3 * GU}px;
+                border-bottom: 1px solid ${theme.border};
+              }
+            `}
+          >
+            <PoolListItem
+              label="Asset"
+              content={
+                <PoolInformation
+                  tokenPair={tokenPair}
+                  title={title}
+                  url={url}
+                />
+              }
               css={`
-                &:not(:last-child) {
-                  padding-bottom: ${3 * GU}px;
-                  margin-bottom: ${3 * GU}px;
-                  border-bottom: 1px solid ${theme.border};
-                }
+                margin-bottom: ${2 * GU}px;
+              `}
+            />
+
+            <div
+              css={`
+                display: grid;
+                grid-template-columns: 1fr 1fr;
               `}
             >
               <PoolListItem
-                label="Asset"
-                content={
-                  <PoolInformation
-                    tokenPair={tokenPair}
-                    title={title}
-                    url={url}
-                  />
-                }
-                css={`
-                  margin-bottom: ${2 * GU}px;
-                `}
+                label="Amount"
+                content={<AntAmount amount={amount} />}
               />
 
-              <div
-                css={`
-                  display: grid;
-                  grid-template-columns: 1fr 1fr;
-                `}
-              >
-                <PoolListItem
-                  label="Amount"
-                  content={<AntAmount amount={amount} />}
-                />
-
-                <PoolListItem
-                  label="Value"
-                  content={value && <UsdAmount amount={value} />}
-                />
-              </div>
+              <PoolListItem
+                label="Value"
+                content={value && <UsdAmount amount={value} />}
+              />
             </div>
-          )
-        })}
+          </div>
+        )
+      })}
     </>
   )
 }
