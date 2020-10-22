@@ -223,8 +223,8 @@ export function useBalancerStakedBalance(
   return lastStakedBalance
 }
 
-export function useTokenBalance(
-  tokenVersion: 'antV1' | 'antV2'
+export function useAntTokenBalance(
+  tokenVersion: 'v1' | 'v2'
 ): BigNumber | null {
   const { account } = useWallet()
   const antTokenV1Contract = useAntTokenV1Contract()
@@ -234,8 +234,8 @@ export function useTokenBalance(
 
   const tokenContract = useMemo(() => {
     const contracts = {
-      antV1: antTokenV1Contract,
-      antV2: antTokenV2Contract,
+      v1: antTokenV1Contract,
+      v2: antTokenV2Contract,
     }
 
     return contracts[tokenVersion]
@@ -273,4 +273,58 @@ export function useTokenBalance(
   useInterval(getBalance, POLL_INTERVAL)
 
   return tokenBalance
+}
+
+export function useAntTotalSupply(tokenVersion: 'v1' | 'v2'): BigNumber | null {
+  const antTokenV1Contract = useAntTokenV1Contract(true)
+  const antTokenV2Contract = useAntTokenV2Contract(true)
+  const mounted = useMounted()
+  const [totalSupply, setTotalSupply] = useState<BigNumber | null>(null)
+
+  const tokenContract = useMemo(() => {
+    const contracts = {
+      v1: antTokenV1Contract,
+      v2: antTokenV2Contract,
+    }
+
+    return contracts[tokenVersion]
+  }, [antTokenV1Contract, antTokenV2Contract, tokenVersion])
+
+  const getTotalSupply = useCallback(
+    async (clear) => {
+      if (!tokenContract) {
+        // Clear any existing balance
+        if (mounted()) {
+          setTotalSupply(null)
+        }
+        return
+      }
+
+      try {
+        const {
+          0: fetchedTotalsupply,
+        } = await tokenContract.functions.totalSupply()
+
+        // Avoid unnessesary re-renders by only updating value when it has actually changed
+        if (
+          mounted() &&
+          (!totalSupply || !fetchedTotalsupply.eq(totalSupply))
+        ) {
+          setTotalSupply(fetchedTotalsupply)
+        }
+      } catch (err) {
+        captureErrorWithSentry(err)
+        clear()
+
+        if (mounted()) {
+          setTotalSupply(null)
+        }
+      }
+    },
+    [mounted, tokenContract, totalSupply]
+  )
+
+  useInterval(getTotalSupply, POLL_INTERVAL)
+
+  return totalSupply
 }
