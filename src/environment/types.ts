@@ -1,6 +1,7 @@
 export type EnvNetworkName = 'ethereum' | 'rinkeby'
 
 type LegacyNetworkType = 'main' | 'rinkeby'
+type ChainId = 1 | 4
 
 export interface EnvVariables {
   NETWORK_ENVIRONMENT(): string
@@ -11,7 +12,7 @@ export interface EnvVariables {
 }
 
 export interface EnvNetworkConfig {
-  chainId: number
+  chainId: ChainId
   legacyNetworkType: LegacyNetworkType
   endpoints: {
     ethereum: string
