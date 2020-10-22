@@ -109,9 +109,9 @@ function LpInfoModal({ visible, onClose }: LpInfoModaProps): JSX.Element {
             align-items: center;
             margin-bottom: ${2 * GU}px;
 
-            font-size: 22px;
+            font-size: 24px;
             font-weight: ${fontWeight.medium};
-            line-height: 1;
+            line-height: 1.2;
           `}
         >
           Liquidity pools distribution
@@ -140,13 +140,6 @@ function PoolTable({ items }: { items: PoolItem[] }) {
       css={`
         width: 100%;
 
-        th {
-          font-weight: ${fontWeight.regular};
-          color: ${theme.surfaceContentSecondary};
-
-          padding-bottom: ${0.5 * GU}px;
-        }
-
         th,
         td {
           text-align: right;
@@ -155,6 +148,13 @@ function PoolTable({ items }: { items: PoolItem[] }) {
           &:first-child {
             text-align: left;
           }
+        }
+
+        th {
+          font-weight: ${fontWeight.regular};
+          color: ${theme.contentSecondary};
+
+          padding-bottom: ${0.75 * GU}px;
         }
 
         tr {
