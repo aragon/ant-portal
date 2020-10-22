@@ -11,7 +11,7 @@ import { bigNum } from '../../utils/math-utils'
 import { useWallet } from '../../providers/Wallet'
 import { networkEnvironment } from '../../environment'
 
-const { chainId } = networkEnvironment
+const { chainId, contracts } = networkEnvironment
 
 const LP_INFO_AVAILABLE_ON_NETWORK = chainId === 1
 const FORMATTED_DIGITS = 2
@@ -22,10 +22,8 @@ function Balances({
   const { account } = useWallet()
   const [modalVisible, setModalVisible] = useState(false)
   const { layoutName } = useLayout()
-  const { antTokenPriceUsd, antV1, antV2, lpBalances } = useAccountBalances()
+  const { antV1, antV2, lpBalances } = useAccountBalances()
   const stackedCards = layoutName === 'small' || layoutName === 'medium'
-
-  const formattedUsdAmount = Number(antTokenPriceUsd).toFixed(2)
 
   const formattedAntV1Balance = useMemo(
     (): string | null =>
@@ -80,7 +78,7 @@ function Balances({
       >
         <BalanceCard
           tokenVersion="v1"
-          price={formattedUsdAmount}
+          tokenAddress={contracts.tokenAntV1}
           balance={formattedAntV1Balance}
           accountConnected={accountConnected}
           showLpBalance
@@ -90,7 +88,7 @@ function Balances({
         />
         <BalanceCard
           tokenVersion="v2"
-          price={formattedUsdAmount}
+          tokenAddress={contracts.tokenAntV2}
           balance={formattedAntV2Balance}
           accountConnected={accountConnected}
         />
