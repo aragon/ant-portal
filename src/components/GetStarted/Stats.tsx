@@ -18,19 +18,19 @@ function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
       {
         title: 'Total Supply',
         graphic: totalSupplySvg,
-        value: '342.23',
+        value: '39,609,523.80',
         desc: MOCK_SHORT_SUBTEXT,
       },
       {
         title: 'ANT Price',
         graphic: antTokenSvg,
-        value: '342.23',
+        value: '$3.56',
         desc: MOCK_SHORT_SUBTEXT,
       },
       {
         title: 'Market Cap',
         graphic: marketCapSvg,
-        value: '342.23',
+        value: '106,068,167',
         desc: MOCK_SHORT_SUBTEXT,
       },
     ],
@@ -44,7 +44,7 @@ function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
           display: grid;
           grid-template-columns: ${stackColumns ? '1fr' : '1fr 1fr 1fr'};
           justify-items: center;
-          grid-gap: ${2 * GU}px;
+          grid-gap: ${3 * GU}px;
         `}
       >
         {cardPresentation.map((card, i) => {
@@ -52,11 +52,11 @@ function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
 
           return (
             <StatCard
+              key={i}
               title={title}
               value={value}
               graphic={graphic}
               desc={desc}
-              key={i}
             />
           )
         })}

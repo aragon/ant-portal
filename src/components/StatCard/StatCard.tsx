@@ -3,6 +3,7 @@ import React from 'react'
 import { useTheme, GU } from '@aragon/ui'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
+import { shadowDepth } from '../../style/shadow'
 
 type StatCardProps = {
   title: string
@@ -14,14 +15,18 @@ type StatCardProps = {
 function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {
   const theme = useTheme()
 
+  const [body, valueDecimal] = value.split('.')
+  const valueBody = valueDecimal ? `${body}.` : body
+
   return (
     <div
       css={`
         background-color: ${theme.surface};
         border-radius: ${radius.high};
-        padding: ${4 * GU}px;
+        padding: ${5 * GU}px;
         width: 100%;
         max-width: ${65 * GU}px;
+        /* box-shadow: ${shadowDepth.medium}; */
       `}
     >
       <img
@@ -42,18 +47,27 @@ function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {
       >
         {title}
       </h3>
-      <span
+      <h4
         css={`
-          font-size: 32px;
-          font-weight: ${fontWeight.semiBold};
+          font-size: 34px;
+          font-weight: ${fontWeight.medium};
+          margin-bottom: ${0.75 * GU}px;
         `}
       >
-        {value}
-      </span>
+        {valueBody}
+        <span
+          css={`
+            font-size: 0.75em;
+          `}
+        >
+          {valueDecimal}
+        </span>
+      </h4>
       <p
         css={`
           font-size: 18px;
-          color: ${theme.surfaceContentSecondary};
+          color: ${theme.contentSecondary};
+          line-height: 1.4;
         `}
       >
         {desc}
