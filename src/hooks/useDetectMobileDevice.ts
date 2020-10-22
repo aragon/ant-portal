@@ -1,19 +1,13 @@
-// utils/useDeviceDetect.js
 import React from 'react'
 
-export default function useDeviceDetect(): boolean {
-  const [isMobile, setMobile] = React.useState(false)
-
-  React.useEffect(() => {
+export default function useDetectMobileDevice(): boolean {
+  return React.useMemo(() => {
     const userAgent =
       typeof window.navigator === 'undefined' ? '' : navigator.userAgent
-    const mobile = Boolean(
+    return Boolean(
       userAgent.match(
         /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
       )
     )
-    setMobile(mobile)
   }, [])
-
-  return isMobile
 }
