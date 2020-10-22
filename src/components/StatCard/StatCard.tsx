@@ -3,7 +3,6 @@ import React from 'react'
 import { useTheme, GU } from '@aragon/ui'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
-import { shadowDepth } from '../../style/shadow'
 
 type StatCardProps = {
   title: string
@@ -26,7 +25,6 @@ function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {
         padding: ${5 * GU}px;
         width: 100%;
         max-width: ${65 * GU}px;
-        /* box-shadow: ${shadowDepth.medium}; */
       `}
     >
       <img
