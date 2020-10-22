@@ -3,6 +3,7 @@ import React from 'react'
 import { useTheme, GU } from '@aragon/ui'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
+import LoadingSkeleton from '../LoadingSkeleton/LoadingSkeleton'
 
 type StatCardProps = {
   title: string
@@ -46,10 +47,20 @@ function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {
         css={`
           font-size: 34px;
           font-weight: ${fontWeight.medium};
-          margin-bottom: ${0.75 * GU}px;
+          margin-top: ${1 * GU}px;
+          margin-bottom: ${1.75 * GU}px;
+          line-height: 1;
         `}
       >
-        {value && <SplitValuePresentation value={value} />}
+        {value ? (
+          <SplitValuePresentation value={value} />
+        ) : (
+          <LoadingSkeleton
+            css={`
+              max-width: ${32 * GU}px;
+            `}
+          />
+        )}
       </h4>
       <p
         css={`
