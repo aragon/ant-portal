@@ -10,32 +10,40 @@ import antTokenSvg from '../../assets/stat-ant-token.svg'
 import marketCapSvg from '../../assets/stat-market-cap.svg'
 import { MOCK_SHORT_SUBTEXT } from '../../mock'
 import { useAccountBalances } from '../../providers/AccountBalances'
-import { formatAmountToUsd } from '../../utils/math-utils'
+import { formatAmountToUsd, parseUnits } from '../../utils/math-utils'
 
 function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
   const { layoutName } = useLayout()
   const { antV1TotalSupply, antV1, antTokenPriceUsd } = useAccountBalances()
 
+  const { decimals } = antV1
+
   const stackColumns = layoutName === 'small' || layoutName === 'medium'
+
+  // TODO: Look at a dynamic solution?
+  const staticCirculatingSupply = useMemo(
+    () => parseUnits('34611262.420382165605096', decimals),
+    [decimals]
+  )
 
   const formattedTotalSupply = useMemo(
     (): string | null =>
       antV1TotalSupply &&
-      new TokenAmount(antV1TotalSupply, antV1.decimals).format({
+      new TokenAmount(antV1TotalSupply, decimals).format({
         digits: 2,
       }),
-    [antV1TotalSupply, antV1.decimals]
+    [antV1TotalSupply, decimals]
   )
 
   const formattedMarketCap = useMemo(() => {
     return antTokenPriceUsd && antV1TotalSupply
       ? `$${formatAmountToUsd(
-          antV1TotalSupply,
-          antV1.decimals,
+          staticCirculatingSupply,
+          decimals,
           antTokenPriceUsd
         )}`
       : null
-  }, [antTokenPriceUsd, antV1TotalSupply, antV1.decimals])
+  }, [antTokenPriceUsd, antV1TotalSupply, decimals, staticCirculatingSupply])
 
   const formattedPrice = useMemo(
     () => antTokenPriceUsd && `$${Number(antTokenPriceUsd).toFixed(2)}`,
