@@ -5,31 +5,20 @@ import { fontWeight } from '../../style/font'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import Faq from './Faq'
 import PageHeading from '../PageHeading/PageHeading'
+import { MOCK_PARAGRAPH_CONTENT } from '../../mock'
 
-// TODO: Add url when available
+// TODO: Add url and content when available
 const FAQS_URL = ''
 const FAQS_ITEMS: [string, string][] = [
-  [
-    'What is ANT v2?',
-    'This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action.',
-  ],
-  [
-    'Why should I migrate my ANT?',
-    'This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action.',
-  ],
-  [
-    'For how long will this migration last?',
-    'This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action.',
-  ],
-  [
-    'What is the conversion rate?',
-    'This is the part of your collateral balance that is backing a particular action that has been challenged or disputed in Aragon Court. Part of this amount could be slashed (transferred to the challenger’s account) if the challenge or dispute outcome results in canceling the action.',
-  ],
+  ['What is ANT v2?', MOCK_PARAGRAPH_CONTENT],
+  ['Why should I migrate my ANT?', MOCK_PARAGRAPH_CONTENT],
+  ['For how long will this migration last?', MOCK_PARAGRAPH_CONTENT],
+  ['What is the conversion rate?', MOCK_PARAGRAPH_CONTENT],
 ]
 
 function Faqs(): JSX.Element {
   return (
-    <LayoutLimiter size="medium">
+    <LayoutLimiter size="small">
       <div
         css={`
           magin-top: 100px;

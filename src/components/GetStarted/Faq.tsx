@@ -5,6 +5,7 @@ import { Transition, animated } from 'react-spring/renderprops'
 import { fontWeight } from '../../style/font'
 import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
+import { springs } from '../../style/springs'
 
 const AnimatedDiv = animated.div
 
@@ -54,52 +55,72 @@ function Item({ title, description }: ItemProps): JSX.Element {
         css={`
           width: 100%;
           z-index: 2;
-          height: auto;
-          padding: ${3 * GU}px ${8.5 * GU}px ${3 * GU}px ${3 * GU}px;
+          padding: ${compactMode ? 3.5 * GU : 4 * GU}px;
+          padding-right: ${12 * GU}px;
           background: ${theme.surface};
           box-shadow: ${shadowDepth.medium};
-          border-radius: ${radius.medium};
-          font-weight: ${fontWeight.medium};
-          font-size: ${compactMode ? `19` : `24`}px;
+          border-radius: ${radius.high};
           text-align: left;
           color: ${theme.content};
-          white-space: break-spaces;
+          white-space: initial;
         `}
       >
         <ToggleButton opened={opened} />
-        <p>{title}</p>
+        <h4
+          css={`
+            font-weight: ${fontWeight.medium};
+            font-size: ${compactMode ? `18` : `22`}px;
+            line-height: 1.2;
+          `}
+        >
+          {title}
+        </h4>
       </ButtonBase>
 
       <Transition
         native
         items={opened}
-        from={{ height: 0 }}
-        enter={{ height: 'auto' }}
-        leave={{ height: 0 }}
+        config={springs.smooth}
+        from={{ height: 0, opacity: 0 }}
+        enter={{ height: 'auto', opacity: 1 }}
+        leave={{ height: 0, opacity: 0 }}
       >
         {(show) =>
           show &&
-          ((props) => (
+          (({ height, opacity }) => (
             <AnimatedDiv
               css={`
-                background-color: ${theme.surfaceSelected};
-                overflow: hidden;
                 z-index: 1;
-                margin-top: 10px;
-                margin-bottom: 20px;
+                overflow: hidden;
                 border-radius: ${radius.high};
               `}
-              style={props}
+              style={{ height }}
             >
               <div
                 css={`
-                  width: 100%;
-                  overflow: hidden;
-                  color: ${theme.tagIdentifier};
-                  padding: ${3.75 * GU}px ${4.5 * GU}px ${3.2 * GU}px;
+                  padding-top: 10px;
+                  margin-bottom: 20px;
                 `}
               >
-                {description}
+                <div
+                  css={`
+                    border-radius: ${radius.high};
+                    background-color: ${theme.surfaceSelected};
+                    padding: ${3.75 * GU}px ${4.5 * GU}px ${3.2 * GU}px;
+                  `}
+                >
+                  <AnimatedDiv style={{ opacity }}>
+                    <p
+                      css={`
+                        color: ${theme.tagIdentifier};
+
+                        font-size: 18px;
+                      `}
+                    >
+                      {description}
+                    </p>
+                  </AnimatedDiv>
+                </div>
               </div>
             </AnimatedDiv>
           ))
@@ -110,7 +131,6 @@ function Item({ title, description }: ItemProps): JSX.Element {
 }
 
 function ToggleButton({ opened }: ToggleButtonProps) {
-  const theme = useTheme()
   const { layoutName } = useLayout()
 
   const compactMode = layoutName === 'small'
@@ -118,45 +138,31 @@ function ToggleButton({ opened }: ToggleButtonProps) {
   return (
     <div
       css={`
-        position: absolute;
-        top: ${compactMode ? 2.75 * GU : 1.87 * GU}px;
-        right: ${3.5 * GU}px;
+        font-size: ${compactMode ? 5 * GU : 6.25 * GU}px;
         display: flex;
-        flex-direction: column;
-        color: ${theme.surfaceContentSecondary};
-        & > div {
-          display: flex;
-          transform-origin: 50% 50%;
-          transition: transform 250ms ease-in-out;
-        }
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        margin-top: -0.5em;
+        right: ${3.5 * GU}px;
+        background-color: #dfebf766;
+        border-radius: ${compactMode ? 4 * GU : 6.25 * GU}px;
+        width: 1em;
+        height: 1em;
+        transform: rotate3d(0, 0, ${opened ? 1 : 0}, 90deg);
+        transform-origin: 50% 50%;
+        transition: transform 250ms ease-in-out;
       `}
     >
-      <div
+      <IconRight
+        size={compactMode ? 'small' : 'medium'}
         css={`
-          transform: rotate3d(0, 0, ${opened ? 1 : 0}, 90deg);
+          display: block;
+          stroke: currentColor;
+          stroke-width: 1px;
         `}
-      >
-        <div
-          css={`
-            background: #dfebf766;
-            border-radius: ${compactMode ? 4 * GU : 6.25 * GU}px;
-            width: ${compactMode ? 4 * GU : 6.25 * GU}px;
-            height: ${compactMode ? 4 * GU : 6.25 * GU}px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          `}
-        >
-          <IconRight
-            size={compactMode ? 'small' : 'medium'}
-            css={`
-              stroke: currentColor;
-              stroke-width: 1px;
-              color: black;
-            `}
-          />
-        </div>
-      </div>
+      />
     </div>
   )
 }
