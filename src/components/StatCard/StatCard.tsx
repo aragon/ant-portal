@@ -6,16 +6,13 @@ import { fontWeight } from '../../style/font'
 
 type StatCardProps = {
   title: string
-  value: string
+  value: string | null
   graphic: string
   desc: string
 }
 
 function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {
   const theme = useTheme()
-
-  const [body, valueDecimal] = value.split('.')
-  const valueBody = valueDecimal ? `${body}.` : body
 
   return (
     <div
@@ -52,14 +49,7 @@ function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {
           margin-bottom: ${0.75 * GU}px;
         `}
       >
-        {valueBody}
-        <span
-          css={`
-            font-size: 0.75em;
-          `}
-        >
-          {valueDecimal}
-        </span>
+        {value && <SplitValuePresentation value={value} />}
       </h4>
       <p
         css={`
@@ -71,6 +61,24 @@ function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {
         {desc}
       </p>
     </div>
+  )
+}
+
+function SplitValuePresentation({ value }: { value: string }): JSX.Element {
+  const [body, valueDecimal] = value.split('.')
+  const valueBody = valueDecimal ? `${body}.` : body
+
+  return (
+    <>
+      {valueBody}
+      <span
+        css={`
+          font-size: 0.75em;
+        `}
+      >
+        {valueDecimal}
+      </span>
+    </>
   )
 }
 

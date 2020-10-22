@@ -21,7 +21,7 @@ export function parseUnits(value: string, digits: number): BigNumber {
   }
 }
 
-export function formatTokenAmountToUsd(
+export function formatAmountToUsd(
   amount: BigNumber,
   decimals: number,
   rate: string

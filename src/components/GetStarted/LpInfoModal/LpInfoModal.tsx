@@ -11,7 +11,7 @@ import TokenAmount from 'token-amount'
 import { fontWeight } from '../../../style/font'
 import BrandModal from '../../BrandModal/BrandModal'
 import { useAccountBalances } from '../../../providers/AccountBalances'
-import { formatTokenAmountToUsd } from '../../../utils/math-utils'
+import { formatAmountToUsd } from '../../../utils/math-utils'
 import AntAmount from '../../AntAmount/AntAmount'
 import UsdAmount from '../../UsdAmount/UsdAmount'
 import TokenIcon from './TokenIcon'
@@ -95,7 +95,7 @@ function LpInfoModal({ visible, onClose }: LpInfoModalProps): JSX.Element {
             }),
             value:
               antTokenPriceUsd &&
-              formatTokenAmountToUsd(antBalance, decimals, antTokenPriceUsd),
+              formatAmountToUsd(antBalance, decimals, antTokenPriceUsd),
           }
         })
       : null

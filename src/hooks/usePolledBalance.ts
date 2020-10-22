@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { networkEnvironment } from '../environment'
 import {
   MOCK_BALANCER_POOL_ACCOUNT,
@@ -290,8 +290,8 @@ export function useAntTotalSupply(tokenVersion: 'v1' | 'v2'): BigNumber | null {
     return contracts[tokenVersion]
   }, [antTokenV1Contract, antTokenV2Contract, tokenVersion])
 
-  const getTotalSupply = useCallback(
-    async (clear) => {
+  useEffect(() => {
+    const getTotalSupply = async () => {
       if (!tokenContract) {
         // Clear any existing balance
         if (mounted()) {
@@ -305,26 +305,20 @@ export function useAntTotalSupply(tokenVersion: 'v1' | 'v2'): BigNumber | null {
           0: fetchedTotalsupply,
         } = await tokenContract.functions.totalSupply()
 
-        // Avoid unnessesary re-renders by only updating value when it has actually changed
-        if (
-          mounted() &&
-          (!totalSupply || !fetchedTotalsupply.eq(totalSupply))
-        ) {
+        if (mounted()) {
           setTotalSupply(fetchedTotalsupply)
         }
       } catch (err) {
         captureErrorWithSentry(err)
-        clear()
 
         if (mounted()) {
           setTotalSupply(null)
         }
       }
-    },
-    [mounted, tokenContract, totalSupply]
-  )
+    }
 
-  useInterval(getTotalSupply, POLL_INTERVAL)
+    getTotalSupply()
+  }, [mounted, tokenContract])
 
   return totalSupply
 }
