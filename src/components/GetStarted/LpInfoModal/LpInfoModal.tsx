@@ -114,7 +114,7 @@ function LpInfoModal({ visible, onClose }: LpInfoModaProps): JSX.Element {
             line-height: 1.2;
           `}
         >
-          Liquidity pools distribution
+          Liquidity pool distribution
         </h1>
         <p
           css={`
