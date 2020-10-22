@@ -65,12 +65,12 @@ function getTokenPair(
   ]
 }
 
-type LpInfoModaProps = {
+type LpInfoModalProps = {
   visible: boolean
   onClose: () => void
 }
 
-function LpInfoModal({ visible, onClose }: LpInfoModaProps): JSX.Element {
+function LpInfoModal({ visible, onClose }: LpInfoModalProps): JSX.Element {
   const { antV1, antTokenPriceUsd, lpBalances } = useAccountBalances()
 
   const theme = useTheme()
@@ -180,7 +180,7 @@ function PoolTable({ items }: { items: PoolItem[] }) {
             return (
               <tr key={i}>
                 <td>
-                  <TokenPairGraphic
+                  <PoolInformation
                     tokenPair={tokenPair}
                     title={title}
                     url={url}
@@ -198,7 +198,7 @@ function PoolTable({ items }: { items: PoolItem[] }) {
   )
 }
 
-function TokenPairGraphic({
+function PoolInformation({
   tokenPair,
   title,
   url,
