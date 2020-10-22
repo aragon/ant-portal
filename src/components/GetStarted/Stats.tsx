@@ -43,7 +43,7 @@ function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
         css={`
           display: grid;
           grid-template-columns: ${stackColumns ? '1fr' : '1fr 1fr 1fr'};
-          align-items: center;
+          justify-items: center;
           grid-gap: ${2 * GU}px;
         `}
       >
