@@ -21,6 +21,9 @@ export const MOCK_INCENTIVE_POOL_ACCOUNT =
 export const MOCK_PARAGRAPH_CONTENT =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ante mi, ultrices sed pretium quis, ultricies sed tellus. Integer a urna sit amet nisi blandit faucibus. Donec sed blandit velit, non dignissim nulla. Integer ornare sem consectetur, lacinia nibh eget, volutpat nunc.'
 
+export const MOCK_SHORT_SUBTEXT =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing.'
+
 export async function mockPromiseLatency(ms: number): Promise<boolean> {
   return new Promise((resolve) => setTimeout(() => resolve(true), ms))
 }
