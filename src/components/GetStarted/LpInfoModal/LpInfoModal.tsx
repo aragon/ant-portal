@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react'
+import React, { ReactNode, useMemo } from 'react'
 import {
   GU,
   Link,
   useTheme,
+  useLayout,
   // @ts-ignore
 } from '@aragon/ui'
 // @ts-ignore
@@ -74,6 +75,8 @@ function LpInfoModal({ visible, onClose }: LpInfoModalProps): JSX.Element {
   const { antV1, antTokenPriceUsd, lpBalances } = useAccountBalances()
 
   const theme = useTheme()
+  const { layoutName } = useLayout()
+  const compactMode = layoutName === 'small'
 
   const poolItems = useMemo((): PoolItem[] | null => {
     const decimals = antV1.decimals
@@ -126,7 +129,12 @@ function LpInfoModal({ visible, onClose }: LpInfoModalProps): JSX.Element {
           migrate those tokens, you must remove liquidity from those
           decentralized exchanges first.
         </p>
-        {poolItems && <PoolTable items={poolItems} />}
+        {poolItems &&
+          (compactMode ? (
+            <PoolList items={poolItems} />
+          ) : (
+            <PoolTable items={poolItems} />
+          ))}
       </>
     </BrandModal>
   )
@@ -173,28 +181,109 @@ function PoolTable({ items }: { items: PoolItem[] }) {
         </tr>
       </thead>
       <tbody>
-        {items &&
-          items.map((item, i) => {
-            const { amount, value, tokenPair, title, url } = item
+        {items.map((item, i) => {
+          const { amount, value, tokenPair, title, url } = item
 
-            return (
-              <tr key={i}>
-                <td>
-                  <PoolInformation
-                    tokenPair={tokenPair}
-                    title={title}
-                    url={url}
-                  />
-                </td>
-                <td>
-                  <AntAmount amount={amount} />
-                </td>
-                <td>{value && <UsdAmount amount={value} />}</td>
-              </tr>
-            )
-          })}
+          return (
+            <tr key={i}>
+              <td>
+                <PoolInformation
+                  tokenPair={tokenPair}
+                  title={title}
+                  url={url}
+                />
+              </td>
+              <td>
+                <AntAmount amount={amount} />
+              </td>
+              <td>{value && <UsdAmount amount={value} />}</td>
+            </tr>
+          )
+        })}
       </tbody>
     </table>
+  )
+}
+
+function PoolList({ items }: { items: PoolItem[] }) {
+  const theme = useTheme()
+
+  return (
+    <>
+      {items.map((item, i) => {
+        const { amount, value, tokenPair, title, url } = item
+
+        return (
+          <div
+            key={i}
+            css={`
+              &:not(:last-child) {
+                padding-bottom: ${3 * GU}px;
+                margin-bottom: ${3 * GU}px;
+                border-bottom: 1px solid ${theme.border};
+              }
+            `}
+          >
+            <PoolListItem
+              label="Asset"
+              content={
+                <PoolInformation
+                  tokenPair={tokenPair}
+                  title={title}
+                  url={url}
+                />
+              }
+              css={`
+                margin-bottom: ${2 * GU}px;
+              `}
+            />
+
+            <div
+              css={`
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+              `}
+            >
+              <PoolListItem
+                label="Amount"
+                content={<AntAmount amount={amount} />}
+              />
+
+              <PoolListItem
+                label="Value"
+                content={value && <UsdAmount amount={value} />}
+              />
+            </div>
+          </div>
+        )
+      })}
+    </>
+  )
+}
+
+function PoolListItem({
+  label,
+  content,
+  ...props
+}: {
+  label: string
+  content: ReactNode
+}) {
+  const theme = useTheme()
+
+  return (
+    <div {...props}>
+      <h2
+        css={`
+          font-weight: ${fontWeight.regular};
+          color: ${theme.contentSecondary};
+          margin-bottom: ${0.25 * GU}px;
+        `}
+      >
+        {label}
+      </h2>
+      {content}
+    </div>
   )
 }
 
@@ -223,6 +312,8 @@ function PoolInformation({
           display: flex;
           align-items: center;
           text-decoration: none;
+          white-space: initial;
+          text-align: left;
         `}
       >
         <div
