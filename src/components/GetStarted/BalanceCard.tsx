@@ -1,9 +1,9 @@
 import React, { ReactNode, useMemo } from 'react'
 import {
   useTheme,
-  IconExternal,
-  ButtonIcon,
   ButtonBase,
+  shortenAddress,
+  IconExternal,
   GU,
   useLayout,
   // @ts-ignore
@@ -12,54 +12,26 @@ import TokenAntGraphic from '../TokenAntGraphic/TokenAntGraphic'
 import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
-import { networkEnvironment } from '../../environment'
 import { css, keyframes } from 'styled-components'
 import { getEtherscanUrl } from '../../utils/etherscan'
 import AntAmount from '../AntAmount/AntAmount'
-import UsdAmount from '../UsdAmount/UsdAmount'
-
-const { contracts } = networkEnvironment
-
-type TokenType = 'v1' | 'v2'
 
 type BalanceCardProps = {
-  tokenVersion: TokenType
-  price: string | null
+  tokenVersion: 'v1' | 'v2'
   balance: string | null
   accountConnected: boolean
+  tokenAddress: string
   lpTotalBalance?: string | null
   showLpBalance?: boolean
   lpInfoAvailable?: boolean
   onLpClick?: (() => void) | null
 }
 
-type TokenPresentation = Record<
-  TokenType,
-  {
-    tokenType: TokenType
-    suffix: string
-    contractAddress: string
-  }
->
-
-const TOKEN_PRESENTATION: TokenPresentation = {
-  v1: {
-    tokenType: 'v1',
-    suffix: 'v1',
-    contractAddress: contracts.tokenAntV1,
-  },
-  v2: {
-    tokenType: 'v2',
-    suffix: 'v2',
-    contractAddress: contracts.tokenAntV2,
-  },
-}
-
 function BalanceCard({
   tokenVersion = 'v1',
-  price,
   balance,
   accountConnected,
+  tokenAddress,
   lpTotalBalance,
   lpInfoAvailable,
   showLpBalance,
@@ -69,12 +41,7 @@ function BalanceCard({
   const { layoutName } = useLayout()
 
   const compactMode = layoutName === 'small'
-
-  const { tokenType, suffix, contractAddress } = TOKEN_PRESENTATION[
-    tokenVersion
-  ]
-
-  const etherscanUrl = getEtherscanUrl(contractAddress)
+  const etherscanUrl = getEtherscanUrl(tokenAddress)
 
   const lpModalButton = useMemo(() => {
     const title = 'Liquidity pool distribution'
@@ -134,7 +101,7 @@ function BalanceCard({
         >
           <TokenAntGraphic
             shadow
-            type={tokenType}
+            type={tokenVersion}
             size={compactMode ? '75' : '100'}
             css={`
               flex-shrink: 0;
@@ -154,21 +121,31 @@ function BalanceCard({
                 margin-bottom: ${1 * GU}px;
               `}
             >
-              ANT {suffix}
+              ANT {tokenVersion}
             </h3>
-            <PriceWithSkeleton price={price} />
+            <ButtonBase
+              href={etherscanUrl}
+              css={`
+                display: inline-flex;
+                align-items: center;
+                text-decoration: none;
+                border-radius: ${radius.medium};
+                padding: ${1.25 * GU}px ${1.75 * GU}px;
+                background-color: ${theme.tagIndicator};
+                line-height: 1;
+              `}
+            >
+              {shortenAddress(tokenAddress, compactMode ? 4 : 6)}
+              <IconExternal
+                size="small"
+                css={`
+                  margin-top: -2px;
+                  margin-left: ${0.5 * GU}px;
+                `}
+              />
+            </ButtonBase>
           </div>
         </div>
-
-        <ButtonIcon
-          label=""
-          href={etherscanUrl}
-          css={`
-            color: ${theme.contentSecondary};
-          `}
-        >
-          <IconExternal size="large" />
-        </ButtonIcon>
       </div>
       <div
         css={`
@@ -263,41 +240,6 @@ function BalanceItem({
         </span>
       )}
     </li>
-  )
-}
-
-function PriceWithSkeleton({ price }: { price: string | null }) {
-  const theme = useTheme()
-
-  return (
-    <p
-      css={`
-        line-height: 1;
-        color: ${theme.surfaceContentSecondary};
-      `}
-    >
-      {price ? (
-        <>
-          ANT Price
-          <UsdAmount
-            amount={price}
-            css={`
-              margin-left: ${0.75 * GU}px;
-              color: ${theme.positive};
-            `}
-          />
-        </>
-      ) : (
-        <span
-          css={`
-            display: block;
-            max-width: ${15 * GU}px;
-          `}
-        >
-          <Skeleton />
-        </span>
-      )}
-    </p>
   )
 }
 
