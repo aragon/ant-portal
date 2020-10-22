@@ -26,8 +26,9 @@ const DEFAULT_PROVIDER = new Providers.JsonRpcProvider(endpoints.ethereum)
 
 type UseContractProps = {
   address?: string
-  abi: string
+  abi: any
   signer?: boolean
+  readOnly?: boolean
 }
 
 type ExtendedContract<T> = T & EthersContract
@@ -44,67 +45,89 @@ function useContract<T>({
   address,
   abi,
   signer = true,
+  readOnly = false,
 }: UseContractProps): ExtendedContract<T> | null {
   const { account, ethers } = useWallet()
 
   return useMemo(() => {
+    if (!address) {
+      return null
+    }
+
+    if (readOnly) {
+      return getContract(address, abi)
+    }
+
     // Apparently .getSigner() returns a new object every time, so we use the
     // connected account as memo dependency.
-    if (!address || !ethers || !account) {
+    if (!ethers || !account) {
       return null
     }
 
     return getContract(address, abi, signer ? ethers.getSigner() : ethers)
-  }, [abi, account, address, ethers, signer]) as ExtendedContract<T> | null
+  }, [abi, account, address, ethers, signer, readOnly])
 }
 
-export function useMigratorContract(): Migrator | null {
+export function useMigratorContract(readOnly?: boolean): Migrator | null {
   const { migrator } = contracts
 
-  return useContract<Migrator>({ address: migrator, abi: migratorAbi as any })
+  return useContract<Migrator>({
+    address: migrator,
+    abi: migratorAbi,
+    readOnly,
+  })
 }
 
-export function useAntTokenV1Contract(): TokenAntV1 | null {
+export function useAntTokenV1Contract(readOnly?: boolean): TokenAntV1 | null {
   const { tokenAntV1 } = contracts
 
   return useContract<TokenAntV1>({
     address: tokenAntV1,
-    abi: tokenAntV1Abi as any,
+    abi: tokenAntV1Abi,
+    readOnly,
   })
 }
 
-export function useAntTokenV2Contract(): TokenAntV2 | null {
+export function useAntTokenV2Contract(readOnly?: boolean): TokenAntV2 | null {
   const { tokenAntV2 } = contracts
 
   return useContract<TokenAntV2>({
     address: tokenAntV2,
-    abi: tokenAntV2Abi as any,
+    abi: tokenAntV2Abi,
+    readOnly,
   })
 }
 
-export function useUniswapPoolContract(): UniswapPool | null {
+export function useUniswapPoolContract(readOnly?: boolean): UniswapPool | null {
   const { antEthUniswapPool } = contracts
 
   return useContract<UniswapPool>({
     address: antEthUniswapPool,
-    abi: uniswapPoolAbi as any,
+    abi: uniswapPoolAbi,
+    readOnly,
   })
 }
 
-export function useIncentivePoolContract(): IncentivePool | null {
+export function useIncentivePoolContract(
+  readOnly?: boolean
+): IncentivePool | null {
   const { antUniIncentivePool } = contracts
 
   return useContract<IncentivePool>({
     address: antUniIncentivePool,
-    abi: incentivePoolAbi as any,
+    abi: incentivePoolAbi,
+    readOnly,
   })
 }
 
-export function useBalancerPoolContract(): BalancerPool | null {
+export function useBalancerPoolContract(
+  readOnly?: boolean
+): BalancerPool | null {
   const { antEthBalancerPool } = contracts
 
   return useContract<BalancerPool>({
     address: antEthBalancerPool,
-    abi: balancerPoolAbi as any,
+    abi: balancerPoolAbi,
+    readOnly,
   })
 }
