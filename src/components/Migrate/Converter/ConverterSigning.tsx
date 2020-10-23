@@ -15,6 +15,7 @@ import { networkEnvironment } from '../../../environment'
 import { useMigrateState } from '../MigrateStateProvider'
 import { useWallet } from '../../../providers/Wallet'
 import { ContractTransaction } from 'ethers'
+import PageHeading from '../../PageHeading/PageHeading'
 
 const { contracts } = networkEnvironment
 
@@ -148,69 +149,84 @@ function ConverterSigning({
     migrationContractInteraction,
   ])
   return (
-    <Stepper
-      steps={
-        mockSigningSteps ? getMockSteps(mockSigningSteps) : transactionSteps
-      }
-      renderInfo={({ stepperStatus, handleSign }) => (
-        <div
-          css={`
-            margin-top: ${4 * GU}px;
-            margin-left: auto;
-            margin-right: auto;
-            max-width: ${70 * GU}px;
-          `}
-        >
-          <div
-            css={`
-              margin-bottom: ${4 * GU}px;
-            `}
-          >
-            {stepperStatus === 'error' ? (
-              <div
-                css={`
-                  display: grid;
-                  grid-gap: ${1 * GU}px;
-                  grid-template-columns: ${stackedButtons ? 'auto' : '1fr 1fr'};
-                `}
-              >
-                <BrandButton wide onClick={goToForm}>
-                  Abandon process
-                </BrandButton>
-                <BrandButton
-                  mode="strong"
-                  onClick={handleSign}
-                  wide
-                  // Cover edge case where a user rejects signing and disconnects the account
-                  disabled={!account}
-                >
-                  Repeat transaction
-                </BrandButton>
-              </div>
-            ) : (
-              <BrandButton
-                onClick={handleBackToHome}
-                disabled={stepperStatus === 'working'}
-                wide
-                css={`
-                  max-width: ${30 * GU}px;
-                  margin: auto;
-                `}
-              >
-                Back to Migrate
-              </BrandButton>
-            )}
-          </div>
-          <SigningInfo
-            status={stepperStatus}
-            multipleTransactions={signingConfiguration === 'requiresReset'}
-          />
-        </div>
-      )}
+    <div
       css={`
         width: 100%;
       `}
-    />
+    >
+      <PageHeading
+        title="Aragon Migrate"
+        description="Upgrading your ANT"
+        css={`
+          margin-bottom: ${7 * GU}px;
+        `}
+      />
+      <Stepper
+        steps={
+          mockSigningSteps ? getMockSteps(mockSigningSteps) : transactionSteps
+        }
+        renderInfo={({ stepperStatus, handleSign }) => (
+          <div
+            css={`
+              margin-top: ${4 * GU}px;
+              margin-left: auto;
+              margin-right: auto;
+              max-width: ${70 * GU}px;
+            `}
+          >
+            <div
+              css={`
+                margin-bottom: ${4 * GU}px;
+              `}
+            >
+              {stepperStatus === 'error' ? (
+                <div
+                  css={`
+                    display: grid;
+                    grid-gap: ${1 * GU}px;
+                    grid-template-columns: ${stackedButtons
+                      ? 'auto'
+                      : '1fr 1fr'};
+                  `}
+                >
+                  <BrandButton wide onClick={goToForm}>
+                    Abandon process
+                  </BrandButton>
+                  <BrandButton
+                    mode="strong"
+                    onClick={handleSign}
+                    wide
+                    // Cover edge case where a user rejects signing and disconnects the account
+                    disabled={!account}
+                  >
+                    Repeat transaction
+                  </BrandButton>
+                </div>
+              ) : (
+                <BrandButton
+                  onClick={handleBackToHome}
+                  disabled={stepperStatus === 'working'}
+                  wide
+                  css={`
+                    max-width: ${30 * GU}px;
+                    margin: auto;
+                  `}
+                >
+                  Back to Migrate
+                </BrandButton>
+              )}
+            </div>
+            <SigningInfo
+              status={stepperStatus}
+              multipleTransactions={signingConfiguration === 'requiresReset'}
+            />
+          </div>
+        )}
+        css={`
+          width: 100%;
+        `}
+      />
+    </div>
   )
 }
 

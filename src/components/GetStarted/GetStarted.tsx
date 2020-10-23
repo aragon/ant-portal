@@ -23,9 +23,12 @@ function GetStarted(): JSX.Element {
         <Header />
         {isMobile && (
           <Info
+            mode="warning"
             css={`
               max-width: ${62 * GU}px;
-              margin: ${4 * GU}px auto;
+              margin-top: ${4 * GU}px;
+              margin-left: auto;
+              margin-right: auto;
             `}
           >
             ANT v2 Migration is not supported for mobile wallets. Use a web or
