@@ -11,6 +11,7 @@ import Stats from './Stats'
 
 function GetStarted(): JSX.Element {
   const isMobile = useDetectMobileDevice()
+
   return (
     <LayoutGutter>
       <div
