@@ -73,10 +73,6 @@ export function useIncentiveStakedBalance(
       } catch (err) {
         captureErrorWithSentry(err)
         clear()
-
-        if (mounted()) {
-          setLastStakedBalance(null)
-        }
       }
     },
     [
@@ -144,10 +140,6 @@ export function useUniswapStakedBalance(
       } catch (err) {
         captureErrorWithSentry(err)
         clear()
-
-        if (mounted()) {
-          setLastStakedBalance(null)
-        }
       }
     },
     [account, mounted, lastStakedBalance, uniswapPoolContract]
@@ -209,10 +201,6 @@ export function useBalancerStakedBalance(
       } catch (err) {
         captureErrorWithSentry(err)
         clear()
-
-        if (mounted()) {
-          setLastStakedBalance(null)
-        }
       }
     },
     [account, mounted, lastStakedBalance, balancerPoolContract]
@@ -261,10 +249,6 @@ export function useAntTokenBalance(
       } catch (err) {
         captureErrorWithSentry(err)
         clear()
-
-        if (mounted()) {
-          setTokenBalance(null)
-        }
       }
     },
     [account, mounted, tokenContract, tokenBalance]
@@ -293,10 +277,6 @@ export function useAntTotalSupply(tokenVersion: 'v1' | 'v2'): BigNumber | null {
   useEffect(() => {
     const getTotalSupply = async () => {
       if (!tokenContract) {
-        // Clear any existing balance
-        if (mounted()) {
-          setTotalSupply(null)
-        }
         return
       }
 
@@ -310,10 +290,6 @@ export function useAntTotalSupply(tokenVersion: 'v1' | 'v2'): BigNumber | null {
         }
       } catch (err) {
         captureErrorWithSentry(err)
-
-        if (mounted()) {
-          setTotalSupply(null)
-        }
       }
     }
 
