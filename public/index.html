@@ -27,9 +27,23 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Aragon Migrate</title>
+
+    <style>
+      /* Override Aragon UI and restore scroll control to window element */
+      html, body {
+        overflow: auto !important;
+        min-height: auto !important;
+        height: auto !important;
+      }
+
+      /* Match app background color to avoid white flicker on first load */
+      body {
+        background-color: #F9FAFC; 
+      }
+    </style>
   </head>
-  <!-- Match app background color to avoid white flicker on first load -->
-  <body style="background-color: #F9FAFC; overflow-y: scroll;">
+
+  <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>
