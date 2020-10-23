@@ -4,8 +4,9 @@ import { usePollTokenPriceUsd } from '../hooks/usePollTokenPriceUsd'
 import {
   useBalancerStakedBalance,
   useIncentiveStakedBalance,
-  useTokenBalance,
+  useAntTokenBalance,
   useUniswapStakedBalance,
+  useAntTotalSupply,
 } from '../hooks/usePolledBalance'
 
 const ANT_TOKEN_DECIMALS = 18
@@ -15,6 +16,7 @@ type PolledValue = BigNumber | null
 type BalancesContext = {
   antV1Balance: PolledValue
   antV2Balance: PolledValue
+  antV1TotalSupply: PolledValue
   uniswapPoolBalance: PolledValue
   balancerPoolBalance: PolledValue
   incentivePoolBalance: PolledValue
@@ -24,6 +26,7 @@ type BalancesContext = {
 const AccountBalancesContext = React.createContext<BalancesContext>({
   antV1Balance: null,
   antV2Balance: null,
+  antV1TotalSupply: null,
   uniswapPoolBalance: null,
   balancerPoolBalance: null,
   incentivePoolBalance: null,
@@ -35,8 +38,9 @@ function AccountBalancesProvider({
 }: {
   children: ReactNode
 }): JSX.Element {
-  const antV1BalanceBn = useTokenBalance('antV1')
-  const antV2BalanceBn = useTokenBalance('antV2')
+  const antV1BalanceBn = useAntTokenBalance('v1')
+  const antV2BalanceBn = useAntTokenBalance('v2')
+  const antV1TotalSupplyBn = useAntTotalSupply('v1')
   const antTokenPriceUsd = usePollTokenPriceUsd()
 
   // TODO: Remove mockedAccount flag
@@ -48,6 +52,7 @@ function AccountBalancesProvider({
     (): BalancesContext => ({
       antV1Balance: antV1BalanceBn,
       antV2Balance: antV2BalanceBn,
+      antV1TotalSupply: antV1TotalSupplyBn,
       uniswapPoolBalance: antInUniswapPoolBn,
       balancerPoolBalance: antInBalancerPoolBn,
       incentivePoolBalance: antInIncentivePoolBn,
@@ -56,6 +61,7 @@ function AccountBalancesProvider({
     [
       antV1BalanceBn,
       antV2BalanceBn,
+      antV1TotalSupplyBn,
       antTokenPriceUsd,
       antInUniswapPoolBn,
       antInBalancerPoolBn,
@@ -82,12 +88,14 @@ type AccountBalances = {
   antV2: BalanceWithDecimals
   lpBalances: [LpPool, BigNumber][] | null
   antTokenPriceUsd: string | null
+  antV1TotalSupply: PolledValue
 }
 
 function useAccountBalances(): AccountBalances {
   const {
     antV1Balance,
     antV2Balance,
+    antV1TotalSupply,
     antTokenPriceUsd,
     uniswapPoolBalance,
     balancerPoolBalance,
@@ -126,6 +134,7 @@ function useAccountBalances(): AccountBalances {
     },
     lpBalances,
     antTokenPriceUsd,
+    antV1TotalSupply,
   }
 }
 

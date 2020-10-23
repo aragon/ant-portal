@@ -7,6 +7,7 @@ import Header from './Header'
 import Balances from './Balances'
 import Faqs from './Faqs'
 import useDetectMobileDevice from '../../hooks/useDetectMobileDevice'
+import Stats from './Stats'
 
 function GetStarted(): JSX.Element {
   const isMobile = useDetectMobileDevice()
@@ -39,6 +40,11 @@ function GetStarted(): JSX.Element {
           `}
         />
         <Features
+          css={`
+            padding-bottom: ${24 * GU}px;
+          `}
+        />
+        <Stats
           css={`
             padding-bottom: ${20 * GU}px;
           `}

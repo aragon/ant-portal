@@ -1,9 +1,9 @@
 import React, { ReactNode, useMemo } from 'react'
 import {
   useTheme,
-  IconExternal,
-  ButtonIcon,
   ButtonBase,
+  shortenAddress,
+  IconExternal,
   GU,
   useLayout,
   // @ts-ignore
@@ -12,52 +12,26 @@ import TokenAntGraphic from '../TokenAntGraphic/TokenAntGraphic'
 import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
-import { networkEnvironment } from '../../environment'
-import { css, keyframes } from 'styled-components'
 import { getEtherscanUrl } from '../../utils/etherscan'
-
-const { contracts } = networkEnvironment
-
-type TokenType = 'v1' | 'v2'
+import AntAmount from '../AntAmount/AntAmount'
+import LoadingSkeleton from '../LoadingSkeleton/LoadingSkeleton'
 
 type BalanceCardProps = {
-  tokenVersion: TokenType
-  price: string | null
+  tokenVersion: 'v1' | 'v2'
   balance: string | null
   accountConnected: boolean
+  tokenAddress: string
   lpTotalBalance?: string | null
   showLpBalance?: boolean
   lpInfoAvailable?: boolean
   onLpClick?: (() => void) | null
 }
 
-type TokenPresentation = Record<
-  TokenType,
-  {
-    tokenType: TokenType
-    suffix: string
-    contractAddress: string
-  }
->
-
-const TOKEN_PRESENTATION: TokenPresentation = {
-  v1: {
-    tokenType: 'v1',
-    suffix: 'v1',
-    contractAddress: contracts.tokenAntV1,
-  },
-  v2: {
-    tokenType: 'v2',
-    suffix: 'v2',
-    contractAddress: contracts.tokenAntV2,
-  },
-}
-
 function BalanceCard({
   tokenVersion = 'v1',
-  price,
   balance,
   accountConnected,
+  tokenAddress,
   lpTotalBalance,
   lpInfoAvailable,
   showLpBalance,
@@ -67,12 +41,7 @@ function BalanceCard({
   const { layoutName } = useLayout()
 
   const compactMode = layoutName === 'small'
-
-  const { tokenType, suffix, contractAddress } = TOKEN_PRESENTATION[
-    tokenVersion
-  ]
-
-  const etherscanUrl = getEtherscanUrl(contractAddress)
+  const etherscanUrl = getEtherscanUrl(tokenAddress)
 
   const lpModalButton = useMemo(() => {
     const title = 'Liquidity pool distribution'
@@ -132,7 +101,7 @@ function BalanceCard({
         >
           <TokenAntGraphic
             shadow
-            type={tokenType}
+            type={tokenVersion}
             size={compactMode ? '75' : '100'}
             css={`
               flex-shrink: 0;
@@ -152,21 +121,31 @@ function BalanceCard({
                 margin-bottom: ${1 * GU}px;
               `}
             >
-              ANT {suffix}
+              ANT {tokenVersion}
             </h3>
-            <PriceWithSkeleton price={price} />
+            <ButtonBase
+              href={etherscanUrl}
+              css={`
+                display: inline-flex;
+                align-items: center;
+                text-decoration: none;
+                border-radius: ${radius.medium};
+                padding: ${1.25 * GU}px ${1.75 * GU}px;
+                background-color: ${theme.tagIndicator};
+                line-height: 1;
+              `}
+            >
+              {shortenAddress(tokenAddress, compactMode ? 4 : 6)}
+              <IconExternal
+                size="small"
+                css={`
+                  margin-top: -2px;
+                  margin-left: ${0.5 * GU}px;
+                `}
+              />
+            </ButtonBase>
           </div>
         </div>
-
-        <ButtonIcon
-          label=""
-          href={etherscanUrl}
-          css={`
-            color: ${theme.contentSecondary};
-          `}
-        >
-          <IconExternal size="large" />
-        </ButtonIcon>
       </div>
       <div
         css={`
@@ -186,19 +165,7 @@ function BalanceCard({
               (lpInfoAvailable ? (
                 <BalanceItem
                   title={lpModalButton}
-                  amount={
-                    lpTotalBalance && (
-                      <span
-                        css={`
-                          color: ${lpTotalBalance === '0'
-                            ? theme.contentSecondary
-                            : theme.surfaceContent};
-                        `}
-                      >
-                        {lpTotalBalance}
-                      </span>
-                    )
-                  }
+                  amount={lpTotalBalance}
                   skeletonWidth={18 * GU}
                   compactMode={compactMode}
                 />
@@ -229,7 +196,7 @@ function BalanceCard({
 
 type BalanceItemType = {
   title: ReactNode
-  amount: ReactNode
+  amount?: string | null
   skeletonWidth?: number
   compactMode: boolean
 }
@@ -240,8 +207,6 @@ function BalanceItem({
   skeletonWidth = 14 * GU,
   compactMode,
 }: BalanceItemType) {
-  const theme = useTheme()
-
   return (
     <li
       css={`
@@ -263,22 +228,7 @@ function BalanceItem({
         {title}
       </h4>
       {amount ? (
-        <span
-          css={`
-            letter-spacing: -0.02em;
-            font-variant-numeric: tabular-nums;
-          `}
-        >
-          {amount}
-          <span
-            css={`
-              color: ${theme.contentSecondary};
-              margin-left: ${0.75 * GU}px;
-            `}
-          >
-            ANT
-          </span>
-        </span>
+        <AntAmount amount={amount} />
       ) : (
         <span
           css={`
@@ -286,82 +236,10 @@ function BalanceItem({
             max-width: ${skeletonWidth}px;
           `}
         >
-          <Skeleton />
+          <LoadingSkeleton />
         </span>
       )}
     </li>
-  )
-}
-
-function PriceWithSkeleton({ price }: { price: string | null }) {
-  const theme = useTheme()
-
-  return (
-    <p
-      css={`
-        line-height: 1;
-        color: ${theme.surfaceContentSecondary};
-      `}
-    >
-      {price ? (
-        <>
-          ANT Price
-          <span
-            css={`
-              margin-left: ${0.75 * GU}px;
-              font-variant-numeric: tabular-nums;
-              color: ${theme.positive};
-            `}
-          >
-            ${price}
-          </span>
-        </>
-      ) : (
-        <span
-          css={`
-            display: block;
-            max-width: ${15 * GU}px;
-          `}
-        >
-          <Skeleton />
-        </span>
-      )}
-    </p>
-  )
-}
-
-const shimmerAnimation = css`
-  background-size: 400% 400%;
-  animation: ${keyframes`
-  from {
-    background-position: 100% 50%;
-  }
-  to {
-    background-position: 0% 50%;
-  }
-  `} 1s linear infinite;
-`
-
-function Skeleton() {
-  const theme = useTheme()
-
-  return (
-    <span
-      css={`
-        display: block;
-        border-radius: ${radius.medium};
-        background: linear-gradient(
-          -45deg,
-          ${theme.surfaceUnder},
-          ${theme.border},
-          ${theme.surfaceUnder},
-          ${theme.border}
-        );
-        ${shimmerAnimation}
-      `}
-    >
-      &nbsp;
-    </span>
   )
 }
 

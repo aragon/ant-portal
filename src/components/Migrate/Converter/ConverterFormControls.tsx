@@ -32,12 +32,10 @@ const { contracts } = networkEnvironment
 
 type ConverterFormControlsProps = {
   tokenSymbol: string
-  amountDigits: number
 }
 
 function ConverterFormControls({
   tokenSymbol,
-  amountDigits,
 }: ConverterFormControlsProps): JSX.Element {
   const history = useHistory()
   const [amount, setAmount] = useState('')
@@ -50,7 +48,7 @@ function ConverterFormControls({
     maxAmount,
     validationStatus,
     parsedAmountBn,
-  } = useInputValidation(amount, amountDigits)
+  } = useInputValidation(amount)
   const {
     handleCheckAllowanceAndProceed,
     allowanceCheckLoading,
@@ -158,6 +156,7 @@ function ConverterFormControls({
         You will receive:{' '}
         <span
           css={`
+            word-break: break-all;
             font-weight: ${fontWeight.medium};
             font-variant-numeric: tabular-nums;
             ${validationStatus === 'valid' ? `color ${theme.accent};` : ''}

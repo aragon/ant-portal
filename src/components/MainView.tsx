@@ -1,12 +1,20 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 import Header from './Header/Header'
 import Footer from './Footer/Footer'
+import { useLocation } from 'react-router-dom'
 
 type Props = {
   children: ReactNode
 }
 
 const MainView = React.memo(function MainView({ children }: Props) {
+  const { pathname } = useLocation()
+
+  // Reset scroll position to top on navigate
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
   return (
     <div
       css={`

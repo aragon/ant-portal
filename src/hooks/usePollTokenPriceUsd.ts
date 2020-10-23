@@ -22,11 +22,8 @@ export function usePollTokenPriceUsd(): string | null {
 
       const { price } = (await res.json()) as any
 
-      // Clamp to two decimals
-      const formattedAmount = Number(price).toFixed(2)
-
       if (mounted()) {
-        setAmountInUsd(formattedAmount)
+        setAmountInUsd(price)
       }
     } catch (err) {
       console.error(`Could not fetch ANT USD price`, err)
