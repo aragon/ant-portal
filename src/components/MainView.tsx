@@ -10,9 +10,9 @@ type Props = {
 const MainView = React.memo(function MainView({ children }: Props) {
   const { pathname } = useLocation()
 
-  // Reset scroll position to top on navigate
+  // Reset scroll position on route change
   useEffect(() => {
-    window.scrollTo(0, 0)
+    document.getElementsByTagName('body')[0].scrollTo(0, 0)
   }, [pathname])
 
   return (
