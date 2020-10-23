@@ -10,6 +10,7 @@ import useDetectMobileDevice from '../../hooks/useDetectMobileDevice'
 
 function GetStarted(): JSX.Element {
   const isMobile = useDetectMobileDevice()
+
   return (
     <LayoutGutter>
       <div
