@@ -17,7 +17,6 @@ import ConverterFormControls from './ConverterFormControls'
 import { radius } from '../../../style/radius'
 import ConversionRate from './ConversionRate'
 
-const AMOUNT_DIGITS = 6
 const TOKEN_SYMBOL: Record<TokenConversionType, string> = {
   ANT: 'ANT',
 }
@@ -52,7 +51,7 @@ function ConverterForm(): JSX.Element {
     () =>
       balance &&
       new TokenAmount(balance, decimals).format({
-        digits: AMOUNT_DIGITS,
+        digits: decimals,
       }),
     [balance, decimals]
   )
@@ -92,9 +91,21 @@ function ConverterForm(): JSX.Element {
             color: ${theme.surfaceContentSecondary};
           `}
         >
-          {formattedAntV1Balance
-            ? `Balance: ${formattedAntV1Balance} ${tokenSymbol}`
-            : 'Enable account to see your balance'}
+          {formattedAntV1Balance ? (
+            <>
+              Balance:{' '}
+              <span
+                css={`
+                  word-break: break-all;
+                `}
+              >
+                {formattedAntV1Balance}
+              </span>{' '}
+              {tokenSymbol}
+            </>
+          ) : (
+            'Enable account to see your balance'
+          )}
         </p>
       </div>
       <div
@@ -113,10 +124,7 @@ function ConverterForm(): JSX.Element {
           grid-area: inputs;
         `}
       >
-        <ConverterFormControls
-          tokenSymbol={tokenSymbol}
-          amountDigits={AMOUNT_DIGITS}
-        />
+        <ConverterFormControls tokenSymbol={tokenSymbol} />
       </div>
     </div>
   )
