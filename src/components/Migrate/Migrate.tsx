@@ -67,7 +67,6 @@ function MigrateContent() {
           description={description}
           css={`
             width: 100%;
-            margin-bottom: ${7 * GU}px;
           `}
         />
 
@@ -76,6 +75,7 @@ function MigrateContent() {
             display: flex;
             justify-content: center;
             width: 100%;
+            margin-top: ${7 * GU}px;
           `}
         >
           <Converter />
