@@ -7,6 +7,7 @@ import BrandButton from '../BrandButton/BrandButton'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import { CONVERTER_PATH } from '../../Routes'
 import { useAccountBalances } from '../../providers/AccountBalances'
+import { useAccountModule } from '../Account/AccountModuleProvider'
 
 type BalanceStatus = 'default' | 'success' | 'noMigrationsAvailable'
 
@@ -41,34 +42,33 @@ const MESSAGES: Record<BalanceStatus, ReactNode> = {
 function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
   const history = useHistory()
   const theme = useTheme()
+  const { showAccount } = useAccountModule()
   const { antV1, antV2 } = useAccountBalances()
   const { layoutName } = useLayout()
   const [balanceStatus, setBalanceStatus] = useState<BalanceStatus>('default')
 
   const compactMode = layoutName === 'small'
 
-  const handleNavigateToConverter = useCallback(() => {
-    history.push(CONVERTER_PATH)
-  }, [history])
+  const handleButtonClick = useCallback(() => {
+    if (balanceStatus !== 'default') {
+      showAccount()
+    } else {
+      history.push(CONVERTER_PATH)
+    }
+  }, [history, balanceStatus, showAccount])
 
   useEffect(() => {
-    if (
-      antV1.balance &&
-      antV1.balance.isZero() &&
-      antV2.balance &&
-      antV2.balance.gt('0')
-    ) {
-      setBalanceStatus('success')
+    if (antV1.balance && antV2.balance) {
+      if (antV1.balance.isZero() && antV2.balance.gt('0')) {
+        setBalanceStatus('success')
+        return
+      }
+      if (antV1.balance.isZero() && antV2.balance.isZero()) {
+        setBalanceStatus('noMigrationsAvailable')
+        return
+      }
     }
-
-    if (
-      antV1.balance &&
-      antV1.balance.isZero() &&
-      antV2.balance &&
-      antV2.balance.isZero()
-    ) {
-      setBalanceStatus('noMigrationsAvailable')
-    }
+    setBalanceStatus('default')
   }, [antV1.balance, antV2.balance])
 
   return (
@@ -117,20 +117,22 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
         >
           {MESSAGES[balanceStatus]}
         </p>
-        <BrandButton
-          mode="strong"
-          size="large"
-          onClick={handleNavigateToConverter}
-        >
-          Migrate ANT v1{' '}
-          <IconArrowRight
-            css={`
-              opacity: 0.75;
-              margin-left: ${1 * GU}px;
-              margin-right: ${1 * GU}px;
-            `}
-          />{' '}
-          ANT v2
+        <BrandButton mode="strong" size="large" onClick={handleButtonClick}>
+          {balanceStatus === 'default' ? (
+            <>
+              Migrate ANT v1{' '}
+              <IconArrowRight
+                css={`
+                  opacity: 0.75;
+                  margin-left: ${1 * GU}px;
+                  margin-right: ${1 * GU}px;
+                `}
+              />{' '}
+              ANT v2
+            </>
+          ) : (
+            'Enable a different account'
+          )}
         </BrandButton>
       </div>
     </LayoutLimiter>
