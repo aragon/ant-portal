@@ -51,7 +51,7 @@ function ConverterForm(): JSX.Element {
     () =>
       balance &&
       new TokenAmount(balance, decimals).format({
-        digits: 2,
+        digits: decimals,
       }),
     [balance, decimals]
   )
@@ -91,9 +91,21 @@ function ConverterForm(): JSX.Element {
             color: ${theme.surfaceContentSecondary};
           `}
         >
-          {formattedAntV1Balance
-            ? `Balance: ${formattedAntV1Balance} ${tokenSymbol}`
-            : 'Enable account to see your balance'}
+          {formattedAntV1Balance ? (
+            <>
+              Balance:{' '}
+              <span
+                css={`
+                  word-break: break-all;
+                `}
+              >
+                {formattedAntV1Balance}
+              </span>{' '}
+              {tokenSymbol}
+            </>
+          ) : (
+            'Enable account to see your balance'
+          )}
         </p>
       </div>
       <div
