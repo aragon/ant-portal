@@ -5,8 +5,8 @@ import featuresPng from '../../assets/antv2-features.png'
 import { fontWeight } from '../../style/font'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 
-// TODO: Add url to blog post when available
-const BLOG_POST_URL = ''
+// TODO: Ensure this is accurate
+const BLOG_POST_URL = 'https://aragon.org/blog/2'
 
 function Features({
   ...props

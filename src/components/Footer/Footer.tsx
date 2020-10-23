@@ -5,10 +5,10 @@ import FooterLogo from './FooterLogo'
 import LayoutGutter from '../Layout/LayoutGutter'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 
-// TODO: Add urls when available
-const RESOURCES_URL = ''
-const COMMUNITY_URL = ''
-const LEGAL_URL = ''
+// TODO: Double check these are accurate
+const RESOURCES_URL = 'https://hack.aragon.org/'
+const COMMUNITY_URL = 'https://aragon.org/community'
+const LEGAL_URL = 'https://aragon.org/terms-and-conditions'
 
 const ARAGON_WEBSITE_URL = 'https://aragon.org'
 
@@ -68,6 +68,10 @@ function FooterLink({ href, children }: FooterLinkProps): JSX.Element {
       css={`
         text-decoration: none;
         color: ${theme.surfaceContentSecondary};
+
+        &:hover {
+          color: ${theme.surfaceContent};
+        }
       `}
       href={href}
     >
