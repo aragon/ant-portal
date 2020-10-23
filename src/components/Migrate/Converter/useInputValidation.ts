@@ -6,14 +6,14 @@ import { useAccountBalances } from '../../../providers/AccountBalances'
 import { parseUnits } from '../../../utils/math-utils'
 import { BigNumber } from 'ethers'
 
-type InputValidation = {
+type InputValidationReturn = {
   parsedAmountBn: BigNumber
   formattedAmount: string
   maxAmount: string
   validationStatus: ValidationStatus
 }
 
-function useInputValidation(amount: string, digits: number): InputValidation {
+function useInputValidation(amount: string): InputValidationReturn {
   const { antV1 } = useAccountBalances()
   const { balance, decimals } = antV1
 
@@ -30,11 +30,17 @@ function useInputValidation(amount: string, digits: number): InputValidation {
 
   const formattedAmount = useMemo((): string => {
     const formatted = new TokenAmount(parsedAmountBn, decimals).format({
-      digits,
+      digits: decimals,
     })
 
-    return formatted === '0' ? '0.0' : formatted
-  }, [parsedAmountBn, decimals, digits])
+    const [, inputDecimalString] = amount.split('.')
+
+    const formatWhenEmpty =
+      (inputDecimalString && inputDecimalString.length > decimals) ||
+      formatted === '0'
+
+    return formatWhenEmpty ? '0.0' : formatted
+  }, [parsedAmountBn, decimals, amount])
 
   const validationStatus = useMemo((): ValidationStatus => {
     if (!balance) {
