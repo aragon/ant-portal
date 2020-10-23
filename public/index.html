@@ -31,13 +31,18 @@
     <style>
       /* Override Aragon UI and restore scroll control to window element */
       html, body {
-        overflow: auto !important;
         min-height: auto !important;
         height: auto !important;
       }
 
-      /* Match app background color to avoid white flicker on first load */
+      html {
+        overflow-y: scroll !important;
+      }
+      
       body {
+        overflow: auto !important;
+
+        /* Match app background color to avoid white flicker on first load */
         background-color: #F9FAFC; 
       }
     </style>
