@@ -3,19 +3,17 @@ import React from 'react'
 import { useTheme, GU } from '@aragon/ui'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
+import LoadingSkeleton from '../LoadingSkeleton/LoadingSkeleton'
 
 type StatCardProps = {
   title: string
-  value: string
+  value: string | null
   graphic: string
   desc: string
 }
 
 function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {
   const theme = useTheme()
-
-  const [body, valueDecimal] = value.split('.')
-  const valueBody = valueDecimal ? `${body}.` : body
 
   return (
     <div
@@ -49,17 +47,20 @@ function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {
         css={`
           font-size: 34px;
           font-weight: ${fontWeight.medium};
-          margin-bottom: ${0.75 * GU}px;
+          margin-top: ${1 * GU}px;
+          margin-bottom: ${1.75 * GU}px;
+          line-height: 1;
         `}
       >
-        {valueBody}
-        <span
-          css={`
-            font-size: 0.75em;
-          `}
-        >
-          {valueDecimal}
-        </span>
+        {value ? (
+          <SplitValuePresentation value={value} />
+        ) : (
+          <LoadingSkeleton
+            css={`
+              max-width: ${32 * GU}px;
+            `}
+          />
+        )}
       </h4>
       <p
         css={`
@@ -71,6 +72,24 @@ function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {
         {desc}
       </p>
     </div>
+  )
+}
+
+function SplitValuePresentation({ value }: { value: string }): JSX.Element {
+  const [body, valueDecimal] = value.split('.')
+  const valueBody = valueDecimal ? `${body}.` : body
+
+  return (
+    <>
+      {valueBody}
+      <span
+        css={`
+          font-size: 0.75em;
+        `}
+      >
+        {valueDecimal}
+      </span>
+    </>
   )
 }
 

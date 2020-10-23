@@ -10,18 +10,18 @@ export function bigNum(value: string | number): BigNumber {
  * Format a decimal-based number back to a big number
  *
  * @param {string} value the number
- * @param {number} digits number of decimal places
+ * @param {number} decimals number of decimal places
  * @returns {BN} value converted to it's normal representation
  */
-export function parseUnits(value: string, digits: number): BigNumber {
+export function parseUnits(value: string, decimals: number): BigNumber {
   try {
-    return EthersUtils.parseUnits(value, digits)
+    return EthersUtils.parseUnits(value, decimals)
   } catch (err) {
     return bigNum(-1)
   }
 }
 
-export function formatTokenAmountToUsd(
+export function formatAmountToUsd(
   amount: BigNumber,
   decimals: number,
   rate: string

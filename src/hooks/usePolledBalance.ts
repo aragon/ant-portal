@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { networkEnvironment } from '../environment'
 import {
   MOCK_BALANCER_POOL_ACCOUNT,
@@ -73,10 +73,6 @@ export function useIncentiveStakedBalance(
       } catch (err) {
         captureErrorWithSentry(err)
         clear()
-
-        if (mounted()) {
-          setLastStakedBalance(null)
-        }
       }
     },
     [
@@ -144,10 +140,6 @@ export function useUniswapStakedBalance(
       } catch (err) {
         captureErrorWithSentry(err)
         clear()
-
-        if (mounted()) {
-          setLastStakedBalance(null)
-        }
       }
     },
     [account, mounted, lastStakedBalance, uniswapPoolContract]
@@ -209,10 +201,6 @@ export function useBalancerStakedBalance(
       } catch (err) {
         captureErrorWithSentry(err)
         clear()
-
-        if (mounted()) {
-          setLastStakedBalance(null)
-        }
       }
     },
     [account, mounted, lastStakedBalance, balancerPoolContract]
@@ -223,8 +211,8 @@ export function useBalancerStakedBalance(
   return lastStakedBalance
 }
 
-export function useTokenBalance(
-  tokenVersion: 'antV1' | 'antV2'
+export function useAntTokenBalance(
+  tokenVersion: 'v1' | 'v2'
 ): BigNumber | null {
   const { account } = useWallet()
   const antTokenV1Contract = useAntTokenV1Contract()
@@ -234,8 +222,8 @@ export function useTokenBalance(
 
   const tokenContract = useMemo(() => {
     const contracts = {
-      antV1: antTokenV1Contract,
-      antV2: antTokenV2Contract,
+      v1: antTokenV1Contract,
+      v2: antTokenV2Contract,
     }
 
     return contracts[tokenVersion]
@@ -261,10 +249,6 @@ export function useTokenBalance(
       } catch (err) {
         captureErrorWithSentry(err)
         clear()
-
-        if (mounted()) {
-          setTokenBalance(null)
-        }
       }
     },
     [account, mounted, tokenContract, tokenBalance]
@@ -273,4 +257,44 @@ export function useTokenBalance(
   useInterval(getBalance, POLL_INTERVAL)
 
   return tokenBalance
+}
+
+export function useAntTotalSupply(tokenVersion: 'v1' | 'v2'): BigNumber | null {
+  const antTokenV1Contract = useAntTokenV1Contract(true)
+  const antTokenV2Contract = useAntTokenV2Contract(true)
+  const mounted = useMounted()
+  const [totalSupply, setTotalSupply] = useState<BigNumber | null>(null)
+
+  const tokenContract = useMemo(() => {
+    const contracts = {
+      v1: antTokenV1Contract,
+      v2: antTokenV2Contract,
+    }
+
+    return contracts[tokenVersion]
+  }, [antTokenV1Contract, antTokenV2Contract, tokenVersion])
+
+  useEffect(() => {
+    const getTotalSupply = async () => {
+      if (!tokenContract) {
+        return
+      }
+
+      try {
+        const {
+          0: fetchedTotalsupply,
+        } = await tokenContract.functions.totalSupply()
+
+        if (mounted()) {
+          setTotalSupply(fetchedTotalsupply)
+        }
+      } catch (err) {
+        captureErrorWithSentry(err)
+      }
+    }
+
+    getTotalSupply()
+  }, [mounted, tokenContract])
+
+  return totalSupply
 }

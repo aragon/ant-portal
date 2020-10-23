@@ -12,9 +12,9 @@ import TokenAntGraphic from '../TokenAntGraphic/TokenAntGraphic'
 import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
-import { css, keyframes } from 'styled-components'
 import { getEtherscanUrl } from '../../utils/etherscan'
 import AntAmount from '../AntAmount/AntAmount'
+import LoadingSkeleton from '../LoadingSkeleton/LoadingSkeleton'
 
 type BalanceCardProps = {
   tokenVersion: 'v1' | 'v2'
@@ -236,45 +236,10 @@ function BalanceItem({
             max-width: ${skeletonWidth}px;
           `}
         >
-          <Skeleton />
+          <LoadingSkeleton />
         </span>
       )}
     </li>
-  )
-}
-
-const shimmerAnimation = css`
-  background-size: 400% 400%;
-  animation: ${keyframes`
-  from {
-    background-position: 100% 50%;
-  }
-  to {
-    background-position: 0% 50%;
-  }
-  `} 1s linear infinite;
-`
-
-function Skeleton() {
-  const theme = useTheme()
-
-  return (
-    <span
-      css={`
-        display: block;
-        border-radius: ${radius.medium};
-        background: linear-gradient(
-          -45deg,
-          ${theme.surfaceUnder},
-          ${theme.border},
-          ${theme.surfaceUnder},
-          ${theme.border}
-        );
-        ${shimmerAnimation}
-      `}
-    >
-      &nbsp;
-    </span>
   )
 }
 
