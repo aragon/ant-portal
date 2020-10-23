@@ -16,6 +16,7 @@ import { useAccountBalances } from '../../../providers/AccountBalances'
 import ConverterFormControls from './ConverterFormControls'
 import { radius } from '../../../style/radius'
 import ConversionRate from './ConversionRate'
+import PageHeading from '../../PageHeading/PageHeading'
 
 const TOKEN_SYMBOL: Record<TokenConversionType, string> = {
   ANT: 'ANT',
@@ -61,70 +62,82 @@ function ConverterForm(): JSX.Element {
       css={`
         width: 100%;
         max-width: ${120 * GU}px;
-        padding: ${6 * GU}px;
-        background-color: ${theme.surface};
-        box-shadow: ${shadowDepth.high};
-        border-radius: ${radius.high};
-        display: grid;
-        grid-gap: ${4 * GU}px;
-        ${compactMode ? stackedLayout : multiColumnLayout}
       `}
     >
+      <PageHeading
+        title="Aragon Migrate"
+        description="How much ANT would you like to upgrade?"
+        css={`
+          margin-bottom: ${7 * GU}px;
+        `}
+      />
       <div
         css={`
-          grid-area: title;
-          text-align: ${compactMode ? 'center' : 'left'};
+          padding: ${6 * GU}px;
+          background-color: ${theme.surface};
+          box-shadow: ${shadowDepth.high};
+          border-radius: ${radius.high};
+          display: grid;
+          grid-gap: ${4 * GU}px;
+          ${compactMode ? stackedLayout : multiColumnLayout}
         `}
       >
-        <h2
+        <div
           css={`
-            line-height: 1;
-            font-weight: ${fontWeight.medium};
-            font-size: 32px;
-            margin-bottom: ${1.5 * GU}px;
+            grid-area: title;
+            text-align: ${compactMode ? 'center' : 'left'};
           `}
         >
-          Migrate {tokenSymbol}
-        </h2>
-        <p
+          <h2
+            css={`
+              line-height: 1;
+              font-weight: ${fontWeight.medium};
+              font-size: 32px;
+              margin-bottom: ${1.5 * GU}px;
+            `}
+          >
+            Migrate {tokenSymbol}
+          </h2>
+          <p
+            css={`
+              color: ${theme.surfaceContentSecondary};
+            `}
+          >
+            {formattedAntV1Balance ? (
+              <>
+                Balance:{' '}
+                <span
+                  css={`
+                    word-break: break-all;
+                  `}
+                >
+                  {formattedAntV1Balance}
+                </span>{' '}
+                {tokenSymbol}
+              </>
+            ) : (
+              'Enable account to see your balance'
+            )}
+          </p>
+        </div>
+        <div
           css={`
-            color: ${theme.surfaceContentSecondary};
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            grid-area: rate;
+            padding: ${2 * GU}px;
           `}
         >
-          {formattedAntV1Balance ? (
-            <>
-              Balance:{' '}
-              <span
-                css={`
-                  word-break: break-all;
-                `}
-              >
-                {formattedAntV1Balance}
-              </span>{' '}
-              {tokenSymbol}
-            </>
-          ) : (
-            'Enable account to see your balance'
-          )}
-        </p>
-      </div>
-      <div
-        css={`
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          grid-area: rate;
-          padding: ${2 * GU}px;
-        `}
-      >
-        <ConversionRate />
-      </div>
-      <div
-        css={`
-          grid-area: inputs;
-        `}
-      >
-        <ConverterFormControls tokenSymbol={tokenSymbol} />
+          <ConversionRate />
+        </div>
+        <div
+          css={`
+            grid-area: inputs;
+          `}
+        >
+          <ConverterFormControls tokenSymbol={tokenSymbol} />
+        </div>
       </div>
     </div>
   )
