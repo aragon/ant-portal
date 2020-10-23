@@ -12,8 +12,10 @@ const environment = getNetworkName(chainId)
 
 export const sentryEnabled = Boolean(dsn)
 
-export default function initializeSentry(): void {
+export function initializeSentry(): void {
   if (sentryEnabled) {
+    console.info('[Sentry] Error logging is active')
+
     initSentry({
       dsn,
       environment,
