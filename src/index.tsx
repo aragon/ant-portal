@@ -6,6 +6,9 @@ import { theme } from './style/theme'
 // @ts-ignore
 import { Main } from '@aragon/ui'
 import { FontStack } from './style/font'
+import { initializeSentry } from './sentry'
+
+initializeSentry()
 
 ReactDOM.render(
   // Due to an issue with styled-components v5, global styles must be applied outside of <React.StrictMode/> to avoid duplicate styles inside the head.
