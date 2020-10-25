@@ -40,7 +40,7 @@ function BrandModal({
   onClose,
   onClosed = noop,
   visible,
-  width = 600,
+  width = 575,
   padding = 4 * GU,
   ...props
 }: BrandModalProps): JSX.Element {
@@ -82,7 +82,7 @@ function BrandModal({
       <Transition
         native
         items={visible}
-        from={{ opacity: 0, scale: 1.05 }}
+        from={{ opacity: 0, scale: 1.1 }}
         enter={{ opacity: 1, scale: 1 }}
         leave={{ opacity: 0, scale: 0.975 }}
         config={springs.tight}

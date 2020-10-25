@@ -8,6 +8,11 @@ import {
 import { ProviderConfig, WalletConnector } from './types'
 import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
+import { fontWeight } from '../../style/font'
+import { Transition, animated } from 'react-spring/renderprops'
+import { springs } from '../../style/springs'
+
+const AnimatedDiv = animated.div
 
 const PROVIDERS_INFO: [
   WalletConnector,
@@ -36,17 +41,37 @@ function ScreenProviders({ onActivate }: ScreenProvidersProps): JSX.Element {
           display: grid;
           grid-gap: ${1.5 * GU}px;
           grid-auto-flow: row;
-          grid-template-columns: repeat(2, 1fr);
         `}
       >
-        {PROVIDERS_INFO.map(([id, provider]) => (
-          <ProviderButton
-            key={id}
-            id={id}
-            provider={provider}
-            onActivate={onActivate}
-          />
-        ))}
+        <Transition
+          native
+          items={PROVIDERS_INFO}
+          config={springs.tight}
+          keys={([id]) => id}
+          from={{ opacity: 0, transform: 2 * GU }}
+          enter={{ opacity: 1, transform: 0 }}
+          trail={50}
+        >
+          {([id, provider]) => ({ opacity, transform }) => (
+            <AnimatedDiv
+              style={{
+                opacity,
+                // Current spring version has misaligned typings on 'interpolate'
+                // @ts-ignore
+                transform: transform.interpolate(
+                  (y: number) => `translate3d(0, ${y}px, 0)`
+                ),
+              }}
+            >
+              <ProviderButton
+                key={id}
+                id={id}
+                provider={provider}
+                onActivate={onActivate}
+              />
+            </AnimatedDiv>
+          )}
+        </Transition>
       </div>
       <div
         css={`
@@ -89,11 +114,11 @@ function ProviderButton({ id, provider, onActivate }: ProviderButtonProps) {
       css={`
         position: relative;
         display: flex;
-        flex-direction: column;
+        /* flex-direction: column; */
         align-items: center;
         justify-content: center;
         width: 100%;
-        padding: ${3.5 * GU}px;
+        padding: ${2.5 * GU}px;
         background-color: ${theme.surface};
         box-shadow: ${shadowDepth.low};
         border-radius: ${radius.medium};
@@ -104,11 +129,18 @@ function ProviderButton({ id, provider, onActivate }: ProviderButtonProps) {
         }
       `}
     >
-      <img src={provider.image} alt="" height={6 * GU} />
+      <img
+        src={provider.image}
+        alt=""
+        css={`
+          height: ${3.5 * GU}px;
+        `}
+      />
       <div
         css={`
-          margin-top: ${1.5 * GU}px;
+          margin-left: ${1.5 * GU}px;
           ${textStyle('body1')};
+          font-weight: ${fontWeight.medium};
           line-height: 1;
         `}
       >
