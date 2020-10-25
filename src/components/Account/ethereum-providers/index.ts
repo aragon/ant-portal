@@ -1,11 +1,12 @@
-import frame from './icons/frame.png'
+import frame from './icons/frame.svg'
 import cipher from './icons/cipher.png'
-import metamask from './icons/metamask.png'
+import metamask from './icons/metamask.svg'
 import status from './icons/status.png'
 import wallet from './icons/wallet.svg'
 import fortmatic from './icons/fortmatic.svg'
 import portis from './icons/portis.svg'
-import { envVar } from '../../../environment'
+import walletconnect from './icons/wallet-connect.svg'
+import { envVar, networkEnvironment } from '../../../environment'
 import {
   KnownProviderId,
   ProviderConfig,
@@ -13,6 +14,8 @@ import {
   WalletConfig,
   WalletConnector,
 } from '../types'
+
+const { endpoints, chainId } = networkEnvironment
 
 const PROVIDERS: Providers = {
   frame: {
@@ -49,6 +52,15 @@ const PROVIDERS: Providers = {
     image: cipher,
     strings: {
       'your Ethereum wallet': 'Cipher',
+    },
+  },
+  walletconnect: {
+    id: 'walletconnect',
+    name: 'WalletConnect',
+    type: 'Any',
+    image: walletconnect,
+    strings: {
+      'your Ethereum wallet': 'WalletConnect',
     },
   },
   fortmatic: {
@@ -119,6 +131,15 @@ function getProviderFromUseWalletId(id: WalletConnector): ProviderConfig {
 
 export function getUseWalletProviders(): WalletConfig[] {
   const providers: WalletConfig[] = [{ id: 'injected' }, { id: 'frame' }]
+
+  if (chainId === 1) {
+    // WalletConnect is only supported on mainnet environments because the web3-react WalletConnect connector is broken on any chain > 1
+    // https://github.com/NoahZinsmeister/web3-react/blob/v6/packages/walletconnect-connector/src/index.ts#L31
+    providers.push({
+      id: 'walletconnect',
+      useWalletConf: { rpcUrl: endpoints.ethereum },
+    })
+  }
 
   if (envVar('FORTMATIC_API_KEY')) {
     providers.push({
