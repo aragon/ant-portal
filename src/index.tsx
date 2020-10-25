@@ -5,7 +5,6 @@ import * as serviceWorker from './serviceWorker'
 import { theme } from './style/theme'
 // @ts-ignore
 import { Main } from '@aragon/ui'
-import { FontStack } from './style/font'
 import { initializeSentry } from './sentry'
 
 initializeSentry()
@@ -21,7 +20,6 @@ ReactDOM.render(
     theme={theme}
   >
     <React.StrictMode>
-      <FontStack />
       <App />
     </React.StrictMode>
   </Main>,
