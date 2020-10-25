@@ -92,7 +92,6 @@ function BrandModal({
       >
         {(show) =>
           show &&
-          /* eslint-disable react/prop-types */
           (({ opacity, scale }) => (
             <AnimatedDiv
               css={`
