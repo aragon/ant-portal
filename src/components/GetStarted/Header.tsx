@@ -14,7 +14,7 @@ type BalanceStatus = 'default' | 'success' | 'noMigrationsAvailable'
 const MESSAGES: Record<BalanceStatus, ReactNode> = {
   default: (
     <>
-      Use Aragon Migrate system to upgrade your ANT balance to the newest
+      Use the Aragon Migrate system to upgrade your ANT balance to the newest
       version of the token&nbsp;contract.
     </>
   ),
