@@ -1,4 +1,9 @@
-import React, { MutableRefObject, ReactNode, useCallback } from 'react'
+import React, {
+  MutableRefObject,
+  ReactNode,
+  useCallback,
+  useEffect,
+} from 'react'
 import { Transition, animated } from 'react-spring/renderprops'
 
 import {
@@ -6,15 +11,16 @@ import {
   useTheme,
   useViewport,
   noop,
-  springs,
   ButtonIcon,
   IconCross,
+  KEY_ESC,
   GU,
   // @ts-ignore
 } from '@aragon/ui'
 import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { rgba } from 'polished'
+import { springs } from '../../style/springs'
 
 const SPACE_AROUND = 4 * GU
 
@@ -54,15 +60,32 @@ function BrandModal({
     [innerModalContainer, onClose]
   )
 
+  const handleEscape = useCallback(
+    (e) => {
+      if (e.keyCode === KEY_ESC) {
+        onClose()
+      }
+    },
+    [onClose]
+  )
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleEscape, true)
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape, true)
+    }
+  }, [handleEscape])
+
   return (
     <RootPortal>
       <Transition
         native
         items={visible}
-        from={{ opacity: 0, scale: 0.98 }}
+        from={{ opacity: 0, scale: 1.05 }}
         enter={{ opacity: 1, scale: 1 }}
-        leave={{ opacity: 0, scale: 0.98 }}
-        config={{ ...springs.smooth, precision: 0.001 }}
+        leave={{ opacity: 0, scale: 0.975 }}
+        config={springs.tight}
         onDestroyed={(destroyed: boolean) => {
           destroyed && onClosed()
         }}
@@ -85,7 +108,7 @@ function BrandModal({
               onClick={handleClickOutside}
               {...props}
             >
-              <AnimatedDiv
+              <div
                 css={`
                   position: relative;
                   display: flex;
@@ -95,11 +118,6 @@ function BrandModal({
                 `}
                 style={{
                   pointerEvents: visible ? 'auto' : 'none',
-                  // Current spring version has misaligned typings on 'interpolate'
-                  // @ts-ignore
-                  transform: scale.interpolate(
-                    (v: number) => `scale3d(${v}, ${v}, 1)`
-                  ),
                 }}
               >
                 <div
@@ -108,7 +126,7 @@ function BrandModal({
                     margin: auto;
                   `}
                 >
-                  <div
+                  <AnimatedDiv
                     role="alertdialog"
                     ref={innerModalContainer}
                     css={`
@@ -122,6 +140,11 @@ function BrandModal({
                     style={{
                       padding: padding,
                       width: modalWidth,
+                      // Current spring version has misaligned typings on 'interpolate'
+                      // @ts-ignore
+                      transform: scale.interpolate(
+                        (v: number) => `scale3d(${v}, ${v}, 1)`
+                      ),
                     }}
                   >
                     <div
@@ -147,9 +170,9 @@ function BrandModal({
                       </ButtonIcon>
                       {children}
                     </div>
-                  </div>
+                  </AnimatedDiv>
                 </div>
-              </AnimatedDiv>
+              </div>
             </AnimatedDiv>
           ))
         }
