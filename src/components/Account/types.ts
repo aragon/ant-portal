@@ -11,6 +11,7 @@ import {
 export type KnownProviderId =
   | 'frame'
   | 'metamask'
+  | 'walletconnect'
   | 'status'
   | 'cipher'
   | 'fortmatic'
@@ -41,7 +42,7 @@ export type WalletError =
 
 export type WalletConfig = {
   id: WalletConnector
-  useWalletConf?: { apiKey?: string; dAppId?: string }
+  useWalletConf?: { apiKey?: string; dAppId?: string; rpcUrl?: string }
 }
 
 // Account module screens
