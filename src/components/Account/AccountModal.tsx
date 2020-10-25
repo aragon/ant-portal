@@ -3,7 +3,6 @@ import { Spring, Transition, animated } from 'react-spring/renderprops'
 import {
   textStyle,
   springs,
-  noop,
   GU,
   // @ts-ignore
 } from '@aragon/ui'
@@ -43,7 +42,6 @@ function AccountModal({
   const [animate, setAnimate] = useState(false)
   const [height, setHeight] = useState(30 * GU)
   const [measuredHeight, setMeasuredHeight] = useState(true)
-  const [screenChangeAnimating, setScreenChangeAnimating] = useState(false)
 
   // Prevents to lose the focus on the popover when a screen leaves while an
   // element inside is focused (e.g. when clicking on the “disconnect” button).
@@ -71,14 +69,7 @@ function AccountModal({
   }, [visible])
 
   return (
-    <BrandModal
-      visible={visible}
-      // Prevent users from closing the modal while the inner screens are animating
-      // Without this, spring will crash if it's elements are removed "mid animation"
-      // This is especially important for third-party wallets that use overlays
-      // which could trigger "escape outside" behaviour when interacting with them
-      onClose={screenChangeAnimating ? onClose : noop}
-    >
+    <BrandModal visible={visible} onClose={onClose}>
       <>
         <h1
           css={`
@@ -135,11 +126,7 @@ function AccountModal({
                 }}
                 immediate={!animate}
                 onStart={() => {
-                  setScreenChangeAnimating(true)
                   setMeasuredHeight(true)
-                }}
-                onRest={() => {
-                  setScreenChangeAnimating(false)
                 }}
               >
                 {(screenData) => ({ opacity, transform }) => (
