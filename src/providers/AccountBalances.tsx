@@ -43,10 +43,9 @@ function AccountBalancesProvider({
   const antV1TotalSupplyBn = useAntTotalSupply('v1')
   const antTokenPriceUsd = usePollTokenPriceUsd()
 
-  // TODO: Remove mockedAccount flag
-  const antInUniswapPoolBn = useUniswapStakedBalance(true)
-  const antInBalancerPoolBn = useBalancerStakedBalance(true)
-  const antInIncentivePoolBn = useIncentiveStakedBalance(true)
+  const antInUniswapPoolBn = useUniswapStakedBalance()
+  const antInBalancerPoolBn = useBalancerStakedBalance()
+  const antInIncentivePoolBn = useIncentiveStakedBalance()
 
   const contextValue = useMemo(
     (): BalancesContext => ({
@@ -82,11 +81,16 @@ type BalanceWithDecimals = {
 }
 
 type LpPool = 'balancer' | 'uniswap' | 'incentive'
+type LpBalances = [LpPool, BigNumber][]
 
 type AccountBalances = {
   antV1: BalanceWithDecimals
   antV2: BalanceWithDecimals
-  lpBalances: [LpPool, BigNumber][] | null
+  lpBalances: {
+    all: LpBalances | null
+    available: LpBalances | null
+    hasBalances: boolean | null
+  }
   antTokenPriceUsd: string | null
   antV1TotalSupply: PolledValue
 }
@@ -102,24 +106,26 @@ function useAccountBalances(): AccountBalances {
     incentivePoolBalance,
   } = useContext(AccountBalancesContext)
 
-  const lpBalances = useMemo((): [LpPool, BigNumber][] | null => {
+  const lpAllBalances = useMemo((): LpBalances | null => {
     const balances: [LpPool, PolledValue][] = [
       ['balancer', balancerPoolBalance],
       ['uniswap', uniswapPoolBalance],
       ['incentive', incentivePoolBalance],
     ]
 
-    const availableBalances = balances.filter(
-      ([, balance]) => balance && !balance.isZero()
-    ) as [LpPool, BigNumber][] | []
-
     // To prevent value jumps within the UI we only want to
     // return the values after they have all been fetched
     const allBalancesFetched = balances.every((item) => Boolean(item[1]))
-    const hasBalances = availableBalances.length > 0
 
-    return hasBalances && allBalancesFetched ? availableBalances : null
+    return allBalancesFetched ? (balances as LpBalances) : null
   }, [balancerPoolBalance, uniswapPoolBalance, incentivePoolBalance])
+
+  const lpAvailableBalances = useMemo((): LpBalances | null => {
+    return (
+      lpAllBalances &&
+      lpAllBalances.filter(([, balance]) => balance && !balance.isZero())
+    )
+  }, [lpAllBalances])
 
   return {
     antV1: {
@@ -132,7 +138,11 @@ function useAccountBalances(): AccountBalances {
       balance: antV2Balance,
       decimals: ANT_TOKEN_DECIMALS,
     },
-    lpBalances,
+    lpBalances: {
+      all: lpAllBalances,
+      available: lpAvailableBalances,
+      hasBalances: lpAvailableBalances && lpAvailableBalances.length > 0,
+    },
     antTokenPriceUsd,
     antV1TotalSupply,
   }

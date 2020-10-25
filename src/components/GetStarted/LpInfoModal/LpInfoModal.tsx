@@ -34,7 +34,7 @@ const POOL_INFO = {
     tokenPair: getTokenPair('ANT', 'UNI'),
   },
   balancer: {
-    title: 'Balancer ANT / ETH',
+    title: 'Balancer ANT / WETH',
     url:
       'https://pools.balancer.exchange/#/pool/0x2cf9106faf2c5c8713035d40df655fb1b9b0f9b9',
     tokenPair: getTokenPair('ANT', 'ETH'),
@@ -81,8 +81,8 @@ function LpInfoModal({ visible, onClose }: LpInfoModalProps): JSX.Element {
   const poolItems = useMemo((): PoolItem[] | null => {
     const decimals = antV1.decimals
 
-    return lpBalances
-      ? lpBalances.map((balance) => {
+    return lpBalances.available
+      ? lpBalances.available.map((balance) => {
           const [key, antBalance] = balance
           const { title, url, tokenPair } = POOL_INFO[key]
 
@@ -99,7 +99,7 @@ function LpInfoModal({ visible, onClose }: LpInfoModalProps): JSX.Element {
           }
         })
       : null
-  }, [lpBalances, antV1, antTokenPriceUsd])
+  }, [lpBalances.available, antV1, antTokenPriceUsd])
 
   return (
     <BrandModal visible={visible} onClose={onClose} width={750}>

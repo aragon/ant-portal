@@ -9,10 +9,6 @@ import { ProviderConfig, WalletConnector } from './types'
 import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
-import { Transition, animated } from 'react-spring/renderprops'
-import { springs } from '../../style/springs'
-
-const AnimatedDiv = animated.div
 
 const PROVIDERS_INFO: [
   WalletConnector,
@@ -43,35 +39,14 @@ function ScreenProviders({ onActivate }: ScreenProvidersProps): JSX.Element {
           grid-auto-flow: row;
         `}
       >
-        <Transition
-          native
-          items={PROVIDERS_INFO}
-          config={springs.tight}
-          keys={([id]) => id}
-          from={{ opacity: 0, transform: 2 * GU }}
-          enter={{ opacity: 1, transform: 0 }}
-          trail={50}
-        >
-          {([id, provider]) => ({ opacity, transform }) => (
-            <AnimatedDiv
-              style={{
-                opacity,
-                // Current spring version has misaligned typings on 'interpolate'
-                // @ts-ignore
-                transform: transform.interpolate(
-                  (y: number) => `translate3d(0, ${y}px, 0)`
-                ),
-              }}
-            >
-              <ProviderButton
-                key={id}
-                id={id}
-                provider={provider}
-                onActivate={onActivate}
-              />
-            </AnimatedDiv>
-          )}
-        </Transition>
+        {PROVIDERS_INFO.map(([id, provider]) => (
+          <ProviderButton
+            key={id}
+            id={id}
+            provider={provider}
+            onActivate={onActivate}
+          />
+        ))}
       </div>
       <div
         css={`

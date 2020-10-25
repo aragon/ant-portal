@@ -44,12 +44,12 @@ function Balances({
   )
 
   const formattedLpBalanceTotal = useMemo((): string | null => {
-    const totalStakedBalance = lpBalances
-      ? lpBalances.reduce((total, item) => {
-          const [, balance] = item
-          return total.add(balance)
-        }, bigNum('0'))
-      : null
+    const totalStakedBalance =
+      lpBalances.all &&
+      lpBalances.all.reduce((total, item) => {
+        const [, balance] = item
+        return total.add(balance)
+      }, bigNum('0'))
 
     return (
       totalStakedBalance &&
@@ -64,7 +64,7 @@ function Balances({
   const handleLpClick = useMemo(() => {
     const openModalHandler = () => setModalVisible(true)
 
-    return lpBalances ? openModalHandler : null
+    return lpBalances.hasBalances ? openModalHandler : null
   }, [lpBalances])
 
   return (
