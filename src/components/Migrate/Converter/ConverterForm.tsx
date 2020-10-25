@@ -73,7 +73,7 @@ function ConverterForm(): JSX.Element {
       />
       <div
         css={`
-          padding: ${6 * GU}px;
+          padding: ${compactMode ? 4 * GU : 6 * GU}px;
           background-color: ${theme.surface};
           box-shadow: ${shadowDepth.high};
           border-radius: ${radius.high};
@@ -129,7 +129,7 @@ function ConverterForm(): JSX.Element {
             padding: ${2 * GU}px;
           `}
         >
-          <ConversionRate />
+          <ConversionRate compactMode={compactMode} />
         </div>
         <div
           css={`

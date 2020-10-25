@@ -94,6 +94,10 @@ function BalanceCard({
         box-shadow: ${shadowDepth.high};
         border-radius: ${radius.high};
         padding: ${compactMode ? 4 * GU : 5 * GU}px;
+
+        max-width: ${90 * GU}px;
+        margin: auto;
+        width: 100%;
       `}
     >
       <div
@@ -115,7 +119,7 @@ function BalanceCard({
           <TokenAntGraphic
             shadow
             type={tokenVersion}
-            size={compactMode ? '75' : '100'}
+            size={compactMode ? 75 : 100}
             css={`
               flex-shrink: 0;
             `}

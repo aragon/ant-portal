@@ -8,7 +8,7 @@ import v2TokenSvg from '../../assets/aragon-v2-token.svg'
 type TokenAntGraphicProps = {
   type: 'v1' | 'v2'
   shadow?: boolean
-  size?: string
+  size?: number
 }
 
 const TOKEN_GRAPHIC = {
@@ -21,7 +21,7 @@ const shadowTint = '#3f899b'
 function TokenAntGraphic({
   type,
   shadow,
-  size = '100',
+  size = 100,
   ...props
 }: TokenAntGraphicProps): JSX.Element {
   const theme = useTheme()
