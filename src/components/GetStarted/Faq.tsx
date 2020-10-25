@@ -112,7 +112,7 @@ function Item({ title, description }: ItemProps): JSX.Element {
                   <AnimatedDiv style={{ opacity }}>
                     <p
                       css={`
-                        color: ${theme.tagIdentifier};
+                        color: ${theme.surfaceContentSecondary};
 
                         font-size: 18px;
                       `}

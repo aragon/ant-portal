@@ -9,7 +9,6 @@ export const theme = {
   positiveSurface: '#ecfaf8',
   negative: '#ff7163',
   contentSecondary: '#9ca3bd',
-  surfaceContentSecondary: '#757d9c',
+  surfaceContentSecondary: '#6f7ca6',
   surfaceSelected: '#fdfefe',
-  tagIdentifier: '#6f7ca6',
 }
