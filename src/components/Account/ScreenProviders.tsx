@@ -107,6 +107,7 @@ function ProviderButton({ id, provider, onActivate }: ProviderButtonProps) {
         src={provider.image}
         alt=""
         css={`
+          width: ${3.5 * GU}px;
           height: ${3.5 * GU}px;
         `}
       />
