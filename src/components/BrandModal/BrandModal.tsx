@@ -82,9 +82,9 @@ function BrandModal({
       <Transition
         native
         items={visible}
-        from={{ opacity: 0, scale: 1.1 }}
+        from={{ opacity: 0, scale: 1.05 }}
         enter={{ opacity: 1, scale: 1 }}
-        leave={{ opacity: 0, scale: 0.975 }}
+        leave={{ opacity: 0, scale: 0.95 }}
         config={springs.tight}
         onDestroyed={(destroyed: boolean) => {
           destroyed && onClosed()
