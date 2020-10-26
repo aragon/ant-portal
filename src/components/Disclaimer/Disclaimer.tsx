@@ -86,7 +86,7 @@ function Disclaimer(): JSX.Element {
             AVAILABLE basis. You agree and acknowledge that the use of the
             Aragon Migrate system is made solely at your own risk and
             responsibility and that the Aragon Association bears no
-            responsibility or liability for such&nbsp;use.
+            responsibility or liability for such use.
           </Paragraph>
         </LayoutLimiter>
       </AnimateEntrance>

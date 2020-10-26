@@ -8,7 +8,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { DISCLAIMER_PATH } from '../../Routes'
 
 // TODO: Double check these are accurate
-const RESOURCES_URL = 'https://hack.aragon.org/'
+const DOCS_URL = 'https://hack.aragon.org/'
 const COMMUNITY_URL = 'https://aragon.org/community'
 
 const ARAGON_WEBSITE_URL = 'https://aragon.org'
@@ -50,7 +50,7 @@ function Footer(): JSX.Element {
                 margin-bottom: ${compactMode ? 2 * GU : `0`}px;
               `}
             >
-              <FooterLink href={RESOURCES_URL}>Documentation</FooterLink>
+              <FooterLink href={DOCS_URL}>Documentation</FooterLink>
               <FooterLink onClick={handleDisclaimerClick}>
                 Disclaimer
               </FooterLink>
