@@ -134,6 +134,9 @@ function Faqs(): JSX.Element {
       <div
         css={`
           magin-top: 100px;
+          a {
+            text-decoration: none;
+          }
         `}
       >
         <PageHeading
