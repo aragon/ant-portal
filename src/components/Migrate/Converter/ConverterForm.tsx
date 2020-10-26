@@ -58,12 +58,7 @@ function ConverterForm(): JSX.Element {
   )
 
   return (
-    <div
-      css={`
-        width: 100%;
-        max-width: ${120 * GU}px;
-      `}
-    >
+    <>
       <PageHeading
         title="Aragon Migrate"
         description="How much ANT would you like to upgrade?"
@@ -139,7 +134,7 @@ function ConverterForm(): JSX.Element {
           <ConverterFormControls tokenSymbol={tokenSymbol} />
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
