@@ -26,7 +26,7 @@ export function initializeAnalytics(): void {
   const countly = window.Countly
 
   if (enabled && countly?.q) {
-    console.log('[Analytics] Enabled')
+    console.info('[Analytics] Events enabled')
     countly.q.push(['track_sessions'])
     countly.q.push(['track_pageview'])
     countly.q.push(['track_clicks'])

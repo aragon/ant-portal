@@ -126,11 +126,9 @@ function useAccountBalances(): AccountBalances {
   const antV2MigratedAmount = useMemo((): BigNumber | null => {
     // Wait for both values to have been fetched before providing an update
     return antV2TotalSupply && antV2MigratorBalance
-      ? antV2TotalSupply?.sub(antV2MigratorBalance)
+      ? antV2TotalSupply.sub(antV2MigratorBalance)
       : null
   }, [antV2TotalSupply, antV2MigratorBalance])
-
-  console.log(antV2MigratedAmount?.toString())
 
   const lpAllBalances = useMemo((): LpBalances | null => {
     const balances: [LpPool, PolledValue][] = [
