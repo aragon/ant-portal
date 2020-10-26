@@ -15,13 +15,13 @@ function GetStarted(): JSX.Element {
 
   return (
     <LayoutGutter>
-      <div
-        css={`
-          padding-top: ${7 * GU}px;
-          padding-bottom: ${24 * GU}px;
-        `}
-      >
-        <AnimateEntrance>
+      <AnimateEntrance>
+        <div
+          css={`
+            padding-top: ${7 * GU}px;
+            padding-bottom: ${24 * GU}px;
+          `}
+        >
           <Header />
           {isMobile && (
             <Info
@@ -55,8 +55,8 @@ function GetStarted(): JSX.Element {
             `}
           />
           <Faqs />
-        </AnimateEntrance>
-      </div>
+        </div>
+      </AnimateEntrance>
     </LayoutGutter>
   )
 }

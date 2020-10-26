@@ -30,12 +30,12 @@ function Converter(): JSX.Element {
   return (
     <Transition
       items={conversionStage}
-      config={springs.subtle}
+      config={springs.tight}
       onStart={enableAnimation}
       immediate={animationDisabled}
       from={{
         opacity: 0,
-        transform: `translate3d(${20 * GU * -direction}px, 0, 0)`,
+        transform: `translate3d(${15 * GU * -direction}px, 0, 0)`,
       }}
       enter={{
         opacity: 1,
@@ -44,7 +44,7 @@ function Converter(): JSX.Element {
       leave={{
         opacity: 0,
         position: 'absolute' as const,
-        transform: `translate3d(${20 * GU * direction}px, 0, 0)`,
+        transform: `translate3d(${15 * GU * direction}px, 0, 0)`,
       }}
       native
     >

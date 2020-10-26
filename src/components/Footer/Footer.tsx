@@ -44,7 +44,7 @@ function Footer(): JSX.Element {
               css={`
                 display: inline-grid;
                 grid-auto-flow: column;
-                grid-gap: ${5 * GU}px;
+                grid-gap: ${compactMode ? 3 * GU : 5 * GU}px;
 
                 margin-bottom: ${compactMode ? 2 * GU : `0`}px;
               `}
