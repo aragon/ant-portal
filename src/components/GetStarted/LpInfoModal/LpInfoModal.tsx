@@ -18,6 +18,9 @@ import TokenIcon from './TokenIcon'
 import { radius } from '../../../style/radius'
 import { shadowDepth } from '../../../style/shadow'
 
+// TODO: Link to specific section
+const READ_MORE_URL = 'https://docs.aragon.org/ant/'
+
 type KnownTokenSymbol = 'ANT' | 'ETH' | 'UNI'
 
 const KNOWN_TOKENS = new Map<KnownTokenSymbol, string>([
@@ -117,18 +120,27 @@ function LpInfoModal({ visible, onClose }: LpInfoModalProps): JSX.Element {
             line-height: 1.2;
           `}
         >
-          Liquidity pool distribution
+          Liquidity pools distribution
         </h1>
         <p
           css={`
             color: ${theme.surfaceContentSecondary};
-            margin-bottom: ${4 * GU}px;
+            margin-bottom: ${3.5 * GU}px;
           `}
         >
-          You hold ANT v1 locked in the following liquidity pools. In order to
-          migrate those tokens, you must remove liquidity from those
-          decentralized exchanges first.
+          You have ANTv1 staked in the following liquidity pools. To upgrade
+          your liquidity, first exit the existing pool, upgrade your ANT through
+          this portal and re-enter it into the equivalent ANTv2 pool.{' '}
+          <Link
+            href={READ_MORE_URL}
+            css={`
+              text-decoration: none;
+            `}
+          >
+            Read more.
+          </Link>
         </p>
+
         {poolItems &&
           (compactMode ? (
             <PoolList items={poolItems} />

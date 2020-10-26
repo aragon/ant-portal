@@ -45,7 +45,7 @@ function BalanceCard({
   const etherscanUrl = getEtherscanUrl(tokenAddress)
 
   const lpModalButton = useMemo(() => {
-    const title = 'Liquidity pool distribution'
+    const title = 'Liquidity pools distribution'
     return onLpClick ? (
       <div
         css={`
