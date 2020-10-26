@@ -96,7 +96,8 @@ function BalanceCard({
         padding: ${compactMode ? 4 * GU : 5 * GU}px;
 
         max-width: ${90 * GU}px;
-        margin: auto;
+        margin-left: auto;
+        margin-right: auto;
         width: 100%;
       `}
     >

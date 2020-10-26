@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import GetStarted from './components/GetStarted/GetStarted'
 import Migrate from './components/Migrate/Migrate'
 
-export const CONVERTER_PATH = '/ant'
+export const CONVERTER_PATH = '/converter'
 
 export default function Routes(): JSX.Element {
   return (
