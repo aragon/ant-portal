@@ -1,5 +1,5 @@
 export const theme = {
-  _name: 'aragon-migrate',
+  _name: 'aragon-upgrade',
   _appearance: 'light',
   accent: '#00c2ff',
   accentStart: '#01e8f7',
