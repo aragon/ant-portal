@@ -131,6 +131,7 @@ export function getUseWalletProviders(): WalletConfig[] {
   const providers: WalletConfig[] = [{ id: 'injected' }, { id: 'frame' }]
 
   // Temporarily disable due to potential versioning issue in web3-react
+  // TODO: Investigate further
   // if (chainId === 1) {
   //   // WalletConnect is only supported on mainnet environments because the web3-react WalletConnect connector is broken on any chain > 1
   //   // https://github.com/NoahZinsmeister/web3-react/blob/v6/packages/walletconnect-connector/src/index.ts#L31
