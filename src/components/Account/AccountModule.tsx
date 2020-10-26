@@ -112,7 +112,7 @@ function AccountModule(): JSX.Element {
       ) : (
         <BrandButton
           icon={<IconConnect />}
-          label="Enable account"
+          label="Connect wallet"
           onClick={toggle}
           display={compactMode ? 'icon' : 'all'}
         />

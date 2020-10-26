@@ -1,7 +1,14 @@
-import React, { ReactNode, useCallback, useState, useEffect } from 'react'
+import React, { ReactNode, useState, useEffect, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
-// @ts-ignore
-import { GU, IconArrowRight, useTheme, useLayout } from '@aragon/ui'
+
+import {
+  GU,
+  IconArrowRight,
+  IconConnect,
+  useTheme,
+  useLayout,
+  // @ts-ignore
+} from '@aragon/ui'
 import { fontWeight } from '../../style/font'
 import BrandButton from '../BrandButton/BrandButton'
 import LayoutLimiter from '../Layout/LayoutLimiter'
@@ -45,7 +52,7 @@ const MESSAGES: Record<BalanceStatus, ReactNode> = {
   ),
   noMigrationsAvailable: (
     <>
-      There are no upgrades available for this account. Enable a different
+      There are no upgrades available for this account. Connect a different
       wallet to check if you have any ANTv1 balance to&nbsp;upgrade.
     </>
   ),
@@ -61,16 +68,51 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
 
   const compactMode = layoutName === 'small'
 
-  const handleButtonClick = useCallback(() => {
-    if (
-      balanceStatus === 'success' ||
-      balanceStatus === 'noMigrationsAvailable'
-    ) {
-      showAccount()
-    } else {
-      history.push(CONVERTER_PATH)
+  const primaryButton = useMemo(() => {
+    if (balanceStatus === 'accountEnabled') {
+      return (
+        <BrandButton
+          mode="strong"
+          size="large"
+          onClick={() => history.push(CONVERTER_PATH)}
+        >
+          <>
+            Upgrade ANTv1{' '}
+            <IconArrowRight
+              css={`
+                opacity: 0.75;
+                margin-left: ${1 * GU}px;
+                margin-right: ${1 * GU}px;
+              `}
+            />{' '}
+            ANTv2
+          </>
+        </BrandButton>
+      )
     }
-  }, [history, balanceStatus, showAccount])
+
+    if (balanceStatus === 'default') {
+      return (
+        <BrandButton
+          mode="strong"
+          size="large"
+          onClick={showAccount}
+          icon={<IconConnect />}
+          label="Connect your wallet"
+        />
+      )
+    }
+
+    return (
+      <BrandButton
+        mode="strong"
+        size="large"
+        onClick={showAccount}
+        icon={<IconConnect />}
+        label="Connect a different wallet"
+      />
+    )
+  }, [balanceStatus, history, showAccount])
 
   useEffect(() => {
     if (antV1.balance && antV2.balance) {
@@ -137,23 +179,7 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
         >
           {MESSAGES[balanceStatus]}
         </p>
-        <BrandButton mode="strong" size="large" onClick={handleButtonClick}>
-          {balanceStatus === 'default' || balanceStatus === 'accountEnabled' ? (
-            <>
-              Upgrade ANTv1{' '}
-              <IconArrowRight
-                css={`
-                  opacity: 0.75;
-                  margin-left: ${1 * GU}px;
-                  margin-right: ${1 * GU}px;
-                `}
-              />{' '}
-              ANTv2
-            </>
-          ) : (
-            'Enable a different account'
-          )}
-        </BrandButton>
+        {primaryButton}
       </div>
     </LayoutLimiter>
   )
