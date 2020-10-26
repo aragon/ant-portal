@@ -6,8 +6,10 @@ import { theme } from './style/theme'
 // @ts-ignore
 import { Main } from '@aragon/ui'
 import { initializeSentry } from './sentry'
+import { initializeAnalytics } from './analytics'
 
 initializeSentry()
+initializeAnalytics()
 
 ReactDOM.render(
   // Due to an issue with styled-components v5, global styles must be applied outside of <React.StrictMode/> to avoid duplicate styles inside the head.

@@ -21,4 +21,7 @@ export const ENV_VARS: EnvVariables = {
     const dsn = process.env.REACT_APP_SENTRY_DSN || ''
     return dsn.trim()
   },
+  ANALYTICS_ENABLED() {
+    return process.env.REACT_APP_ANALYTICS_ENABLED || ''
+  },
 }

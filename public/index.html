@@ -48,12 +48,6 @@
       Countly.app_key = '5d89bda664cfc5765d59b2264ced81191866c07e'
       Countly.url = 'https://analytics.aragon.org/'
       Countly.inactivity_time = 10
-
-      // TODO: Apply this configuration conditionally depending on environment
-      Countly.q.push(['track_sessions'])
-      Countly.q.push(['track_pageview'])
-      Countly.q.push(['track_clicks'])
-      Countly.q.push(['track_errors'])
       ;(function () {
         var cly = document.createElement('script')
         cly.type = 'text/javascript'
