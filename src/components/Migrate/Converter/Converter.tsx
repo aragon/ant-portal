@@ -35,7 +35,7 @@ function Converter(): JSX.Element {
       immediate={animationDisabled}
       from={{
         opacity: 0,
-        transform: `translate3d(${10 * GU * -direction}px, 0, 0)`,
+        transform: `translate3d(${20 * GU * -direction}px, 0, 0)`,
       }}
       enter={{
         opacity: 1,
@@ -44,7 +44,7 @@ function Converter(): JSX.Element {
       leave={{
         opacity: 0,
         position: 'absolute' as const,
-        transform: `translate3d(${10 * GU * direction}px, 0, 0)`,
+        transform: `translate3d(${20 * GU * direction}px, 0, 0)`,
       }}
       native
     >
