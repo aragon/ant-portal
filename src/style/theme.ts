@@ -8,7 +8,7 @@ export const theme = {
   positive: '#38ccb6',
   positiveSurface: '#ecfaf8',
   negative: '#ff7163',
-  contentSecondary: '#9ca3bd',
+  contentSecondary: '#8991b1',
   surfaceContentSecondary: '#6f7ca6',
   surfaceSelected: '#fdfefe',
 }

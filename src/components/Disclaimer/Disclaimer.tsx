@@ -68,24 +68,18 @@ function Disclaimer(): JSX.Element {
           </h1>
           <Paragraph compactMode={compactMode}>
             The ANT migration is solely a technical upgrade to adopt the latest
-            technical developments in the Ethereum tokens. Read more{' '}
+            technical developments of Ethereum tokens.{' '}
             <Link
               href={BLOG_POST_URL}
               css={`
+                font-weight: ${fontWeight.medium};
                 text-decoration: none;
               `}
             >
-              here
+              Read more here
             </Link>
             . ANTv2 is not a new token. ANTv2 is the upgraded version of ANT.
             ANTv2 will maintain the same functionality as ANTv1.
-          </Paragraph>
-          <Paragraph compactMode={compactMode}>
-            The ANT Upgrade Portal has been made available on an AS IS and AS
-            AVAILABLE basis. You agree and acknowledge that the use of the ANT
-            Upgrade Portal is made solely at your own risk and responsibility
-            and that the Aragon Association bears no responsibility or liability
-            for such use.
           </Paragraph>
         </LayoutLimiter>
       </AnimateEntrance>
@@ -108,8 +102,10 @@ function Paragraph({
         &:not(:last-child) {
           margin-bottom: ${3 * GU}px;
         }
-        font-size: ${compactMode ? `18` : `22`}px;
-        color: ${theme.surfaceContentSecondary};
+        font-weight: ${fontWeight.medium};
+        font-size: ${compactMode ? `18` : `26`}px;
+        line-height: 1.6;
+        color: ${theme.contentSecondary};
       `}
     >
       {children}
