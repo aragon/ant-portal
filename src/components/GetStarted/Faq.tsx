@@ -60,9 +60,10 @@ function Item({ title, description }: ItemProps): JSX.Element {
           background: ${theme.surface};
           box-shadow: ${shadowDepth.medium};
           border-radius: ${radius.high};
+          color: ${opened ? theme.content : theme.surfaceContentSecondary};
           text-align: left;
-          color: ${theme.content};
           white-space: initial;
+          transition: color 250ms ease-in-out;
         `}
       >
         <ToggleButton opened={opened} />

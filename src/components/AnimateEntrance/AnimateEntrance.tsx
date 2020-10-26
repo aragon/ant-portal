@@ -18,6 +18,7 @@ function AnimateEntrance({
 }: AnimateEntranceProps): JSX.Element {
   return (
     <Spring
+      native
       config={springs.subtle}
       delay={100}
       from={{
