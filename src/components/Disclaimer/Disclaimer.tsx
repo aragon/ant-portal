@@ -68,14 +68,15 @@ function Disclaimer(): JSX.Element {
           </h1>
           <Paragraph compactMode={compactMode}>
             The ANT migration is solely a technical upgrade to adopt the latest
-            technical developments in the Ethereum tokens. Read more{' '}
+            technical developments in the Ethereum tokens.{' '}
             <Link
               href={BLOG_POST_URL}
               css={`
+                font-weight: ${fontWeight.medium};
                 text-decoration: none;
               `}
             >
-              here
+              Read more here
             </Link>
             . ANTv2 is not a new token. ANTv2 is the upgraded version of ANT.
             ANTv2 will maintain the same functionality as ANTv1.
