@@ -5,6 +5,10 @@ import { fontWeight } from '../../style/font'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import Faq from './Faq'
 import PageHeading from '../PageHeading/PageHeading'
+import { networkEnvironment } from '../../environment'
+import { getEtherscanUrl } from '../../utils/etherscan'
+
+const { contracts } = networkEnvironment
 
 // TODO: Add url and content when available
 const FAQS_URL = 'https://aragon.org/faqs/tokens#ant-faq'
@@ -38,16 +42,10 @@ const FAQS_ITEMS: [string, ReactNode][] = [
         .
       </p>
       <p>
-        ANTv1 address:{' '}
-        <Link href="https://etherscan.io/address/0xa117000000f279D81A1D3cc75430fAA017FA5A2e">
-          0x960b236A07cf122663c4303350609A66A7B288C0
-        </Link>{' '}
+        ANTv1 address: <AddressLink address={contracts.tokenAntV1} />
       </p>
       <p>
-        ANTv2 address:{' '}
-        <Link href="https://etherscan.io/address/0xa117000000f279D81A1D3cc75430fAA017FA5A2e">
-          0xa117000000f279D81A1D3cc75430fAA017FA5A2e
-        </Link>
+        ANTv2 address: <AddressLink address={contracts.tokenAntV2} />
       </p>
     </>,
   ],
@@ -133,7 +131,6 @@ function Faqs(): JSX.Element {
     <LayoutLimiter size="small">
       <div
         css={`
-          magin-top: 100px;
           a {
             text-decoration: none;
           }
@@ -166,6 +163,21 @@ function Faqs(): JSX.Element {
         </div>
       </div>
     </LayoutLimiter>
+  )
+}
+
+function AddressLink({ address }: { address: string }): JSX.Element {
+  return (
+    <Link
+      href={getEtherscanUrl(contracts.tokenAntV1)}
+      css={`
+        text-align: left;
+        white-space: initial;
+        word-break: break-all;
+      `}
+    >
+      {address}
+    </Link>
   )
 }
 

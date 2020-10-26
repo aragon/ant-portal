@@ -110,19 +110,20 @@ function Item({ title, description }: ItemProps): JSX.Element {
                     padding: ${3.75 * GU}px ${4.5 * GU}px ${3.2 * GU}px;
                   `}
                 >
-                  <AnimatedDiv style={{ opacity }}>
-                    <div
-                      css={`
-                        color: ${theme.surfaceContentSecondary};
-                        font-size: 18px;
-                        p,
-                        ul {
+                  <AnimatedDiv
+                    style={{ opacity }}
+                    css={`
+                      color: ${theme.surfaceContentSecondary};
+                      font-size: ${compactMode ? 16 : 18}px;
+                      p,
+                      ul {
+                        &:not(:last-child) {
                           margin-bottom: ${2.25 * GU}px;
                         }
-                      `}
-                    >
-                      {description}
-                    </div>
+                      }
+                    `}
+                  >
+                    {description}
                   </AnimatedDiv>
                 </div>
               </div>
