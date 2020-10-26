@@ -5,8 +5,7 @@ import featuresPng from '../../assets/antv2-features.png'
 import { fontWeight } from '../../style/font'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 
-// TODO: Ensure this is accurate
-const BLOG_POST_URL = 'https://aragon.org/blog/2'
+const BLOG_POST_URL = 'https://aragon.org/blog/antv2'
 
 function Features({
   ...props
@@ -47,9 +46,9 @@ function Features({
               margin-bottom: ${3 * GU}px;
             `}
           >
-            Switching to a new, simpler token will make ANT transactions 3x
-            cheaper — lowering the barrier to entry and making it a better token
-            to use.
+            It’s time for ANT to get an upgrade! Switching to a newer, simpler
+            token contract will make transactions 3x cheaper and support
+            gasless&nbsp;transfers.
           </p>
           <Link
             href={BLOG_POST_URL}
