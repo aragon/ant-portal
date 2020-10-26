@@ -8,15 +8,20 @@ import {
   useUniswapStakedBalance,
   useAntTotalSupply,
 } from '../hooks/usePolledBalance'
+import { useWallet } from 'use-wallet'
+import { networkEnvironment } from '../environment'
 
 const ANT_TOKEN_DECIMALS = 18
+
+const { contracts } = networkEnvironment
 
 type PolledValue = BigNumber | null
 
 type BalancesContext = {
   antV1Balance: PolledValue
   antV2Balance: PolledValue
-  antV1TotalSupply: PolledValue
+  antV2MigratorBalance: PolledValue
+  antV2TotalSupply: PolledValue
   uniswapPoolBalance: PolledValue
   balancerPoolBalance: PolledValue
   incentivePoolBalance: PolledValue
@@ -26,7 +31,8 @@ type BalancesContext = {
 const AccountBalancesContext = React.createContext<BalancesContext>({
   antV1Balance: null,
   antV2Balance: null,
-  antV1TotalSupply: null,
+  antV2MigratorBalance: null,
+  antV2TotalSupply: null,
   uniswapPoolBalance: null,
   balancerPoolBalance: null,
   incentivePoolBalance: null,
@@ -38,9 +44,16 @@ function AccountBalancesProvider({
 }: {
   children: ReactNode
 }): JSX.Element {
-  const antV1BalanceBn = useAntTokenBalance('v1')
-  const antV2BalanceBn = useAntTokenBalance('v2')
-  const antV1TotalSupplyBn = useAntTotalSupply('v1')
+  const { account } = useWallet()
+
+  const antV1BalanceBn = useAntTokenBalance('v1', account)
+  const antV2BalanceBn = useAntTokenBalance('v2', account)
+  const antV2MigratorBalanceBn = useAntTokenBalance(
+    'v2',
+    contracts.migrator,
+    true
+  )
+  const antV2TotalSupplyBn = useAntTotalSupply('v2')
   const antTokenPriceUsd = usePollTokenPriceUsd()
 
   const antInUniswapPoolBn = useUniswapStakedBalance()
@@ -51,7 +64,8 @@ function AccountBalancesProvider({
     (): BalancesContext => ({
       antV1Balance: antV1BalanceBn,
       antV2Balance: antV2BalanceBn,
-      antV1TotalSupply: antV1TotalSupplyBn,
+      antV2MigratorBalance: antV2MigratorBalanceBn,
+      antV2TotalSupply: antV2TotalSupplyBn,
       uniswapPoolBalance: antInUniswapPoolBn,
       balancerPoolBalance: antInBalancerPoolBn,
       incentivePoolBalance: antInIncentivePoolBn,
@@ -60,7 +74,8 @@ function AccountBalancesProvider({
     [
       antV1BalanceBn,
       antV2BalanceBn,
-      antV1TotalSupplyBn,
+      antV2MigratorBalanceBn,
+      antV2TotalSupplyBn,
       antTokenPriceUsd,
       antInUniswapPoolBn,
       antInBalancerPoolBn,
@@ -92,19 +107,30 @@ type AccountBalances = {
     hasBalances: boolean | null
   }
   antTokenPriceUsd: string | null
-  antV1TotalSupply: PolledValue
+  antV2TotalSupply: PolledValue
+  antV2MigratedAmount: PolledValue
 }
 
 function useAccountBalances(): AccountBalances {
   const {
     antV1Balance,
     antV2Balance,
-    antV1TotalSupply,
+    antV2MigratorBalance,
+    antV2TotalSupply,
     antTokenPriceUsd,
     uniswapPoolBalance,
     balancerPoolBalance,
     incentivePoolBalance,
   } = useContext(AccountBalancesContext)
+
+  const antV2MigratedAmount = useMemo((): BigNumber | null => {
+    // Wait for both values to have been fetched before providing an update
+    return antV2TotalSupply && antV2MigratorBalance
+      ? antV2TotalSupply?.sub(antV2MigratorBalance)
+      : null
+  }, [antV2TotalSupply, antV2MigratorBalance])
+
+  console.log(antV2MigratedAmount?.toString())
 
   const lpAllBalances = useMemo((): LpBalances | null => {
     const balances: [LpPool, PolledValue][] = [
@@ -144,7 +170,8 @@ function useAccountBalances(): AccountBalances {
       hasBalances: lpAvailableBalances && lpAvailableBalances.length > 0,
     },
     antTokenPriceUsd,
-    antV1TotalSupply,
+    antV2TotalSupply,
+    antV2MigratedAmount,
   }
 }
 

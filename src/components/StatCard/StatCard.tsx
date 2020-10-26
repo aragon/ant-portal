@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 // @ts-ignore
 import { useTheme, GU } from '@aragon/ui'
 import { radius } from '../../style/radius'
@@ -9,7 +9,7 @@ type StatCardProps = {
   title: string
   value: string | null
   graphic: string
-  desc: string
+  desc: ReactNode
 }
 
 function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 // @ts-ignore
-import { GU, useLayout } from '@aragon/ui'
+import { Link, GU, useLayout } from '@aragon/ui'
 // @ts-ignore
 import TokenAmount from 'token-amount'
 import LayoutLimiter from '../Layout/LayoutLimiter'
@@ -8,13 +8,19 @@ import StatCard from '../StatCard/StatCard'
 import totalSupplySvg from '../../assets/stat-total-supply.svg'
 import antTokenSvg from '../../assets/stat-ant-token.svg'
 import marketCapSvg from '../../assets/stat-market-cap.svg'
-import { MOCK_SHORT_SUBTEXT } from '../../mock'
 import { useAccountBalances } from '../../providers/AccountBalances'
 import { formatAmountToUsd, parseUnits } from '../../utils/math-utils'
 
+const API_REFERENCE_URL = 'https://0x.org/api'
+
 function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
   const { layoutName } = useLayout()
-  const { antV1TotalSupply, antV1, antTokenPriceUsd } = useAccountBalances()
+  const {
+    antV2TotalSupply,
+    antV2MigratedAmount,
+    antV1,
+    antTokenPriceUsd,
+  } = useAccountBalances()
 
   const { decimals } = antV1
 
@@ -28,22 +34,22 @@ function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
 
   const formattedTotalSupply = useMemo(
     (): string | null =>
-      antV1TotalSupply &&
-      new TokenAmount(antV1TotalSupply, decimals).format({
+      antV2MigratedAmount &&
+      new TokenAmount(antV2MigratedAmount, decimals).format({
         digits: 2,
       }),
-    [antV1TotalSupply, decimals]
+    [antV2MigratedAmount, decimals]
   )
 
   const formattedMarketCap = useMemo(() => {
-    return antTokenPriceUsd && antV1TotalSupply
+    return antTokenPriceUsd && antV2TotalSupply
       ? `$${formatAmountToUsd(
           staticCirculatingSupply,
           decimals,
           antTokenPriceUsd
         )}`
       : null
-  }, [antTokenPriceUsd, antV1TotalSupply, decimals, staticCirculatingSupply])
+  }, [antTokenPriceUsd, antV2TotalSupply, decimals, staticCirculatingSupply])
 
   const formattedPrice = useMemo(
     () => antTokenPriceUsd && `$${Number(antTokenPriceUsd).toFixed(2)}`,
@@ -56,19 +62,32 @@ function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
         title: 'Total Supply',
         graphic: totalSupplySvg,
         value: formattedTotalSupply,
-        desc: MOCK_SHORT_SUBTEXT,
+        desc: 'Total ANT supply that has been upgraded to ANTv2.',
       },
       {
         title: 'ANT Price',
         graphic: antTokenSvg,
         value: formattedPrice,
-        desc: MOCK_SHORT_SUBTEXT,
+        desc: (
+          <>
+            Current aggregate price of ANT v1 - courtesy of{' '}
+            <Link
+              href={API_REFERENCE_URL}
+              css={`
+                text-decoration: none;
+              `}
+            >
+              0x API
+            </Link>
+            .
+          </>
+        ),
       },
       {
         title: 'Market Cap',
         graphic: marketCapSvg,
         value: formattedMarketCap,
-        desc: MOCK_SHORT_SUBTEXT,
+        desc: 'Value of the total ANT in circulation.',
       },
     ],
     [formattedTotalSupply, formattedPrice, formattedMarketCap]
