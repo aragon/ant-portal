@@ -59,10 +59,10 @@ function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
   const cardPresentation = useMemo(
     () => [
       {
-        title: 'Total Supply',
+        title: 'Upgraded ANT',
         graphic: totalSupplySvg,
         value: formattedTotalSupply,
-        desc: 'Total ANT supply that has been upgraded to ANTv2.',
+        desc: 'Total amount of ANT that has been upgraded to ANTv2.',
       },
       {
         title: 'ANT Price',
@@ -87,7 +87,7 @@ function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
         title: 'Market Cap',
         graphic: marketCapSvg,
         value: formattedMarketCap,
-        desc: 'Value of the total ANT in circulation.',
+        desc: 'Value of all ANT in circulation.',
       },
     ],
     [formattedTotalSupply, formattedPrice, formattedMarketCap]
