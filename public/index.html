@@ -14,20 +14,58 @@
 
     <!-- OpenGraph (Twitter, Facebook, Linkedin) -->
     <!-- TODO: Update this information -->
-    <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:site" content="@AragonProject"/>
-    <meta name="twitter:creator" content="@AragonProject"/>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@AragonProject" />
+    <meta name="twitter:creator" content="@AragonProject" />
 
-    <meta property="og:title" content="Aragon Migrate"/>
-    <meta property="og:description" content="Use the Aragon Migrate system to upgrade your ANT balance to the newest
-    version of the token contract"/>
-    <meta property="og:url" content="https://upgrade.aragon.org/"/>
-    <meta property="og:site_name" content="Aragon Migrate"/>
-    <meta property="og:image" content="%PUBLIC_URL%/og-preview-image.png"/>
-    <meta property="og:image:secure_url" content="%PUBLIC_URL%/og-preview-image.png"/>
+    <meta property="og:title" content="Aragon Migrate" />
+    <meta
+      property="og:description"
+      content="Use the Aragon Migrate system to upgrade your ANT balance to the newest
+    version of the token contract"
+    />
+    <meta property="og:url" content="https://upgrade.aragon.org/" />
+    <meta property="og:site_name" content="Aragon Migrate" />
+    <meta property="og:image" content="%PUBLIC_URL%/og-preview-image.png" />
+    <meta
+      property="og:image:secure_url"
+      content="%PUBLIC_URL%/og-preview-image.png"
+    />
 
     <!-- Preload fonts -->
-    <link rel="preload" href="%PUBLIC_URL%/manrope-variable.ttf" as="font" type="font/ttf" crossorigin>
+    <link
+      rel="preload"
+      href="%PUBLIC_URL%/manrope-variable.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+
+    <script type="text/javascript">
+      var Countly = Countly || {}
+      Countly.q = Countly.q || []
+
+      Countly.app_key = '5d89bda664cfc5765d59b2264ced81191866c07e'
+      Countly.url = 'https://analytics.aragon.org/'
+      Countly.inactivity_time = 10
+
+      // TODO: Apply this configuration conditionally depending on environment
+      Countly.q.push(['track_sessions'])
+      Countly.q.push(['track_pageview'])
+      Countly.q.push(['track_clicks'])
+      Countly.q.push(['track_errors'])
+      ;(function () {
+        var cly = document.createElement('script')
+        cly.type = 'text/javascript'
+        cly.async = true
+        cly.src = 'https://analytics.aragon.org/sdk/web/countly.min.js'
+        cly.onload = function () {
+          Countly.init()
+        }
+        var s = document.getElementsByTagName('script')[0]
+        s.parentNode.insertBefore(cly, s)
+      })()
+    </script>
 
     <style>
       @font-face {
@@ -47,7 +85,7 @@
         overflow-y: scroll !important;
 
         /* Match app background color to avoid white flicker on first load */
-        background-color: #F9FAFC; 
+        background-color: #f9fafc;
       }
     </style>
 
