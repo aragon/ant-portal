@@ -111,7 +111,7 @@ function ConverterForm(): JSX.Element {
                 {tokenSymbol}v1
               </>
             ) : (
-              'Enable account to see your balance'
+              'Connect your wallet to see your balance'
             )}
           </p>
         </div>

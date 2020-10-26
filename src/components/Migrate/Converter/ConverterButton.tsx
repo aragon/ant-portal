@@ -10,7 +10,7 @@ import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner'
 type ButtonStatus = ValidationStatus | 'loading'
 
 const BUTTON_MESSAGES: Record<ButtonStatus, string> = {
-  notConnected: 'Enable account',
+  notConnected: 'Connect wallet',
   insufficientBalance: 'Insufficient ANT balance',
   noAmount: 'Enter an amount',
   valid: 'Continue',
