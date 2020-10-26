@@ -68,7 +68,7 @@ function Disclaimer(): JSX.Element {
           </h1>
           <Paragraph compactMode={compactMode}>
             The ANT migration is solely a technical upgrade to adopt the latest
-            technical developments in the Ethereum tokens.{' '}
+            technical developments of Ethereum tokens.{' '}
             <Link
               href={BLOG_POST_URL}
               css={`
