@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { ReactNode, useState, useCallback } from 'react'
 // @ts-ignore
 import { ButtonBase, IconRight, GU, useLayout, useTheme } from '@aragon/ui'
 import { Transition, animated } from 'react-spring/renderprops'
@@ -10,12 +10,12 @@ import { springs } from '../../style/springs'
 const AnimatedDiv = animated.div
 
 type FaqProps = {
-  items: [string, string][]
+  items: [string, ReactNode][]
 }
 
 type ItemProps = {
   title: string
-  description: string
+  description: ReactNode
 }
 
 type ToggleButtonProps = {
@@ -111,15 +111,18 @@ function Item({ title, description }: ItemProps): JSX.Element {
                   `}
                 >
                   <AnimatedDiv style={{ opacity }}>
-                    <p
+                    <div
                       css={`
                         color: ${theme.surfaceContentSecondary};
-
                         font-size: 18px;
+                        p,
+                        ul {
+                          margin-bottom: ${1 * GU}px;
+                        }
                       `}
                     >
                       {description}
-                    </p>
+                    </div>
                   </AnimatedDiv>
                 </div>
               </div>
