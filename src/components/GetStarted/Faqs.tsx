@@ -169,7 +169,7 @@ function Faqs(): JSX.Element {
 function AddressLink({ address }: { address: string }): JSX.Element {
   return (
     <Link
-      href={getEtherscanUrl(contracts.tokenAntV1)}
+      href={getEtherscanUrl(address)}
       css={`
         text-align: left;
         white-space: initial;
