@@ -104,7 +104,7 @@ function ConverterSigning({
     // to reset it to 0 before using "approveAndCall"
     if (signingConfiguration === 'requiresReset') {
       steps.unshift({
-        title: 'Reset approval',
+        title: 'Approve',
         descriptions: {
           waiting: 'Waiting for signature…',
           prompting: 'Sign transaction…',
@@ -149,11 +149,7 @@ function ConverterSigning({
     migrationContractInteraction,
   ])
   return (
-    <div
-      css={`
-        width: 100%;
-      `}
-    >
+    <>
       <PageHeading
         title="Aragon Migrate"
         description="Upgrading your ANT"
@@ -226,7 +222,7 @@ function ConverterSigning({
           width: 100%;
         `}
       />
-    </div>
+    </>
   )
 }
 

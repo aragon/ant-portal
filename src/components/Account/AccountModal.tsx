@@ -87,11 +87,11 @@ function AccountModal({
           {heading}
         </h1>
         <Spring
+          native
           config={springs.smooth}
           from={{ height: 32 * GU }}
           to={{ height }}
           immediate={!animate}
-          native
         >
           {({ height }) => (
             <AnimatedDiv

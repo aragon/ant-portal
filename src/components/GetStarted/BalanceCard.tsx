@@ -4,6 +4,7 @@ import {
   ButtonBase,
   shortenAddress,
   IconExternal,
+  IconInfo,
   GU,
   useLayout,
   // @ts-ignore
@@ -54,12 +55,24 @@ function BalanceCard({
         <ButtonBase
           onClick={onLpClick}
           css={`
+            display: flex;
+            align-items: center;
             font-size: 18px;
             line-height: 1;
             padding: ${1 * GU}px;
             color: ${theme.link};
           `}
         >
+          <div
+            css={`
+              margin-left: -${0.5 * GU}px;
+              margin-bottom: -${0.25 * GU}px;
+              margin-right: ${0.25 * GU}px;
+            `}
+          >
+            <IconInfo />
+          </div>
+
           {title}
         </ButtonBase>
       </div>
@@ -81,6 +94,11 @@ function BalanceCard({
         box-shadow: ${shadowDepth.high};
         border-radius: ${radius.high};
         padding: ${compactMode ? 4 * GU : 5 * GU}px;
+
+        max-width: ${90 * GU}px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
       `}
     >
       <div
@@ -102,7 +120,7 @@ function BalanceCard({
           <TokenAntGraphic
             shadow
             type={tokenVersion}
-            size={compactMode ? '75' : '100'}
+            size={compactMode ? 75 : 100}
             css={`
               flex-shrink: 0;
             `}

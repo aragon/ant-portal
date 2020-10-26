@@ -5,6 +5,7 @@ import { TokenConversionType } from './types'
 import Converter from './Converter/Converter'
 import LayoutGutter from '../Layout/LayoutGutter'
 import { MigrateStateProvider } from './MigrateStateProvider'
+import AnimateEntrance from '../AnimateEntrance/AnimateEntrance'
 
 type MigrateProps = {
   conversionType: TokenConversionType
@@ -20,34 +21,36 @@ function Migrate({ conversionType }: MigrateProps): JSX.Element {
 
 function MigrateContent() {
   return (
-    <LayoutGutter
-      css={`
-        padding-top: ${7 * GU}px;
-        padding-bottom: ${10 * GU}px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        flex: 1;
-      `}
-    >
-      <div
+    <AnimateEntrance>
+      <LayoutGutter
         css={`
-          margin-top: -${4 * GU}px;
-          width: 100%;
+          padding-top: ${7 * GU}px;
+          padding-bottom: ${10 * GU}px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          flex: 1;
         `}
       >
         <div
           css={`
-            display: flex;
-            justify-content: center;
+            margin-top: -${4 * GU}px;
             width: 100%;
           `}
         >
-          <Converter />
+          <div
+            css={`
+              display: flex;
+              justify-content: center;
+              width: 100%;
+            `}
+          >
+            <Converter />
+          </div>
         </div>
-      </div>
-    </LayoutGutter>
+      </LayoutGutter>
+    </AnimateEntrance>
   )
 }
 

@@ -232,7 +232,7 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
 
       // This is intentional latency to give a consistent / solid feel when the allowance response occurs very very quickly
       // Without it the flicker can feel very subtly jarring
-      await mockPromiseLatency(500)
+      await mockPromiseLatency(200)
 
       const {
         remaining: allowanceRemaining,

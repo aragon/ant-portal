@@ -60,9 +60,10 @@ function Item({ title, description }: ItemProps): JSX.Element {
           background: ${theme.surface};
           box-shadow: ${shadowDepth.medium};
           border-radius: ${radius.high};
+          color: ${opened ? theme.content : theme.surfaceContentSecondary};
           text-align: left;
-          color: ${theme.content};
           white-space: initial;
+          transition: color 250ms ease-in-out;
         `}
       >
         <ToggleButton opened={opened} />
@@ -112,7 +113,7 @@ function Item({ title, description }: ItemProps): JSX.Element {
                   <AnimatedDiv style={{ opacity }}>
                     <p
                       css={`
-                        color: ${theme.tagIdentifier};
+                        color: ${theme.surfaceContentSecondary};
 
                         font-size: 18px;
                       `}

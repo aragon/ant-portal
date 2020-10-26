@@ -26,6 +26,31 @@
     <meta property="og:image" content="%PUBLIC_URL%/og-preview-image.png"/>
     <meta property="og:image:secure_url" content="%PUBLIC_URL%/og-preview-image.png"/>
 
+    <!-- Preload fonts -->
+    <link rel="preload" href="%PUBLIC_URL%/manrope.variable.ttf" as="font" type="font/woff2" crossorigin>
+
+    <style>
+      @font-face {
+        font-family: 'Manrope';
+        src: url('/manrope-variable.ttf');
+        font-weight: 1 999;
+        font-display: swap;
+      }
+
+      body,
+      html {
+        font-family: 'Manrope', sans-serif !important;
+      }
+
+      body {
+        /* Always provide a scrollbar to prevent content jumping when moving between short and long pages */
+        overflow-y: scroll !important;
+
+        /* Match app background color to avoid white flicker on first load */
+        background-color: #F9FAFC; 
+      }
+    </style>
+
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -41,15 +66,6 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Aragon Migrate</title>
-
-    <style>
-      body {
-        overflow-y: scroll !important;
-
-        /* Match app background color to avoid white flicker on first load */
-        background-color: #F9FAFC; 
-      }
-    </style>
   </head>
 
   <body>

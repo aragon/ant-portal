@@ -6,7 +6,11 @@ import { fontWeight } from '../../../style/font'
 import TokenAntGraphic from '../../TokenAntGraphic/TokenAntGraphic'
 import { radius } from '../../../style/radius'
 
-function ConversionRate(): JSX.Element {
+type ConversionRateProps = {
+  compactMode: boolean
+}
+
+function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
   const theme = useTheme()
 
   return (
@@ -23,9 +27,10 @@ function ConversionRate(): JSX.Element {
           margin-bottom: ${3.5 * GU}px;
         `}
       >
-        <TokenAntGraphic type="v1" />
+        <TokenAntGraphic type="v1" size={compactMode ? 80 : 100} />
         <TokenAntGraphic
           type="v2"
+          size={compactMode ? 80 : 100}
           shadow
           css={`
             margin-left: -${1 * GU}px;
@@ -41,7 +46,7 @@ function ConversionRate(): JSX.Element {
       >
         <h4
           css={`
-            font-size: 60px;
+            font-size: ${compactMode ? 52 : 60}px;
             font-weight: ${fontWeight.semiBold};
 
             // Optically offset left edge of number 1 for centering

@@ -2,12 +2,13 @@ import React, { ReactNode, useEffect } from 'react'
 import Header from './Header/Header'
 import Footer from './Footer/Footer'
 import { useLocation } from 'react-router-dom'
+import AnimateEntrance from './AnimateEntrance/AnimateEntrance'
 
-type Props = {
+type MainViewProps = {
   children: ReactNode
 }
 
-const MainView = React.memo(function MainView({ children }: Props) {
+const MainView = React.memo(function MainView({ children }: MainViewProps) {
   const { pathname } = useLocation()
 
   // Reset scroll position on route change
@@ -27,7 +28,10 @@ const MainView = React.memo(function MainView({ children }: Props) {
         z-index: 0;
       `}
     >
-      <Header />
+      <AnimateEntrance direction={-1}>
+        <Header />
+      </AnimateEntrance>
+
       <main
         css={`
           display: flex;
@@ -37,7 +41,10 @@ const MainView = React.memo(function MainView({ children }: Props) {
       >
         {children}
       </main>
-      <Footer />
+
+      <AnimateEntrance>
+        <Footer />
+      </AnimateEntrance>
     </div>
   )
 })

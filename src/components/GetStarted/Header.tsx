@@ -90,7 +90,7 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
             );
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: ${1.5 * GU}px;
+            margin-bottom: ${1 * GU}px;
           `}
         >
           Aragon Migrate

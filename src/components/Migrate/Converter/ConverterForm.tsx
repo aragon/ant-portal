@@ -58,12 +58,7 @@ function ConverterForm(): JSX.Element {
   )
 
   return (
-    <div
-      css={`
-        width: 100%;
-        max-width: ${120 * GU}px;
-      `}
-    >
+    <>
       <PageHeading
         title="Aragon Migrate"
         description="How much ANT would you like to upgrade?"
@@ -73,7 +68,7 @@ function ConverterForm(): JSX.Element {
       />
       <div
         css={`
-          padding: ${6 * GU}px;
+          padding: ${compactMode ? 4 * GU : 6 * GU}px;
           background-color: ${theme.surface};
           box-shadow: ${shadowDepth.high};
           border-radius: ${radius.high};
@@ -129,7 +124,7 @@ function ConverterForm(): JSX.Element {
             padding: ${2 * GU}px;
           `}
         >
-          <ConversionRate />
+          <ConversionRate compactMode={compactMode} />
         </div>
         <div
           css={`
@@ -139,7 +134,7 @@ function ConverterForm(): JSX.Element {
           <ConverterFormControls tokenSymbol={tokenSymbol} />
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
