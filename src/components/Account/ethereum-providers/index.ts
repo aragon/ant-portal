@@ -6,7 +6,7 @@ import wallet from './icons/wallet.svg'
 import fortmatic from './icons/fortmatic.svg'
 import portis from './icons/portis.svg'
 import walletconnect from './icons/wallet-connect.svg'
-import { envVar, networkEnvironment } from '../../../environment'
+import { envVar } from '../../../environment'
 import {
   KnownProviderId,
   ProviderConfig,
@@ -14,8 +14,6 @@ import {
   WalletConfig,
   WalletConnector,
 } from '../types'
-
-const { endpoints, chainId } = networkEnvironment
 
 const PROVIDERS: Providers = {
   frame: {
@@ -132,14 +130,16 @@ function getProviderFromUseWalletId(id: WalletConnector): ProviderConfig {
 export function getUseWalletProviders(): WalletConfig[] {
   const providers: WalletConfig[] = [{ id: 'injected' }, { id: 'frame' }]
 
-  if (chainId === 1) {
-    // WalletConnect is only supported on mainnet environments because the web3-react WalletConnect connector is broken on any chain > 1
-    // https://github.com/NoahZinsmeister/web3-react/blob/v6/packages/walletconnect-connector/src/index.ts#L31
-    providers.push({
-      id: 'walletconnect',
-      useWalletConf: { rpcUrl: endpoints.ethereum },
-    })
-  }
+  // Temporarily disable due to potential versioning issue in web3-react
+  // TODO: Investigate further
+  // if (chainId === 1) {
+  //   // WalletConnect is only supported on mainnet environments because the web3-react WalletConnect connector is broken on any chain > 1
+  //   // https://github.com/NoahZinsmeister/web3-react/blob/v6/packages/walletconnect-connector/src/index.ts#L31
+  //   providers.push({
+  //     id: 'walletconnect',
+  //     useWalletConf: { rpcUrl: endpoints.ethereum },
+  //   })
+  // }
 
   if (envVar('FORTMATIC_API_KEY')) {
     providers.push({
