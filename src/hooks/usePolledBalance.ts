@@ -212,11 +212,12 @@ export function useBalancerStakedBalance(
 }
 
 export function useAntTokenBalance(
-  tokenVersion: 'v1' | 'v2'
+  tokenVersion: 'v1' | 'v2',
+  account: string | null,
+  readOnly?: boolean
 ): BigNumber | null {
-  const { account } = useWallet()
-  const antTokenV1Contract = useAntTokenV1Contract()
-  const antTokenV2Contract = useAntTokenV2Contract()
+  const antTokenV1Contract = useAntTokenV1Contract(readOnly)
+  const antTokenV2Contract = useAntTokenV2Contract(readOnly)
   const mounted = useMounted()
   const [tokenBalance, setTokenBalance] = useState<BigNumber | null>(null)
 
