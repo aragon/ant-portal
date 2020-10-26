@@ -15,6 +15,7 @@ type AnimateEntranceProps = {
 function AnimateEntrance({
   children,
   direction = 1,
+  ...props
 }: AnimateEntranceProps): JSX.Element {
   return (
     <Spring
@@ -33,8 +34,16 @@ function AnimateEntrance({
             position: relative;
             overflow: hidden;
           `}
+          {...props}
         >
-          <AnimatedDiv style={animationProps}>{children}</AnimatedDiv>
+          <AnimatedDiv
+            style={animationProps}
+            css={`
+              width: 100%;
+            `}
+          >
+            {children}
+          </AnimatedDiv>
         </div>
       )}
     </Spring>
