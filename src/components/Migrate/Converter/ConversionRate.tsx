@@ -89,7 +89,7 @@ function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
           >
             1
           </span>{' '}
-          ANT v1{' '}
+          ANTv1{' '}
           <span
             css={`
               margin-left: ${1 * GU}px;
@@ -106,7 +106,7 @@ function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
           >
             1
           </span>{' '}
-          ANT v2
+          ANTv2
         </p>
       </div>
     </div>

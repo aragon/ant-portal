@@ -38,7 +38,7 @@ export const MOCK_LP_BALANCES: [
 ]
 
 const mockStepItem: StepItem = {
-  title: 'Initiate ANT migration',
+  title: 'Initiate upgrade',
   handleSign: async ({
     setSuccess,
     setWorking,

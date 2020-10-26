@@ -60,8 +60,8 @@ function ConverterForm(): JSX.Element {
   return (
     <>
       <PageHeading
-        title="Aragon Migrate"
-        description="How much ANT would you like to upgrade?"
+        title="Aragon Upgrade"
+        description="How much ANTv1 would you like to upgrade?"
         css={`
           margin-bottom: ${7 * GU}px;
         `}
@@ -91,7 +91,7 @@ function ConverterForm(): JSX.Element {
               margin-bottom: ${1.5 * GU}px;
             `}
           >
-            Migrate {tokenSymbol}
+            Upgrade {tokenSymbol}v1
           </h2>
           <p
             css={`
@@ -108,7 +108,7 @@ function ConverterForm(): JSX.Element {
                 >
                   {formattedAntV1Balance}
                 </span>{' '}
-                {tokenSymbol}
+                {tokenSymbol}v1
               </>
             ) : (
               'Enable account to see your balance'
