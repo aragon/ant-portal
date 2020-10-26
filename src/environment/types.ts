@@ -9,6 +9,7 @@ export interface EnvVariables {
   FORTMATIC_API_KEY(): string
   PORTIS_DAPP_ID(): string
   SENTRY_DSN(): string
+  ANALYTICS_ENABLED(): string
 }
 
 export interface EnvNetworkConfig {

@@ -11,6 +11,7 @@ import ScreenProviders from './ScreenProviders'
 import { ScreenConfig, WalletConnector } from './types'
 import AccountModal from './AccountModal'
 import { useAccountModule } from './AccountModuleProvider'
+import { trackEvent } from '../../analytics'
 
 const SCREENS: ScreenConfig[] = [
   { id: 'providers', title: 'Use account from' },
@@ -59,7 +60,19 @@ function AccountModule(): JSX.Element {
   }, [wallet])
 
   const handleActivate = useCallback(
-    (providerId: WalletConnector) => wallet.connect(providerId),
+    async (providerId: WalletConnector) => {
+      // This will just return a promises that resolves.
+      // We should update use-wallet to return a boolean on
+      // whether this was successful so we don't have to wait
+      // until a next render to figure out the status.
+      await wallet.connect(providerId)
+
+      trackEvent('web3_connect', {
+        segmentation: {
+          provider: providerId,
+        },
+      })
+    },
     [wallet]
   )
 
