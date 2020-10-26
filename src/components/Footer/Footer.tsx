@@ -7,9 +7,8 @@ import LayoutLimiter from '../Layout/LayoutLimiter'
 import { useHistory, useLocation } from 'react-router-dom'
 import { DISCLAIMER_PATH } from '../../Routes'
 
-// TODO: Double check these are accurate
-const DOCS_URL = 'https://hack.aragon.org/'
-const COMMUNITY_URL = 'https://aragon.org/community'
+const DOCS_URL = 'https://docs.aragon.org/ant/'
+const COMMUNITY_URL = 'https://discord.com/invite/aragon'
 
 const ARAGON_WEBSITE_URL = 'https://aragon.org'
 
