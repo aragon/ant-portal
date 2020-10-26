@@ -194,7 +194,7 @@ function PoolTable({ items }: { items: PoolItem[] }) {
                 />
               </td>
               <td>
-                <AntAmount amount={amount} />
+                <AntAmount amount={amount} version="v1" />
               </td>
               <td>{value && <UsdAmount amount={value} />}</td>
             </tr>
@@ -246,7 +246,7 @@ function PoolList({ items }: { items: PoolItem[] }) {
             >
               <PoolListItem
                 label="Amount"
-                content={<AntAmount amount={amount} />}
+                content={<AntAmount amount={amount} version="v1" />}
               />
 
               <PoolListItem

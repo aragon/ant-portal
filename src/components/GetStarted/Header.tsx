@@ -9,12 +9,23 @@ import { CONVERTER_PATH } from '../../Routes'
 import { useAccountBalances } from '../../providers/AccountBalances'
 import { useAccountModule } from '../Account/AccountModuleProvider'
 
-type BalanceStatus = 'default' | 'success' | 'noMigrationsAvailable'
+type BalanceStatus =
+  | 'default'
+  | 'success'
+  | 'noMigrationsAvailable'
+  | 'accountEnabled'
 
 const MESSAGES: Record<BalanceStatus, ReactNode> = {
   default: (
     <>
-      Use the Aragon Migrate system to upgrade your ANT balance to the newest
+      Use Aragon Upgrade system to upgrade your ANT balance to the newest
+      version of the token contract. Connect your wallet to view the available
+      upgrades on your&nbsp;account.
+    </>
+  ),
+  accountEnabled: (
+    <>
+      Use Aragon Upgrade Portal to upgrade your ANT balance to the newest
       version of the token&nbsp;contract.
     </>
   ),
@@ -27,14 +38,15 @@ const MESSAGES: Record<BalanceStatus, ReactNode> = {
       <span role="img" aria-label="party">
         🎊
       </span>{' '}
-      You have migrated all your ANT balance to ANT v2. This account doesn’t
-      hold any more ANT v1 balance. Try a different account.
+      You have upgraded all your ANTv1 balance to ANTv2. This account doesn’t
+      hold any more ANTv1. You can continue to upgrade ANT held in a
+      different&nbsp;account.
     </>
   ),
   noMigrationsAvailable: (
     <>
-      There are no migrations available for this account. Enable a different
-      wallet to check if you have any ANT v1 tokens to migrate.
+      There are no upgrades available for this account. Enable a different
+      wallet to check if you have any ANTv1 balance to&nbsp;upgrade.
     </>
   ),
 }
@@ -50,7 +62,10 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
   const compactMode = layoutName === 'small'
 
   const handleButtonClick = useCallback(() => {
-    if (balanceStatus !== 'default') {
+    if (
+      balanceStatus === 'success' ||
+      balanceStatus === 'noMigrationsAvailable'
+    ) {
       showAccount()
     } else {
       history.push(CONVERTER_PATH)
@@ -67,7 +82,12 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
         setBalanceStatus('noMigrationsAvailable')
         return
       }
+
+      setBalanceStatus('accountEnabled')
+
+      return
     }
+
     setBalanceStatus('default')
   }, [antV1.balance, antV2.balance])
 
@@ -93,7 +113,7 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
             margin-bottom: ${1 * GU}px;
           `}
         >
-          Aragon Migrate
+          Aragon Upgrade
         </h3>
         <h1
           css={`
@@ -103,7 +123,7 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
             font-size: ${compactMode ? `44` : `54`}px;
           `}
         >
-          Migrate to ANT&nbsp;v2
+          Upgrade to ANTv2
         </h1>
         <p
           css={`
@@ -118,9 +138,9 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
           {MESSAGES[balanceStatus]}
         </p>
         <BrandButton mode="strong" size="large" onClick={handleButtonClick}>
-          {balanceStatus === 'default' ? (
+          {balanceStatus === 'default' || balanceStatus === 'accountEnabled' ? (
             <>
-              Migrate ANT v1{' '}
+              Upgrade ANTv1{' '}
               <IconArrowRight
                 css={`
                   opacity: 0.75;
@@ -128,7 +148,7 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
                   margin-right: ${1 * GU}px;
                 `}
               />{' '}
-              ANT v2
+              ANTv2
             </>
           ) : (
             'Enable a different account'

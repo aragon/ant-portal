@@ -139,7 +139,7 @@ function BalanceCard({
                 margin-bottom: ${1 * GU}px;
               `}
             >
-              ANT {tokenVersion}
+              ANT{tokenVersion}
             </h3>
             <ButtonBase
               href={etherscanUrl}
@@ -177,6 +177,7 @@ function BalanceCard({
               title="Wallet balance"
               amount={balance}
               compactMode={compactMode}
+              version={tokenVersion}
             />
 
             {showLpBalance &&
@@ -186,6 +187,7 @@ function BalanceCard({
                   amount={lpTotalBalance}
                   skeletonWidth={18 * GU}
                   compactMode={compactMode}
+                  version={tokenVersion}
                 />
               ) : (
                 <span
@@ -217,6 +219,7 @@ type BalanceItemType = {
   amount?: string | null
   skeletonWidth?: number
   compactMode: boolean
+  version: 'v1' | 'v2'
 }
 
 function BalanceItem({
@@ -224,6 +227,7 @@ function BalanceItem({
   amount,
   skeletonWidth = 14 * GU,
   compactMode,
+  version,
 }: BalanceItemType) {
   return (
     <li
@@ -246,7 +250,7 @@ function BalanceItem({
         {title}
       </h4>
       {amount ? (
-        <AntAmount amount={amount} />
+        <AntAmount amount={amount} version={version} />
       ) : (
         <span
           css={`

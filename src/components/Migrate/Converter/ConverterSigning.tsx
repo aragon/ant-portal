@@ -66,7 +66,7 @@ function ConverterSigning({
   const transactionSteps = useMemo(() => {
     const steps = [
       {
-        title: 'Initiate migration',
+        title: 'Initiate upgrade',
         descriptions: {
           waiting: 'Waiting for signature…',
           prompting: 'Sign transaction…',
@@ -151,8 +151,8 @@ function ConverterSigning({
   return (
     <>
       <PageHeading
-        title="Aragon Migrate"
-        description="Upgrading your ANT"
+        title="Aragon Upgrade"
+        description="Upgrading your ANTv1"
         css={`
           margin-bottom: ${7 * GU}px;
         `}

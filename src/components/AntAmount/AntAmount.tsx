@@ -7,9 +7,10 @@ import {
 
 type AntAmountProps = {
   amount: string
+  version: 'v1' | 'v2'
 }
 
-function AntAmount({ amount, ...props }: AntAmountProps): JSX.Element {
+function AntAmount({ amount, version, ...props }: AntAmountProps): JSX.Element {
   const theme = useTheme()
 
   return (
@@ -35,7 +36,7 @@ function AntAmount({ amount, ...props }: AntAmountProps): JSX.Element {
           margin-left: ${0.75 * GU}px;
         `}
       >
-        ANT
+        ANT{version}
       </span>
     </span>
   )

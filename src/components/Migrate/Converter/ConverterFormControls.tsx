@@ -106,12 +106,12 @@ function ConverterFormControls({
             margin-bottom: ${1 * GU}px;
           `}
         >
-          Enter the amount you would like to convert
+          Enter the amount you would like to upgrade
         </h3>
 
         <TextInput
           wide
-          placeholder={`0.0 ${tokenSymbol} v1`}
+          placeholder={`0.0 ${tokenSymbol}v1`}
           value={amount}
           onChange={handleAmountChange}
           css={`
@@ -164,7 +164,7 @@ function ConverterFormControls({
         >
           {formattedAmount}
         </span>{' '}
-        {tokenSymbol} v2
+        {tokenSymbol}v2
       </p>
       <Info
         css={`
@@ -183,7 +183,7 @@ function ConverterFormControls({
           `}
         >
           {' '}
-          Review {tokenSymbol} v2 token contract{' '}
+          Review {tokenSymbol}v2 token contract{' '}
           <IconExternal
             size="small"
             css={`
@@ -225,7 +225,7 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
       }
 
       if (!antTokenV1Contract) {
-        throw new Error('The ANT v1 token contract is not defined!')
+        throw new Error('The ANTv1 token contract is not defined!')
       }
 
       setAllowanceCheckLoading(true)
