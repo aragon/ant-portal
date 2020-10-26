@@ -117,7 +117,7 @@ function Item({ title, description }: ItemProps): JSX.Element {
                         font-size: 18px;
                         p,
                         ul {
-                          margin-bottom: ${1 * GU}px;
+                          margin-bottom: ${1.5 * GU}px;
                         }
                       `}
                     >

@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 // @ts-ignore
-import { IdentityBadge, GU, Link } from '@aragon/ui'
+import { GU, Link } from '@aragon/ui'
 import { fontWeight } from '../../style/font'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import Faq from './Faq'
@@ -39,17 +39,15 @@ const FAQS_ITEMS: [string, ReactNode][] = [
       </p>
       <p>
         ANTv1 address:{' '}
-        <IdentityBadge
-          compact
-          entity="0x960b236A07cf122663c4303350609A66A7B288C0"
-        />{' '}
+        <Link href="https://etherscan.io/address/0xa117000000f279D81A1D3cc75430fAA017FA5A2e">
+          0x960b236A07cf122663c4303350609A66A7B288C0
+        </Link>{' '}
       </p>
       <p>
         ANTv2 address:{' '}
-        <IdentityBadge
-          compact
-          entity="0xa117000000f279D81A1D3cc75430fAA017FA5A2e"
-        />
+        <Link href="https://etherscan.io/address/0xa117000000f279D81A1D3cc75430fAA017FA5A2e">
+          0xa117000000f279D81A1D3cc75430fAA017FA5A2e
+        </Link>
       </p>
     </>,
   ],
