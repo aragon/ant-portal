@@ -1,21 +1,30 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useCallback } from 'react'
 // @ts-ignore
 import { GU, Link, useTheme, useLayout } from '@aragon/ui'
 import FooterLogo from './FooterLogo'
 import LayoutGutter from '../Layout/LayoutGutter'
 import LayoutLimiter from '../Layout/LayoutLimiter'
+import { useHistory, useLocation } from 'react-router-dom'
+import { DISCLAIMER_PATH } from '../../Routes'
 
 // TODO: Double check these are accurate
-const RESOURCES_URL = 'https://hack.aragon.org/'
+const DOCS_URL = 'https://hack.aragon.org/'
 const COMMUNITY_URL = 'https://aragon.org/community'
-const LEGAL_URL = 'https://aragon.org/terms-and-conditions'
 
 const ARAGON_WEBSITE_URL = 'https://aragon.org'
 
 function Footer(): JSX.Element {
+  const location = useLocation()
+  const history = useHistory()
   const theme = useTheme()
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
+
+  const handleDisclaimerClick = useCallback(() => {
+    if (location.pathname !== DISCLAIMER_PATH) {
+      history.push(DISCLAIMER_PATH)
+    }
+  }, [location.pathname, history])
 
   return (
     <footer>
@@ -41,9 +50,11 @@ function Footer(): JSX.Element {
                 margin-bottom: ${compactMode ? 2 * GU : `0`}px;
               `}
             >
-              <FooterLink href={RESOURCES_URL}>Resources</FooterLink>
+              <FooterLink href={DOCS_URL}>Documentation</FooterLink>
+              <FooterLink onClick={handleDisclaimerClick}>
+                Disclaimer
+              </FooterLink>
               <FooterLink href={COMMUNITY_URL}>Community</FooterLink>
-              <FooterLink href={LEGAL_URL}>Legal terms</FooterLink>
             </div>
             <Link href={ARAGON_WEBSITE_URL}>
               <FooterLogo />
@@ -56,11 +67,12 @@ function Footer(): JSX.Element {
 }
 
 type FooterLinkProps = {
-  href: string
+  href?: string
   children?: ReactNode
+  onClick?: () => void
 }
 
-function FooterLink({ href, children }: FooterLinkProps): JSX.Element {
+function FooterLink({ href, children, onClick }: FooterLinkProps): JSX.Element {
   const theme = useTheme()
 
   return (
@@ -74,6 +86,7 @@ function FooterLink({ href, children }: FooterLinkProps): JSX.Element {
         }
       `}
       href={href}
+      onClick={onClick && onClick}
     >
       {children}
     </Link>

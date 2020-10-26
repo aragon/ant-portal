@@ -21,16 +21,19 @@ function Migrate({ conversionType }: MigrateProps): JSX.Element {
 
 function MigrateContent() {
   return (
-    <AnimateEntrance>
+    <AnimateEntrance
+      css={`
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        flex: 1;
+      `}
+    >
       <LayoutGutter
         css={`
           padding-top: ${7 * GU}px;
           padding-bottom: ${10 * GU}px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 100%;
-          flex: 1;
         `}
       >
         <div
