@@ -25,7 +25,7 @@ type BalanceStatus =
 const MESSAGES: Record<BalanceStatus, ReactNode> = {
   default: (
     <>
-      Use Aragon Upgrade system to upgrade your ANT balance to the newest
+      Use Aragon Upgrade Portal to upgrade your ANT balance to the newest
       version of the token contract. Connect your wallet to view the available
       upgrades on your&nbsp;account.
     </>
@@ -46,7 +46,7 @@ const MESSAGES: Record<BalanceStatus, ReactNode> = {
         🎊
       </span>{' '}
       You have upgraded all your ANTv1 balance to ANTv2. This account doesn’t
-      hold any more ANTv1. You can continue to upgrade ANT held in a
+      hold any more ANTv1. You can continue to upgrade ANTv1 held in a
       different&nbsp;account.
     </>
   ),

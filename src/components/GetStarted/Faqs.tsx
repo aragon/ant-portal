@@ -50,7 +50,7 @@ const FAQS_ITEMS: [string, ReactNode][] = [
     </>,
   ],
   [
-    'Why should I migrate my ANT?',
+    'Why should I upgrade my ANT?',
     <>
       <p>
         ANTv2 is not a different token, but just a new version of ANT. If you
@@ -84,7 +84,7 @@ const FAQS_ITEMS: [string, ReactNode][] = [
     </>,
   ],
   [
-    'For how long will this migration last?',
+    'For how long will this upgrade last?',
     <p>
       Users will be able to use the Upgrade Portal as many times as they’d like.
       It will be continually supported going forward, ensuring that tokenholders
@@ -107,8 +107,11 @@ const FAQS_ITEMS: [string, ReactNode][] = [
         own wallets in just a few clicks.
       </p>
       <p>
-        If you have ANT in major exchanges supporting the upgrade, including
-        Binance, Huobi and OKEx, your ANT will be upgraded automatically.
+        If you have ANT in major exchanges supporting the upgrade, including{' '}
+        <Link href="https://www.binance.com/">Binance</Link>,{' '}
+        <Link href="https://www.huobi.com/">Huobi</Link> and{' '}
+        <Link href="https://www.okex.com/">OKEx</Link>, your ANT will be
+        upgraded automatically.
       </p>
 
       <p>
