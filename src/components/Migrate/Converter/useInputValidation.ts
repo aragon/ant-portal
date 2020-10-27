@@ -24,6 +24,7 @@ function useInputValidation(amount: string): InputValidationReturn {
 
   const maxAmount = useMemo((): string => {
     return new TokenAmount(balance?.toString() || '', decimals).format({
+      commify: false,
       digits: decimals,
     })
   }, [balance, decimals])
