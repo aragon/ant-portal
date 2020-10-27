@@ -25,10 +25,10 @@ const FAQS_ITEMS: [string, ReactNode][] = [
         , that logic is not needed anymore.
       </p>
       <p>
-        Switching to a new, simpler token will make ANT transactions 3x cheaper
-        — lowering the barrier to entry and making it a better token to use.
-        ANTv2 will also support gas-less transactions, enabling service
-        operators (and delegated hot wallets) to pay for their users’ gas.
+        Switching to a new, simpler token makes ANT transactions 66% cheaper —
+        lowering the barrier to entry and making it a better token to use. ANTv2
+        will also support gas-less transactions, enabling service operators (and
+        delegated hot wallets) to pay for their users’ gas.
       </p>
       <p>
         Further documentation about ANT token contract is available at{' '}
@@ -95,8 +95,8 @@ const FAQS_ITEMS: [string, ReactNode][] = [
   [
     'What is the conversion rate?',
     <p>
-      The conversion rate is fixed at 1:1, this means that you will get 1 ANTv2
-      for every ANTv1 you upgrade.
+      The conversion rate is fixed at 1:1, this means that you will get one
+      ANTv2 for every ANTv1 you upgrade.
     </p>,
   ],
   [
