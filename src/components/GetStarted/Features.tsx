@@ -47,7 +47,7 @@ function Features({
             `}
           >
             It’s time for ANT to get an upgrade! Switching to a newer, simpler
-            token contract will make transactions 3x cheaper and support
+            token contract makes ANT transactions 66% cheaper and support
             gasless&nbsp;transfers.
           </p>
           <Link
