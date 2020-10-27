@@ -49,15 +49,21 @@ function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
 
   const stackColumns = layoutName === 'small' || layoutName === 'medium'
 
-  const percentageOfUpgraded = useMemo(
-    () =>
-      `${getUpgradedPercentage(
-        antV2MigratedAmount,
-        antV2TotalSupply,
-        decimals
-      )}%`,
-    [antV2MigratedAmount, antV2TotalSupply, decimals]
-  )
+  const percentageOfUpgraded = useMemo(() => {
+    const percentage = getUpgradedPercentage(
+      antV2MigratedAmount,
+      antV2TotalSupply,
+      decimals
+    )
+
+    return percentage
+      ? `${getUpgradedPercentage(
+          antV2MigratedAmount,
+          antV2TotalSupply,
+          decimals
+        )}%`
+      : null
+  }, [antV2MigratedAmount, antV2TotalSupply, decimals])
 
   // TODO: Look at a dynamic solution?
   const staticCirculatingSupply = useMemo(
