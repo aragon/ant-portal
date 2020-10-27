@@ -25,14 +25,14 @@ type BalanceStatus =
 const MESSAGES: Record<BalanceStatus, ReactNode> = {
   default: (
     <>
-      Use Aragon Upgrade Portal to upgrade your ANT balance to the newest
+      Use the ANT Upgrade Portal to upgrade your ANT balance to the newest
       version of the token contract. Connect your wallet to view the available
       upgrades on your&nbsp;account.
     </>
   ),
   accountEnabled: (
     <>
-      Use Aragon Upgrade Portal to upgrade your ANT balance to the newest
+      Use the ANT Upgrade Portal to upgrade your ANT balance to the newest
       version of the token&nbsp;contract.
     </>
   ),
@@ -155,7 +155,7 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
             margin-bottom: ${1 * GU}px;
           `}
         >
-          Aragon Upgrade
+          ANT Upgrade Portal
         </h3>
         <h1
           css={`
