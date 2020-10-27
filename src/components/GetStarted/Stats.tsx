@@ -10,8 +10,31 @@ import antTokenSvg from '../../assets/stat-ant-token.svg'
 import marketCapSvg from '../../assets/stat-market-cap.svg'
 import { useAccountBalances } from '../../providers/AccountBalances'
 import { formatAmountToUsd, parseUnits } from '../../utils/math-utils'
+import { BigNumber } from 'ethers'
 
 const API_REFERENCE_URL = 'https://0x.org/api'
+
+function getUpgradedPercentage(
+  upgradedAmountBn: BigNumber | null,
+  totalAmountBn: BigNumber | null,
+  decimals: number
+) {
+  if (!upgradedAmountBn || !totalAmountBn) {
+    return null
+  }
+
+  const upgradedAmount = new TokenAmount(upgradedAmountBn, decimals).format({
+    commify: false,
+    digits: decimals,
+  })
+
+  const totalAmount = new TokenAmount(totalAmountBn, decimals).format({
+    commify: false,
+    digits: decimals,
+  })
+
+  return ((Number(upgradedAmount) / Number(totalAmount)) * 100).toFixed(2)
+}
 
 function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
   const { layoutName } = useLayout()
@@ -26,19 +49,20 @@ function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
 
   const stackColumns = layoutName === 'small' || layoutName === 'medium'
 
+  const percentageOfUpgraded = useMemo(
+    () =>
+      `${getUpgradedPercentage(
+        antV2MigratedAmount,
+        antV2TotalSupply,
+        decimals
+      )}%`,
+    [antV2MigratedAmount, antV2TotalSupply, decimals]
+  )
+
   // TODO: Look at a dynamic solution?
   const staticCirculatingSupply = useMemo(
     () => parseUnits('34611262.420382165605096', decimals),
     [decimals]
-  )
-
-  const formattedTotalSupply = useMemo(
-    (): string | null =>
-      antV2MigratedAmount &&
-      new TokenAmount(antV2MigratedAmount, decimals).format({
-        digits: 2,
-      }),
-    [antV2MigratedAmount, decimals]
   )
 
   const formattedMarketCap = useMemo(() => {
@@ -61,8 +85,8 @@ function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
       {
         title: 'Upgraded ANT',
         graphic: totalSupplySvg,
-        value: formattedTotalSupply,
-        desc: 'Total amount of ANT that has been upgraded to ANTv2.',
+        value: percentageOfUpgraded,
+        desc: 'Percentage of total ANT supply that has been upgraded to ANTv2.',
       },
       {
         title: 'ANT Price',
@@ -90,7 +114,7 @@ function Stats({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
         desc: 'Value of all ANT in circulation.',
       },
     ],
-    [formattedTotalSupply, formattedPrice, formattedMarketCap]
+    [percentageOfUpgraded, formattedPrice, formattedMarketCap]
   )
 
   return (
