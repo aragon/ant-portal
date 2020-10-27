@@ -76,7 +76,7 @@ const FAQS_ITEMS: [string, ReactNode][] = [
           lasting two weeks
         </li>
         <li>
-          Voting on bootstrapping the a new governance process for the Aragon
+          Voting on bootstrapping a new governance process for the Aragon
           Network
         </li>
       </ul>
