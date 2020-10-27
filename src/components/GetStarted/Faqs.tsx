@@ -27,7 +27,7 @@ const FAQS_ITEMS: [string, ReactNode][] = [
       <p>
         Switching to a new, simpler token makes ANT transactions 66% cheaper —
         lowering the barrier to entry and making it a better token to use. ANTv2
-        will also support gas-less transactions, enabling service operators (and
+        will also support gasless transactions, enabling service operators (and
         delegated hot wallets) to pay for their users’ gas.
       </p>
       <p>
