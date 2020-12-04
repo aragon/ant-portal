@@ -107,12 +107,13 @@ function ProviderButton({ id, provider, onActivate }: ProviderButtonProps) {
         src={provider.image}
         alt=""
         css={`
-          height: ${3.5 * GU}px;
+          height: ${3.75 * GU}px;
+          height: ${3.75 * GU}px;
         `}
       />
       <div
         css={`
-          margin-left: ${1.5 * GU}px;
+          margin-left: ${1.25 * GU}px;
           ${textStyle('body1')};
           font-weight: ${fontWeight.medium};
           line-height: 1;
