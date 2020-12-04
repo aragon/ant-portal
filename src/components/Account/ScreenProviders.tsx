@@ -108,7 +108,7 @@ function ProviderButton({ id, provider, onActivate }: ProviderButtonProps) {
         alt=""
         css={`
           height: ${3.75 * GU}px;
-          height: ${3.75 * GU}px;
+          width: ${3.75 * GU}px;
         `}
       />
       <div
