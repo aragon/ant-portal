@@ -224,6 +224,7 @@ function useActivity(): {
     return activities.reduce((count, { read }) => count + Number(!read), 0)
   }, [activities])
 
+  // Determine whether there are any pending activities in the list
   const hasPending = useMemo(() => {
     return activities.some(({ status }) => status === 'pending')
   }, [activities])

@@ -3,8 +3,6 @@ class StoredList<T> {
   items
 
   // name: the key used by StoredList to save the list in localStorage.
-  // preStringify: use this to transform an item of the list before being saved.
-  // postParse: use this to transform an item of the list after it got loaded.
   constructor(name: string) {
     this.name = name
     this.items = this.loadItems()
