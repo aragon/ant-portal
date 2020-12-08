@@ -40,8 +40,7 @@ function AccountModal({
   direction,
 }: AccountModalProps): JSX.Element {
   const [animate, setAnimate] = useState(false)
-  const [height, setHeight] = useState(30 * GU)
-  const [measuredHeight, setMeasuredHeight] = useState(true)
+  const [contentHeight, setHeight] = useState(30 * GU)
 
   // Prevents to lose the focus on the popover when a screen leaves while an
   // element inside is focused (e.g. when clicking on the “disconnect” button).
@@ -90,14 +89,20 @@ function AccountModal({
           native
           config={springs.smooth}
           from={{ height: 32 * GU }}
-          to={{ height }}
+          to={{ height: contentHeight }}
           immediate={!animate}
         >
           {({ height }) => (
             <AnimatedDiv
               ref={popoverFocusElement}
               tabIndex={0}
-              style={{ height: measuredHeight ? height : 'auto' }}
+              style={{
+                // Current spring version has misaligned typings on 'interpolate'
+                // @ts-ignore
+                height: height.interpolate((h) =>
+                  h !== contentHeight ? `${h}px` : 'auto'
+                ),
+              }}
               css={`
                 position: relative;
                 flex-grow: 1;
@@ -122,26 +127,24 @@ function AccountModal({
                 enter={{ opacity: 1, transform: `translate3d(0, 0, 0)` }}
                 leave={{
                   opacity: 0,
+                  position: 'absolute' as const,
                   transform: `translate3d(${3 * GU * -direction}px, 0, 0)`,
                 }}
                 immediate={!animate}
-                onStart={() => {
-                  setMeasuredHeight(true)
-                }}
               >
-                {(screenData) => ({ opacity, transform }) => (
+                {(screenData) => ({ opacity, transform, position }) => (
                   <AnimatedDiv
                     ref={(elt) => {
                       if (elt) {
                         setHeight(elt.clientHeight)
                       }
                     }}
-                    style={{ opacity, transform }}
+                    style={{ opacity, transform, position }}
                     css={`
-                      position: ${measuredHeight ? 'absolute' : 'static'};
                       top: 0;
                       left: 0;
                       right: 0;
+                      width: 100%;
                     `}
                   >
                     {children(screenData)}
