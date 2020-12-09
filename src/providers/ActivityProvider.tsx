@@ -21,7 +21,7 @@ const networkType = networkEnvironment.legacyNetworkType
 
 type Status = 'confirmed' | 'failed' | 'pending' | 'timeout'
 
-type ActionType = 'convertANT'
+type ActionType = 'upgradeANT' | 'approveANT'
 
 type Activity = {
   createdAt: number

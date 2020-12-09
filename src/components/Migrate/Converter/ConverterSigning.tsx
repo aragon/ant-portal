@@ -2,6 +2,8 @@ import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 // @ts-ignore
 import { useLayout, GU } from '@aragon/ui'
+// @ts-ignore
+import TokenAmount from 'token-amount'
 import BrandButton from '../../BrandButton/BrandButton'
 import Stepper from '../../Stepper/Stepper'
 import { getMockSteps } from '../../../mock'
@@ -16,6 +18,8 @@ import { useMigrateState } from '../MigrateStateProvider'
 import { useWallet } from '../../../providers/Wallet'
 import { ContractTransaction } from 'ethers'
 import PageHeading from '../../PageHeading/PageHeading'
+import { useActivity } from '../../../providers/ActivityProvider'
+import { useAccountBalances } from '../../../providers/AccountBalances'
 
 const { contracts } = networkEnvironment
 
@@ -26,10 +30,12 @@ type ConverterSigningProps = {
 function ConverterSigning({
   mockSigningSteps,
 }: ConverterSigningProps): JSX.Element {
+  const { addActivity } = useActivity()
   const history = useHistory()
   const { layoutName } = useLayout()
   const { account } = useWallet()
   const { convertAmount, goToForm, signingConfiguration } = useMigrateState()
+  const { antV1 } = useAccountBalances()
   const antTokenV1Contract = useAntTokenV1Contract()
   const migratorContract = useMigratorContract()
   const stackedButtons = layoutName === 'small'
@@ -63,6 +69,24 @@ function ConverterSigning({
     signingConfiguration,
   ])
 
+  const addUpgradeActivity = useCallback(
+    (tx) => {
+      const formattedAmount = new TokenAmount(
+        convertAmount,
+        antV1.decimals
+      ).format({
+        digits: antV1.decimals,
+      })
+
+      addActivity(
+        tx,
+        'upgradeANT',
+        `Upgrade ${formattedAmount} ANTv1 to ${formattedAmount} ANTv2`
+      )
+    },
+    [addActivity, convertAmount, antV1.decimals]
+  )
+
   const transactionSteps = useMemo(() => {
     const steps = [
       {
@@ -90,7 +114,11 @@ function ConverterSigning({
 
             const tx = await migrationContractInteraction()
 
-            setHash(tx ? tx.hash : '')
+            if (tx) {
+              addUpgradeActivity(tx)
+              setHash(tx.hash)
+            }
+
             setSuccess()
           } catch (err) {
             console.error(err)
@@ -124,9 +152,12 @@ function ConverterSigning({
               '0'
             )
 
-            setWorking()
+            if (tx) {
+              addActivity(tx, 'approveANT', 'Approve ANTv1 spend')
+              setHash(tx.hash)
+            }
 
-            setHash(tx ? tx.hash : '')
+            setWorking()
 
             // We must wait for the approval tx to be mined before the next migration
             // step can verify as valid
@@ -147,6 +178,8 @@ function ConverterSigning({
     convertAmount,
     signingConfiguration,
     migrationContractInteraction,
+    addActivity,
+    addUpgradeActivity,
   ])
   return (
     <>
