@@ -6,8 +6,11 @@ import { networkEnvironment } from '../environment'
 
 const { legacyNetworkType } = networkEnvironment
 
-export function getEtherscanUrl(address: string): string {
-  return blockExplorerUrl('address', address, {
+export function getEtherscanUrl(
+  address: string,
+  type: 'address' | 'transaction' | 'token' = 'address'
+): string {
+  return blockExplorerUrl(type, address, {
     networkType: legacyNetworkType,
   })
 }
