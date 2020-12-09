@@ -200,6 +200,7 @@ ActivityProvider.propTypes = {
 function useActivity(): {
   activities: Activities
   unreadCount: number
+  pendingCount: number
   hasPending: boolean
   markActivitiesRead: () => void
   addActivity: (
@@ -224,10 +225,18 @@ function useActivity(): {
     return activities.reduce((count, { read }) => count + Number(!read), 0)
   }, [activities])
 
+  // Total number of pending activities
+  const pendingCount = useMemo(() => {
+    return activities.reduce(
+      (count, { status }) => count + Number(status === 'pending'),
+      0
+    )
+  }, [activities])
+
   // Determine whether there are any pending activities in the list
   const hasPending = useMemo(() => {
-    return activities.some(({ status }) => status === 'pending')
-  }, [activities])
+    return pendingCount > 0
+  }, [pendingCount])
 
   // Add a single activity.
   const addActivity = useCallback(
@@ -278,6 +287,7 @@ function useActivity(): {
     clearActivities,
     removeActivity,
     hasPending,
+    pendingCount,
   }
 }
 
