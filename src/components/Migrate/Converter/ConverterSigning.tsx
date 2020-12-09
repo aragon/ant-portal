@@ -18,7 +18,7 @@ import { useMigrateState } from '../MigrateStateProvider'
 import { useWallet } from '../../../providers/Wallet'
 import { ContractTransaction } from 'ethers'
 import PageHeading from '../../PageHeading/PageHeading'
-import { useActivity } from '../../../providers/ActivityProvider'
+import { useActivity } from '../../Activity/ActivityProvider'
 import { useAccountBalances } from '../../../providers/AccountBalances'
 
 const { contracts } = networkEnvironment

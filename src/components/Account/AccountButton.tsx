@@ -11,7 +11,7 @@ import { useWallet } from '../../providers/Wallet'
 import { shortenAddress } from '../../lib/web3-utils'
 import BrandButton from '../BrandButton/BrandButton'
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'
-import { useActivity } from '../../providers/ActivityProvider'
+import { useActivity } from '../Activity/ActivityProvider'
 
 type AccountButtonProps = {
   onClick: () => void

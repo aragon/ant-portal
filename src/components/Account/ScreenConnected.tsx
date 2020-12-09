@@ -15,7 +15,7 @@ import { networkEnvironment } from '../../environment'
 import { getProviderFromUseWalletId } from './ethereum-providers'
 import { useCopyToClipboard } from '../../hooks/useCopyToClipboard'
 import { useWallet } from '../../providers/Wallet'
-import ActivityList from './ActivityList'
+import ActivityList from '../Activity/ActivityList'
 
 function ScreenConnected(): JSX.Element {
   const {
