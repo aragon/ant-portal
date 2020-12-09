@@ -4,14 +4,17 @@ import {
   IconCheck,
   IconCross,
   IconClock,
+  IconExternal,
   ButtonBase,
   useTheme,
+  Link,
   // @ts-ignore
 } from '@aragon/ui'
 import { useActivity } from '../../providers/ActivityProvider'
 import { fontWeight } from '../../style/font'
 import { radius } from '../../style/radius'
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'
+import { getEtherscanUrl } from '../../utils/etherscan'
 
 function ActivityList({
   ...props
@@ -70,43 +73,66 @@ function ActivityList({
               list-style: none;
             `}
           >
-            {sortedActivites.map(({ description, status }, i) => {
-              return (
-                <li
-                  key={i}
-                  css={`
-                    display: flex;
-                    justify-content: space-between;
-                    color: ${theme.contentSecondary};
-                    font-size: 14px;
-
-                    &:not(:last-child) {
-                      margin-bottom: ${0.75 * GU}px;
-                    }
-                  `}
-                >
-                  {description}
-
-                  <div
+            {sortedActivites.map(
+              ({ description, status, transactionHash }, i) => {
+                return (
+                  <li
+                    key={i}
                     css={`
-                      margin-top: 0.25em;
+                      display: flex;
+                      justify-content: space-between;
+                      color: ${theme.contentSecondary};
+                      font-size: 14px;
+
+                      &:not(:last-child) {
+                        margin-bottom: ${0.75 * GU}px;
+                      }
                     `}
                   >
-                    {status === 'pending' ? (
-                      <LoadingSpinner
+                    <Link
+                      href={getEtherscanUrl(transactionHash, 'transaction')}
+                      css={`
+                        text-align: left;
+                        white-space: initial;
+                        word-break: break-word;
+                        display: inline-flex;
+                      `}
+                    >
+                      {description}
+
+                      <IconExternal
                         css={`
-                          color: ${theme.accent};
-                          width: 1.1em;
-                          height: 1.1em;
+                          width: 1.5em;
+                          height: 1.5em;
+                          flex-shrink: 0;
+
+                          margin-left: ${0.75 * GU}px;
+                          margin-right: ${3 * GU}px;
                         `}
                       />
-                    ) : (
-                      <ActivityStatusIcon status={status} />
-                    )}
-                  </div>
-                </li>
-              )
-            })}
+                    </Link>
+
+                    <div
+                      css={`
+                        margin-top: 0.25em;
+                      `}
+                    >
+                      {status === 'pending' ? (
+                        <LoadingSpinner
+                          css={`
+                            color: ${theme.accent};
+                            width: 1.1em;
+                            height: 1.1em;
+                          `}
+                        />
+                      ) : (
+                        <ActivityStatusIcon status={status} />
+                      )}
+                    </div>
+                  </li>
+                )
+              }
+            )}
           </ul>
         </>
       ) : (
