@@ -18,7 +18,6 @@ type AccountButtonProps = {
 function AccountButton({ onClick }: AccountButtonProps): JSX.Element {
   const theme = useTheme()
   const { account } = useWallet()
-
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
 

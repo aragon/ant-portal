@@ -6,8 +6,10 @@ import { networkEnvironment } from '../environment'
 import { getUseWalletConnectors } from '../components/Account/ethereum-providers'
 import { WalletWithProvider } from '../components/Account/types'
 
+export type Web3Provider = EthersProviders.Web3Provider
+
 type WalletContext = {
-  ethers: EthersProviders.Web3Provider | null
+  ethers: Web3Provider | null
 } & WalletWithProvider
 
 const WalletAugmentedContext = React.createContext<WalletContext | null>(null)
