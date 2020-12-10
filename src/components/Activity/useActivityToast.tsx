@@ -1,10 +1,17 @@
 import React from 'react'
 import { useCallback } from 'react'
-// @ts-ignore
-import { useToast, ButtonBase, GU } from '@aragon/ui'
-import { Activity, ActivityActionType, ActivityFinalStatus } from './types'
+import {
+  useToast,
+  IconExternal,
+  Link,
+  useTheme,
+  GU,
+  // @ts-ignore
+} from '@aragon/ui'
+import { ActivityActionType, ActivityFinalStatus } from './types'
 import ActivityStatusIcon from './ActivityStatusIcon'
 import { fontWeight } from '../../style/font'
+import { getEtherscanUrl } from '../../utils/etherscan'
 
 const DESCRIPTIONS: Record<
   ActivityActionType,
@@ -23,44 +30,82 @@ const DESCRIPTIONS: Record<
 }
 
 export function useActivityToast(): (
-  activity: Activity,
+  hash: string,
+  activityType: ActivityActionType,
   status: ActivityFinalStatus
 ) => void {
-  const summonToast = useToast()
+  const theme = useTheme()
+  const showToast = useToast()
 
   return useCallback(
-    (activity: Activity, status: ActivityFinalStatus) => {
-      const description = DESCRIPTIONS[activity.type][status]
+    (
+      hash: string,
+      activityType: ActivityActionType,
+      status: ActivityFinalStatus
+    ) => {
+      const description = DESCRIPTIONS[activityType][status]
 
-      summonToast(
-        <ButtonBase
+      showToast(
+        <Link
+          href={getEtherscanUrl(hash, 'transaction')}
           css={`
             display: flex;
-            justify-content: space-between;
             width: 100%;
             text-align: left;
             font-weight: ${fontWeight.medium};
+            text-decoration: none;
           `}
         >
-          <span
-            css={`
-              position: relative;
-              overflow: hidden;
-              flex: 1;
-              margin-right: ${2 * GU}px;
-            `}
-          >
-            {description}
-          </span>
           <ActivityStatusIcon
             status={status}
             css={`
+              position: relative;
+              top: 3px;
               flex-shrink: 0;
             `}
           />
-        </ButtonBase>
+          <span
+            css={`
+              display: block;
+              margin-left: ${1.75 * GU}px;
+              flex: 1;
+              min-width: 0px;
+            `}
+          >
+            <span
+              css={`
+                display: block;
+                position: relative;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                margin-bottom: ${0.25 * GU}px;
+
+                color: ${theme.surface};
+              `}
+            >
+              {description}
+            </span>
+            <span
+              css={`
+                display: flex;
+                align-items: center;
+                color: ${theme.surfaceIcon};
+              `}
+            >
+              View on Etherscan{' '}
+              <IconExternal
+                css={`
+                  margin-left: ${0.5 * GU}px;
+                  width: 1.25em;
+                  height: 1.25em;
+                `}
+              />
+            </span>
+          </span>
+        </Link>
       )
     },
-    [summonToast]
+    [showToast, theme]
   )
 }

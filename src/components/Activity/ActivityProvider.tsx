@@ -156,7 +156,7 @@ function ActivityProvider({ children }: { children: ReactNode }): JSX.Element {
         const status = await getActivityFinalStatus(ethers, activity)
 
         if (!cancelled && status !== activity.status) {
-          showActivityToast(activity, status)
+          showActivityToast(activity.transactionHash, activity.type, status)
           updateActivityStatus(activity.transactionHash, status)
         }
       })
