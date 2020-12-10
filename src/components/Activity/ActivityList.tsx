@@ -31,6 +31,8 @@ function ActivityList({
         padding: ${3 * GU}px;
         border-radius: ${radius.medium};
         border: 1px solid ${theme.border};
+        overflow-y: auto;
+        max-height: ${30 * GU}px;
       `}
       {...props}
     >
@@ -83,7 +85,7 @@ function ActivityList({
                       font-size: 14px;
 
                       &:not(:last-child) {
-                        margin-bottom: ${0.75 * GU}px;
+                        margin-bottom: ${1 * GU}px;
                       }
                     `}
                   >
@@ -94,17 +96,20 @@ function ActivityList({
                         white-space: initial;
                         word-break: break-word;
                         display: inline-flex;
+                        /* text-decoration: none; */
                       `}
                     >
                       {description}
 
                       <IconExternal
                         css={`
-                          width: 1.5em;
-                          height: 1.5em;
+                          position: relative;
+                          top: 3px;
+                          width: 1.1em;
+                          height: 1.1em;
                           flex-shrink: 0;
 
-                          margin-left: ${0.75 * GU}px;
+                          margin-left: ${0.5 * GU}px;
                           margin-right: ${3 * GU}px;
                         `}
                       />
