@@ -12,9 +12,6 @@ function CustomToast({ children }: { children: ReactNode }): JSX.Element {
       css={`
         // Toast spacing element
         > div {
-          // We must re-enable pointer events as some of our toasts contain clickable elements
-          pointer-events: auto;
-
           // Toast inner element
           > div {
             position: relative;

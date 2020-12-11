@@ -49,6 +49,8 @@ export function useActivityToast(): (
         <Link
           href={getEtherscanUrl(hash, 'transaction')}
           css={`
+            // We must re-enable pointer events on this child element as the parent disables it
+            pointer-events: auto;
             display: flex;
             width: 100%;
             text-align: left;
