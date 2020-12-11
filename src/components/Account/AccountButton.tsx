@@ -52,7 +52,7 @@ function TransactionsPending(): JSX.Element {
           color: ${theme.accent};
         `}
       />
-      {pendingCount} Pending
+      {pendingCount} Tx Pending
     </>
   )
 }
