@@ -7,7 +7,7 @@ import { radius } from '../style/radius'
 function CustomToast({ children }: { children: ReactNode }): JSX.Element {
   return (
     <ToastHub
-      timeout={4000}
+      timeout={6000}
       showIndicator
       css={`
         // Toast spacing element
