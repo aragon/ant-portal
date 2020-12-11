@@ -175,10 +175,13 @@ function ActivityProvider({ children }: { children: ReactNode }): JSX.Element {
     showActivityToast,
   ])
 
-  const contextValue = {
-    activities,
-    updateActivities,
-  }
+  const contextValue = useMemo(
+    () => ({
+      activities,
+      updateActivities,
+    }),
+    [activities, updateActivities]
+  )
 
   return (
     <ActivityContext.Provider value={contextValue}>
@@ -274,7 +277,7 @@ function useActivity(): {
     [updateActivities]
   )
 
-  // Clear a single activity
+  // Get single activity via transaction hash
   const getActivityByHash = useCallback(
     (hash: string) =>
       activities.find(({ transactionHash }) => transactionHash === hash) ||

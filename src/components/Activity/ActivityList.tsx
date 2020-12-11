@@ -96,7 +96,7 @@ function ActivityList({
                         white-space: initial;
                         word-break: break-word;
                         display: inline-flex;
-                        /* text-decoration: none; */
+                        text-decoration: none;
                       `}
                     >
                       {description}

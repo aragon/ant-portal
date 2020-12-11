@@ -16,22 +16,19 @@ function ActivityStatusIcon({
 }): JSX.Element {
   const theme = useTheme()
 
-  const { icon, color, title } = useMemo(() => {
+  const { icon, color } = useMemo(() => {
     const iconPresentation = {
       confirmed: {
         icon: <IconCheck />,
         color: theme.positive,
-        title: 'Transaction confirmed',
       },
       failed: {
         icon: <IconCross />,
         color: theme.negative,
-        title: 'Transaction failed',
       },
       timeout: {
         icon: <IconClock />,
         color: theme.warning,
-        title: 'Transaction is taking a long time',
       },
     }
 
@@ -59,7 +56,6 @@ function ActivityStatusIcon({
           color: ${color};
         }
       `}
-      title={title}
       {...props}
     >
       {icon}
