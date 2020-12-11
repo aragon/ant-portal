@@ -1,5 +1,4 @@
 import { utils as EthersUtils, BigNumber } from 'ethers'
-// @ts-ignore
 import TokenAmount from 'token-amount'
 
 export function bigNum(value: string | number): BigNumber {
