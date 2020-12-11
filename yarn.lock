@@ -9348,7 +9348,7 @@ js-yaml@^3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-jsbi@^3.1.1, jsbi@^3.1.2:
+jsbi@^3.1.1, jsbi@^3.1.2, jsbi@^3.1.4:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-3.1.4.tgz#9654dd02207a66a4911b4e4bb74265bc2cbc9dd0"
   integrity sha512-52QRRFSsi9impURE8ZUbzAMCLjPm4THO7H2fcuIvaaeFTbSysvkodbQQXIVsNgq/ypDbq6dJiuGKL0vZ/i9hUg==
@@ -14239,12 +14239,12 @@ token-amount@^0.1.0:
   dependencies:
     jsbi "^3.1.1"
 
-token-amount@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/token-amount/-/token-amount-0.2.0.tgz#eade9de6a95169f6ac2273c9517c9ccd20a47bc8"
-  integrity sha512-hr5fkLLRcDP98fohAZGtgm/zYK/HclnSNbvM6RHkk94iwBcrlmUSpFQxpXqdmU+seWYlc9pHDalj0fFpRXfWtg==
+token-amount@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/token-amount/-/token-amount-0.3.0.tgz#0ab93000a26ebe364aee30ec7ec6bc92a043bc25"
+  integrity sha512-T9dCmen36//NFhoKoGLG/7m3pcxgG7JYc5rh24hMOHmMLLyDWsLkpXaMGZes3TOZiNW/tsfK9wGp6ZjfKVJE7g==
   dependencies:
-    jsbi "^3.1.1"
+    jsbi "^3.1.4"
 
 tough-cookie@^2.3.3, tough-cookie@^2.3.4, tough-cookie@^2.5.0, tough-cookie@~2.5.0:
   version "2.5.0"
