@@ -14,14 +14,14 @@ function GetStarted(): JSX.Element {
   const isMobile = useDetectMobileDevice()
 
   return (
-    <LayoutGutter>
-      <AnimateEntrance>
-        <div
-          css={`
-            padding-top: ${7 * GU}px;
-            padding-bottom: ${24 * GU}px;
-          `}
-        >
+    <AnimateEntrance>
+      <div
+        css={`
+          padding-top: ${7 * GU}px;
+          padding-bottom: ${24 * GU}px;
+        `}
+      >
+        <LayoutGutter>
           <Header />
           {isMobile && (
             <Info
@@ -55,9 +55,9 @@ function GetStarted(): JSX.Element {
             `}
           />
           <Faqs />
-        </div>
-      </AnimateEntrance>
-    </LayoutGutter>
+        </LayoutGutter>
+      </div>
+    </AnimateEntrance>
   )
 }
 
