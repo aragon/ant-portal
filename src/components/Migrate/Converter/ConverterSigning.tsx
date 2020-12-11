@@ -71,7 +71,7 @@ function ConverterSigning({
   const addUpgradeActivity = useCallback(
     (tx) => {
       const formattedAmount = new TokenAmount(
-        convertAmount || 0,
+        convertAmount ?? 0,
         antV1.decimals
       ).format({
         digits: antV1.decimals,
