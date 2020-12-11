@@ -2,7 +2,6 @@ import React, { useCallback, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 // @ts-ignore
 import { useLayout, GU } from '@aragon/ui'
-// @ts-ignore
 import TokenAmount from 'token-amount'
 import BrandButton from '../../BrandButton/BrandButton'
 import Stepper from '../../Stepper/Stepper'
@@ -72,7 +71,7 @@ function ConverterSigning({
   const addUpgradeActivity = useCallback(
     (tx) => {
       const formattedAmount = new TokenAmount(
-        convertAmount,
+        convertAmount || 0,
         antV1.decimals
       ).format({
         digits: antV1.decimals,
