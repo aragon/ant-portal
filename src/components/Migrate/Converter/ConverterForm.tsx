@@ -6,7 +6,6 @@ import {
   GU,
   // @ts-ignore
 } from '@aragon/ui'
-// @ts-ignore
 import TokenAmount from 'token-amount'
 import { fontWeight } from '../../../style/font'
 import { TokenConversionType } from '../types'
