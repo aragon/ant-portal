@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-// @ts-ignore
 import TokenAmount from 'token-amount'
 import { ValidationStatus } from '../types'
 import { useAccountBalances } from '../../../providers/AccountBalances'

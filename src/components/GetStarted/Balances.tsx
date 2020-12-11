@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react'
 // @ts-ignore
 import { useLayout, GU } from '@aragon/ui'
-// @ts-ignore
 import TokenAmount from 'token-amount'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import BalanceCard from './BalanceCard'
