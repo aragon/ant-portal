@@ -24,11 +24,11 @@ function AnimateEntrance({
       delay={100}
       from={{
         opacity: 0,
-        transform: `translate3d(0, ${5 * GU * direction}px, 0)`,
+        y: 5 * GU * direction,
       }}
-      to={{ opacity: 1, transform: `translate3d(0, 0, 0)` }}
+      to={{ opacity: 1, y: 0 }}
     >
-      {(animationProps) => (
+      {({ opacity, y }) => (
         <div
           css={`
             position: relative;
@@ -37,7 +37,15 @@ function AnimateEntrance({
           {...props}
         >
           <AnimatedDiv
-            style={animationProps}
+            style={{
+              opacity,
+              // Prevent rasterization artifacts by removing transform once animation has completed
+              // Current spring version has misaligned typings on 'interpolate'
+              // @ts-ignore
+              transform: y.interpolate((y: number) =>
+                y !== 0 ? `translate3d(0, ${y}px, 0)` : 'none'
+              ),
+            }}
             css={`
               width: 100%;
             `}
