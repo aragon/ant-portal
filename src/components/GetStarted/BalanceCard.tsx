@@ -16,9 +16,11 @@ import { fontWeight } from '../../style/font'
 import { getEtherscanUrl } from '../../utils/etherscan'
 import AntAmount from '../AntAmount/AntAmount'
 import LoadingSkeleton from '../LoadingSkeleton/LoadingSkeleton'
+import { TokenName } from '../../token-info/types'
+import { tokenInfo } from '../../token-info/tokenInfo'
 
 type BalanceCardProps = {
-  tokenName: 'antV1' | 'antV2'
+  tokenName: TokenName
   balance: string | null
   accountConnected: boolean
   tokenAddress: string
@@ -43,6 +45,8 @@ function BalanceCard({
 
   const compactMode = layoutName === 'small'
   const etherscanUrl = getEtherscanUrl(tokenAddress)
+
+  const tokenTitle = tokenInfo[tokenName].suffix
 
   const lpModalButton = useMemo(() => {
     const title = 'Liquidity pools distribution'
@@ -139,7 +143,7 @@ function BalanceCard({
                 margin-bottom: ${1 * GU}px;
               `}
             >
-              ANT{tokenName}
+              {tokenTitle}
             </h3>
             <ButtonBase
               href={etherscanUrl}
@@ -219,7 +223,7 @@ type BalanceItemType = {
   amount?: string | null
   skeletonWidth?: number
   compactMode: boolean
-  tokenName: 'antV1' | 'antV2'
+  tokenName: TokenName
 }
 
 function BalanceItem({
