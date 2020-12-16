@@ -8,7 +8,6 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import PropTypes from 'prop-types'
 import StoredList from '../../StoredList/StoredList'
 import { MINUTE } from '../../utils/date-utils'
 import { useWallet, Web3Provider } from '../../providers/Wallet'
@@ -94,13 +93,17 @@ function ActivityProvider({ children }: { children: ReactNode }): JSX.Element {
   // are updated in the stored list and in the state.
   const updateActivities = useCallback(
     (cb: (activities: Activities) => Activities) => {
-      const newActivities = cb(activities)
-      setActivities(newActivities)
-      if (storedList.current) {
-        storedList.current.update(newActivities)
-      }
+      setActivities((prevActivities) => {
+        const newActivities = cb(prevActivities)
+
+        if (storedList.current) {
+          storedList.current.update(newActivities)
+        }
+
+        return newActivities
+      })
     },
-    [activities, storedList]
+    [storedList]
   )
 
   // Update the status of a single activity,
@@ -188,10 +191,6 @@ function ActivityProvider({ children }: { children: ReactNode }): JSX.Element {
       {children}
     </ActivityContext.Provider>
   )
-}
-
-ActivityProvider.propTypes = {
-  children: PropTypes.node,
 }
 
 function useActivity(): {
