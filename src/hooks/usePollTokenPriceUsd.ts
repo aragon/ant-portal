@@ -23,8 +23,6 @@ export function usePollTokenPriceUsd(): string | null {
 
       const { price } = (await res.json()) as any
 
-      console.log(price)
-
       if (mounted()) {
         setAmountInUsd(price)
       }
