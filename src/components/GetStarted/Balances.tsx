@@ -76,7 +76,7 @@ function Balances({
         `}
       >
         <BalanceCard
-          tokenVersion="v1"
+          tokenName="antV1"
           tokenAddress={contracts.tokenAntV1}
           balance={formattedAntV1Balance}
           accountConnected={accountConnected}
@@ -86,7 +86,7 @@ function Balances({
           onLpClick={handleLpClick}
         />
         <BalanceCard
-          tokenVersion="v2"
+          tokenName="antV2"
           tokenAddress={contracts.tokenAntV2}
           balance={formattedAntV2Balance}
           accountConnected={accountConnected}

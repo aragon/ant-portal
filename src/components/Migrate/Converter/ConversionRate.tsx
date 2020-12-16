@@ -27,9 +27,9 @@ function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
           margin-bottom: ${3.5 * GU}px;
         `}
       >
-        <TokenGraphic type="v1" size={compactMode ? 80 : 100} />
+        <TokenGraphic type="antV1" size={compactMode ? 80 : 100} />
         <TokenGraphic
-          type="v2"
+          type="antV2"
           size={compactMode ? 80 : 100}
           shadow
           css={`

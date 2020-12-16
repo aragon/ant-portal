@@ -2,18 +2,13 @@ import React from 'react'
 import { rgba } from 'polished'
 // @ts-ignore
 import { useTheme } from '@aragon/ui'
-import v1TokenSvg from '../../assets/aragon-v1-token.svg'
-import v2TokenSvg from '../../assets/aragon-v2-token.svg'
+import { TokenName } from '../../token-info/types'
+import { tokenInfo } from '../../token-info/tokenInfo'
 
 type TokenGraphicProps = {
-  type: 'v1' | 'v2'
+  type: TokenName
   shadow?: boolean
   size?: number
-}
-
-const TOKEN_GRAPHIC = {
-  v1: v1TokenSvg,
-  v2: v2TokenSvg,
 }
 
 const shadowTint = '#3f899b'
@@ -26,7 +21,7 @@ function TokenAntGraphic({
 }: TokenGraphicProps): JSX.Element {
   const theme = useTheme()
 
-  const tokenGraphic = TOKEN_GRAPHIC[type]
+  const { graphic } = tokenInfo[type]
 
   return (
     <div
@@ -49,7 +44,7 @@ function TokenAntGraphic({
     >
       <img
         alt=""
-        src={tokenGraphic}
+        src={graphic}
         css={`
           display: block;
           width: 100%;
