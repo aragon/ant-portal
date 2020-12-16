@@ -21,6 +21,7 @@ import {
   ActivityStatus,
 } from './types'
 import { useActivityToast } from './useActivityToast'
+import { useMounted } from '../../hooks/useMounted'
 
 const TIMEOUT_DURATION = 10 * MINUTE
 
@@ -83,6 +84,7 @@ async function getActivityFinalStatus(
 }
 
 function ActivityProvider({ children }: { children: ReactNode }): JSX.Element {
+  const mounted = useMounted()
   const [activities, setActivities] = useState<Activities>([])
   const showActivityToast = useActivityToast()
   const storedList = useRef() as MutableRefObject<StoredList<Activity>>
@@ -93,6 +95,8 @@ function ActivityProvider({ children }: { children: ReactNode }): JSX.Element {
   // are updated in the stored list and in the state.
   const updateActivities = useCallback(
     (cb: (activities: Activities) => Activities) => {
+      // It's very important to use an update function within this setState call to ensure the most recent activities
+      // are always used in updates, simply passing the "activities" return value from the hook can produce stale state due to the async nature of state hooks
       setActivities((prevActivities) => {
         const newActivities = cb(prevActivities)
 
@@ -150,7 +154,6 @@ function ActivityProvider({ children }: { children: ReactNode }): JSX.Element {
       return
     }
 
-    let cancelled = false
     storedList.current = getStoredList(account)
     updateActivitiesFromStorage()
 
@@ -158,15 +161,11 @@ function ActivityProvider({ children }: { children: ReactNode }): JSX.Element {
       activities.forEach(async (activity) => {
         const status = await getActivityFinalStatus(ethers, activity)
 
-        if (!cancelled && status !== activity.status) {
+        if (mounted() && status !== activity.status) {
           showActivityToast(activity.transactionHash, activity.type, status)
           updateActivityStatus(activity.transactionHash, status)
         }
       })
-    }
-
-    return () => {
-      cancelled = true
     }
   }, [
     account,
@@ -176,6 +175,7 @@ function ActivityProvider({ children }: { children: ReactNode }): JSX.Element {
     updateActivityStatus,
     storedList,
     showActivityToast,
+    mounted,
   ])
 
   const contextValue = useMemo(
