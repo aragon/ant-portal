@@ -96,8 +96,7 @@ function ActivityProvider({ children }: { children: ReactNode }): JSX.Element {
   const updateActivities = useCallback(
     (cb: (activities: Activities) => Activities) => {
       // It's very important to use an update function within this setState call to ensure the most recent activities
-      // are always used in updates, simply passing the "activities" return value from the hook will produce unreliable stale changes
-      // due the the async nature state hooks
+      // are always used in updates, simply passing the "activities" return value from the hook can produce stale state due to the async nature of state hooks
       setActivities((prevActivities) => {
         const newActivities = cb(prevActivities)
 
