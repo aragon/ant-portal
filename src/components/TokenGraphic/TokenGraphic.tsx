@@ -6,7 +6,7 @@ import { TokenName } from '../../token-info/types'
 import { tokenInfo } from '../../token-info/tokenInfo'
 
 type TokenGraphicProps = {
-  type: TokenName
+  tokenName: TokenName
   shadow?: boolean
   size?: number
 }
@@ -27,14 +27,14 @@ const SHADOW: Record<TokenName, string> = {
 }
 
 function TokenAntGraphic({
-  type,
+  tokenName,
   shadow,
   size = 100,
   ...props
 }: TokenGraphicProps): JSX.Element {
   const theme = useTheme()
 
-  const { graphic } = tokenInfo[type]
+  const { graphic } = tokenInfo[tokenName]
 
   return (
     <div
@@ -46,7 +46,7 @@ function TokenAntGraphic({
         border-radius: 100%;
         overflow: hidden;
 
-        box-shadow: ${shadow ? SHADOW[type] : ''};
+        box-shadow: ${shadow ? SHADOW[tokenName] : ''};
       `}
       {...props}
     >

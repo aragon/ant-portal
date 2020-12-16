@@ -123,7 +123,7 @@ function BalanceCard({
         >
           <TokenGraphic
             shadow
-            type={tokenName}
+            tokenName={tokenName}
             size={compactMode ? 75 : 100}
             css={`
               flex-shrink: 0;
