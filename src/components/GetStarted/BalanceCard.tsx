@@ -9,7 +9,7 @@ import {
   useLayout,
   // @ts-ignore
 } from '@aragon/ui'
-import TokenAntGraphic from '../TokenAntGraphic/TokenAntGraphic'
+import TokenGraphic from '../TokenGraphic/TokenGraphic'
 import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
@@ -117,7 +117,7 @@ function BalanceCard({
             flex: 1;
           `}
         >
-          <TokenAntGraphic
+          <TokenGraphic
             shadow
             type={tokenVersion}
             size={compactMode ? 75 : 100}

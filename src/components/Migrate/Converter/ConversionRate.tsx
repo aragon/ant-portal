@@ -3,7 +3,7 @@ import React from 'react'
 import { useTheme, GU } from '@aragon/ui'
 import { shadowDepth } from '../../../style/shadow'
 import { fontWeight } from '../../../style/font'
-import TokenAntGraphic from '../../TokenAntGraphic/TokenAntGraphic'
+import TokenGraphic from '../../TokenGraphic/TokenGraphic'
 import { radius } from '../../../style/radius'
 
 type ConversionRateProps = {
@@ -27,8 +27,8 @@ function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
           margin-bottom: ${3.5 * GU}px;
         `}
       >
-        <TokenAntGraphic type="v1" size={compactMode ? 80 : 100} />
-        <TokenAntGraphic
+        <TokenGraphic type="v1" size={compactMode ? 80 : 100} />
+        <TokenGraphic
           type="v2"
           size={compactMode ? 80 : 100}
           shadow

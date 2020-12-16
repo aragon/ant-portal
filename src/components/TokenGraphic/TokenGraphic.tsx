@@ -5,7 +5,7 @@ import { useTheme } from '@aragon/ui'
 import v1TokenSvg from '../../assets/aragon-v1-token.svg'
 import v2TokenSvg from '../../assets/aragon-v2-token.svg'
 
-type TokenAntGraphicProps = {
+type TokenGraphicProps = {
   type: 'v1' | 'v2'
   shadow?: boolean
   size?: number
@@ -23,7 +23,7 @@ function TokenAntGraphic({
   shadow,
   size = 100,
   ...props
-}: TokenAntGraphicProps): JSX.Element {
+}: TokenGraphicProps): JSX.Element {
   const theme = useTheme()
 
   const tokenGraphic = TOKEN_GRAPHIC[type]
