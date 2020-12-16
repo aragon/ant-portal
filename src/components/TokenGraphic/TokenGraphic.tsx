@@ -11,7 +11,20 @@ type TokenGraphicProps = {
   size?: number
 }
 
-const shadowTint = '#3f899b'
+const SHADOW: Record<TokenName, string> = {
+  antV1: `0px 5px 10px ${rgba('#3f899b', 0.2)}, 2px 12px 20px ${rgba(
+    '#3f899b',
+    0.4
+  )}`,
+  antV2: `0px 5px 10px ${rgba('#3f899b', 0.2)}, 2px 12px 20px ${rgba(
+    '#3f899b',
+    0.4
+  )}`,
+  anj: `0px 5px 10px ${rgba('#9c7974', 0.1)}, 2px 12px 20px ${rgba(
+    '#9c7974',
+    0.2
+  )}`,
+}
 
 function TokenAntGraphic({
   type,
@@ -33,12 +46,7 @@ function TokenAntGraphic({
         border-radius: 100%;
         overflow: hidden;
 
-        box-shadow: ${shadow
-          ? `0px 5px 10px ${rgba(shadowTint, 0.2)}, 2px 12px 20px ${rgba(
-              shadowTint,
-              0.4
-            )}`
-          : ''};
+        box-shadow: ${shadow ? SHADOW[type] : ''};
       `}
       {...props}
     >
