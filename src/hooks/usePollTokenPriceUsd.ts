@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react'
+import { getNetworkConfig } from '../environment/networks'
 import { captureErrorWithSentry } from '../sentry'
 import { useInterval } from './useInterval'
 import { useMounted } from './useMounted'
 
 const API_BASE = 'https://api.0x.org'
 const BUY_TOKEN = 'USDC'
-const SELL_TOKEN = 'ANT'
+const SELL_TOKEN = getNetworkConfig('ethereum').contracts.tokenAntV2
 const SELL_AMOUNT = '1000000000000000000'
 
 const POLL_INTERVAL = 60000
@@ -21,6 +22,8 @@ export function usePollTokenPriceUsd(): string | null {
       )
 
       const { price } = (await res.json()) as any
+
+      console.log(price)
 
       if (mounted()) {
         setAmountInUsd(price)
