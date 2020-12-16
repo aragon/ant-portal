@@ -9,33 +9,23 @@ import React, {
   useState,
 } from 'react'
 import PropTypes from 'prop-types'
-import StoredList from '../StoredList/StoredList'
-import { MINUTE } from '../utils/date-utils'
-import { useWallet, Web3Provider } from '../providers/Wallet'
-import { networkEnvironment } from '../environment'
+import StoredList from '../../StoredList/StoredList'
+import { MINUTE } from '../../utils/date-utils'
+import { useWallet, Web3Provider } from '../../providers/Wallet'
+import { networkEnvironment } from '../../environment'
 import { ContractTransaction } from 'ethers'
+import {
+  Activities,
+  Activity,
+  ActivityActionType,
+  ActivityFinalStatus,
+  ActivityStatus,
+} from './types'
+import { useActivityToast } from './useActivityToast'
 
 const TIMEOUT_DURATION = 10 * MINUTE
 
 const networkType = networkEnvironment.legacyNetworkType
-
-type Status = 'confirmed' | 'failed' | 'pending' | 'timeout'
-
-type ActionType = 'convertANT'
-
-type Activity = {
-  createdAt: number
-  description: string
-  from: string
-  nonce: number
-  read: boolean
-  status: Status
-  type: ActionType
-  to?: string
-  transactionHash: string
-}
-
-type Activities = Activity[]
 
 type ActivityContextState = {
   activities: Activities
@@ -53,9 +43,9 @@ async function getActivityFinalStatus(
   activityDetails: {
     createdAt: number
     transactionHash: string
-    status: Status
+    status: ActivityStatus
   }
-): Promise<Status> {
+): Promise<ActivityFinalStatus> {
   const { createdAt, transactionHash, status } = activityDetails
 
   if (status !== 'pending') {
@@ -95,6 +85,7 @@ async function getActivityFinalStatus(
 
 function ActivityProvider({ children }: { children: ReactNode }): JSX.Element {
   const [activities, setActivities] = useState<Activities>([])
+  const showActivityToast = useActivityToast()
   const storedList = useRef() as MutableRefObject<StoredList<Activity>>
   const wallet = useWallet()
   const { account, ethers } = wallet
@@ -163,7 +154,9 @@ function ActivityProvider({ children }: { children: ReactNode }): JSX.Element {
     if (ethers) {
       activities.forEach(async (activity) => {
         const status = await getActivityFinalStatus(ethers, activity)
+
         if (!cancelled && status !== activity.status) {
+          showActivityToast(activity.transactionHash, activity.type, status)
           updateActivityStatus(activity.transactionHash, status)
         }
       })
@@ -179,12 +172,16 @@ function ActivityProvider({ children }: { children: ReactNode }): JSX.Element {
     updateActivitiesFromStorage,
     updateActivityStatus,
     storedList,
+    showActivityToast,
   ])
 
-  const contextValue = {
-    activities,
-    updateActivities,
-  }
+  const contextValue = useMemo(
+    () => ({
+      activities,
+      updateActivities,
+    }),
+    [activities, updateActivities]
+  )
 
   return (
     <ActivityContext.Provider value={contextValue}>
@@ -200,15 +197,17 @@ ActivityProvider.propTypes = {
 function useActivity(): {
   activities: Activities
   unreadCount: number
+  pendingCount: number
   hasPending: boolean
   markActivitiesRead: () => void
   addActivity: (
     tx: ContractTransaction,
-    type: ActionType,
+    type: ActivityActionType,
     description: string
   ) => ContractTransaction
   clearActivities: () => void
   removeActivity: (hash: string) => void
+  getActivityByHash: (hash: string) => Activity | null
 } {
   const { updateActivities, activities } = useContext(ActivityContext)!
 
@@ -224,14 +223,22 @@ function useActivity(): {
     return activities.reduce((count, { read }) => count + Number(!read), 0)
   }, [activities])
 
+  // Total number of pending activities
+  const pendingCount = useMemo(() => {
+    return activities.reduce(
+      (count, { status }) => count + Number(status === 'pending'),
+      0
+    )
+  }, [activities])
+
   // Determine whether there are any pending activities in the list
   const hasPending = useMemo(() => {
-    return activities.some(({ status }) => status === 'pending')
-  }, [activities])
+    return pendingCount > 0
+  }, [pendingCount])
 
   // Add a single activity.
   const addActivity = useCallback(
-    (tx: ContractTransaction, type: ActionType, description = '') => {
+    (tx: ContractTransaction, type: ActivityActionType, description = '') => {
       updateActivities((activities: Activities) => [
         ...activities,
         {
@@ -270,6 +277,15 @@ function useActivity(): {
     [updateActivities]
   )
 
+  // Get single activity via transaction hash
+  const getActivityByHash = useCallback(
+    (hash: string) =>
+      activities.find(({ transactionHash }) => transactionHash === hash) ||
+      null,
+
+    [activities]
+  )
+
   return {
     activities,
     markActivitiesRead,
@@ -278,6 +294,8 @@ function useActivity(): {
     clearActivities,
     removeActivity,
     hasPending,
+    pendingCount,
+    getActivityByHash,
   }
 }
 

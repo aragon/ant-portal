@@ -10,26 +10,29 @@ import { breakpoints } from './style/breakpoints'
 import { WalletProvider } from './providers/Wallet'
 import { AccountBalancesProvider } from './providers/AccountBalances'
 import { AccountModuleProvider } from './components/Account/AccountModuleProvider'
-import { ActivityProvider } from './providers/ActivityProvider'
+import { ActivityProvider } from './components/Activity/ActivityProvider'
+import CustomToast from './providers/CustomToast'
 
 function App(): JSX.Element {
   return (
     <WalletProvider>
-      <UseTokenProvider>
-        <AccountBalancesProvider>
-          <AccountModuleProvider>
-            <ActivityProvider>
-              <LayoutProvider breakpoints={breakpoints}>
-                <Router>
-                  <MainView>
-                    <Routes />
-                  </MainView>
-                </Router>
-              </LayoutProvider>
-            </ActivityProvider>
-          </AccountModuleProvider>
-        </AccountBalancesProvider>
-      </UseTokenProvider>
+      <CustomToast>
+        <UseTokenProvider>
+          <AccountBalancesProvider>
+            <AccountModuleProvider>
+              <ActivityProvider>
+                <LayoutProvider breakpoints={breakpoints}>
+                  <Router>
+                    <MainView>
+                      <Routes />
+                    </MainView>
+                  </Router>
+                </LayoutProvider>
+              </ActivityProvider>
+            </AccountModuleProvider>
+          </AccountBalancesProvider>
+        </UseTokenProvider>
+      </CustomToast>
     </WalletProvider>
   )
 }

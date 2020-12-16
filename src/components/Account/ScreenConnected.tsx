@@ -15,6 +15,7 @@ import { networkEnvironment } from '../../environment'
 import { getProviderFromUseWalletId } from './ethereum-providers'
 import { useCopyToClipboard } from '../../hooks/useCopyToClipboard'
 import { useWallet } from '../../providers/Wallet'
+import ActivityList from '../Activity/ActivityList'
 
 function ScreenConnected(): JSX.Element {
   const {
@@ -78,6 +79,7 @@ function ScreenConnected(): JSX.Element {
               align-items: center;
               justify-self: flex-end;
               padding: ${0.5 * GU}px;
+
               &:active {
                 background: ${theme.surfacePressed};
               }
@@ -123,6 +125,12 @@ function ScreenConnected(): JSX.Element {
       <BrandButton onClick={() => reset()} wide>
         Disconnect wallet
       </BrandButton>
+
+      <ActivityList
+        css={`
+          margin-top: ${3 * GU}px;
+        `}
+      />
     </>
   )
 }
