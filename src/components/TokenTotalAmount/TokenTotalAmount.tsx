@@ -12,7 +12,7 @@ type AntAmountProps = {
   tokenName: TokenName
 }
 
-function AntAmount({
+function TokenTotalAmount({
   amount,
   tokenName,
   ...props
@@ -50,4 +50,4 @@ function AntAmount({
   )
 }
 
-export default AntAmount
+export default TokenTotalAmount

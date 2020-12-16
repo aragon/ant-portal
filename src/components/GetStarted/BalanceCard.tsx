@@ -14,7 +14,7 @@ import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
 import { getEtherscanUrl } from '../../utils/etherscan'
-import AntAmount from '../AntAmount/AntAmount'
+import TokenTotalAmount from '../TokenTotalAmount/TokenTotalAmount'
 import LoadingSkeleton from '../LoadingSkeleton/LoadingSkeleton'
 import { TokenName } from '../../token-info/types'
 import { tokenInfo } from '../../token-info/tokenInfo'
@@ -254,7 +254,7 @@ function BalanceItem({
         {title}
       </h4>
       {amount ? (
-        <AntAmount amount={amount} tokenName={tokenName} />
+        <TokenTotalAmount amount={amount} tokenName={tokenName} />
       ) : (
         <span
           css={`
