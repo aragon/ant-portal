@@ -4,14 +4,22 @@ import {
   GU,
   // @ts-ignore
 } from '@aragon/ui'
+import { tokenInfo } from '../../token-info/tokenInfo'
+import { TokenName } from '../../token-info/types'
 
 type AntAmountProps = {
   amount: string
-  version: 'v1' | 'v2'
+  tokenName: TokenName
 }
 
-function AntAmount({ amount, version, ...props }: AntAmountProps): JSX.Element {
+function TokenTotalAmount({
+  amount,
+  tokenName,
+  ...props
+}: AntAmountProps): JSX.Element {
   const theme = useTheme()
+
+  const suffix = tokenInfo[tokenName].suffix
 
   return (
     <span
@@ -36,10 +44,10 @@ function AntAmount({ amount, version, ...props }: AntAmountProps): JSX.Element {
           margin-left: ${0.75 * GU}px;
         `}
       >
-        ANT{version}
+        {suffix}
       </span>
     </span>
   )
 }
 
-export default AntAmount
+export default TokenTotalAmount

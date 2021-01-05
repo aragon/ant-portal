@@ -9,16 +9,18 @@ import {
   useLayout,
   // @ts-ignore
 } from '@aragon/ui'
-import TokenAntGraphic from '../TokenAntGraphic/TokenAntGraphic'
+import TokenGraphic from '../TokenGraphic/TokenGraphic'
 import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
 import { getEtherscanUrl } from '../../utils/etherscan'
-import AntAmount from '../AntAmount/AntAmount'
+import TokenTotalAmount from '../TokenTotalAmount/TokenTotalAmount'
 import LoadingSkeleton from '../LoadingSkeleton/LoadingSkeleton'
+import { TokenName } from '../../token-info/types'
+import { tokenInfo } from '../../token-info/tokenInfo'
 
 type BalanceCardProps = {
-  tokenVersion: 'v1' | 'v2'
+  tokenName: TokenName
   balance: string | null
   accountConnected: boolean
   tokenAddress: string
@@ -29,7 +31,7 @@ type BalanceCardProps = {
 }
 
 function BalanceCard({
-  tokenVersion = 'v1',
+  tokenName = 'antV1',
   balance,
   accountConnected,
   tokenAddress,
@@ -43,6 +45,8 @@ function BalanceCard({
 
   const compactMode = layoutName === 'small'
   const etherscanUrl = getEtherscanUrl(tokenAddress)
+
+  const tokenTitle = tokenInfo[tokenName].suffix
 
   const lpModalButton = useMemo(() => {
     const title = 'Liquidity pools distribution'
@@ -117,9 +121,9 @@ function BalanceCard({
             flex: 1;
           `}
         >
-          <TokenAntGraphic
+          <TokenGraphic
             shadow
-            type={tokenVersion}
+            tokenName={tokenName}
             size={compactMode ? 75 : 100}
             css={`
               flex-shrink: 0;
@@ -139,7 +143,7 @@ function BalanceCard({
                 margin-bottom: ${1 * GU}px;
               `}
             >
-              ANT{tokenVersion}
+              {tokenTitle}
             </h3>
             <ButtonBase
               href={etherscanUrl}
@@ -177,7 +181,7 @@ function BalanceCard({
               title="Wallet balance"
               amount={balance}
               compactMode={compactMode}
-              version={tokenVersion}
+              tokenName={tokenName}
             />
 
             {showLpBalance &&
@@ -187,7 +191,7 @@ function BalanceCard({
                   amount={lpTotalBalance}
                   skeletonWidth={18 * GU}
                   compactMode={compactMode}
-                  version={tokenVersion}
+                  tokenName={tokenName}
                 />
               ) : (
                 <span
@@ -219,7 +223,7 @@ type BalanceItemType = {
   amount?: string | null
   skeletonWidth?: number
   compactMode: boolean
-  version: 'v1' | 'v2'
+  tokenName: TokenName
 }
 
 function BalanceItem({
@@ -227,7 +231,7 @@ function BalanceItem({
   amount,
   skeletonWidth = 14 * GU,
   compactMode,
-  version,
+  tokenName,
 }: BalanceItemType) {
   return (
     <li
@@ -250,7 +254,7 @@ function BalanceItem({
         {title}
       </h4>
       {amount ? (
-        <AntAmount amount={amount} version={version} />
+        <TokenTotalAmount amount={amount} tokenName={tokenName} />
       ) : (
         <span
           css={`

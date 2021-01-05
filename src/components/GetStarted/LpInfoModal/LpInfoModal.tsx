@@ -11,7 +11,7 @@ import { fontWeight } from '../../../style/font'
 import BrandModal from '../../BrandModal/BrandModal'
 import { useAccountBalances } from '../../../providers/AccountBalances'
 import { formatAmountToUsd } from '../../../utils/math-utils'
-import AntAmount from '../../AntAmount/AntAmount'
+import TokenTotalAmount from '../../TokenTotalAmount/TokenTotalAmount'
 import UsdAmount from '../../UsdAmount/UsdAmount'
 import TokenIcon from './TokenIcon'
 import { radius } from '../../../style/radius'
@@ -205,7 +205,7 @@ function PoolTable({ items }: { items: PoolItem[] }) {
                 />
               </td>
               <td>
-                <AntAmount amount={amount} version="v1" />
+                <TokenTotalAmount amount={amount} tokenName="antV1" />
               </td>
               <td>{value && <UsdAmount amount={value} />}</td>
             </tr>
@@ -257,7 +257,7 @@ function PoolList({ items }: { items: PoolItem[] }) {
             >
               <PoolListItem
                 label="Amount"
-                content={<AntAmount amount={amount} version="v1" />}
+                content={<TokenTotalAmount amount={amount} tokenName="antV1" />}
               />
 
               <PoolListItem
