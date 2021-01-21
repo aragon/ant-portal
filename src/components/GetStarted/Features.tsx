@@ -2,10 +2,12 @@ import React from 'react'
 // @ts-ignore
 import { GU, Link, useTheme, useLayout } from '@aragon/ui'
 import featuresPng from '../../assets/antv2-features.png'
+import redeemAnjPng from '../../assets/redeem-anj.png'
 import { fontWeight } from '../../style/font'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 
 const BLOG_POST_URL = 'https://aragon.org/blog/antv2'
+const REDEEM_ANJ_PROPOSAL_URL = 'https://aragon.org/blog/merge-anj'
 
 function Features({
   ...props
@@ -18,6 +20,81 @@ function Features({
 
   return (
     <LayoutLimiter size="medium" {...props}>
+      <div
+        css={`
+          display: grid;
+          grid-template-columns: ${stackColumns ? '1fr' : '1fr 1fr'};
+          align-items: center;
+          grid-gap: ${10 * GU}px;
+          text-align: ${stackColumns ? 'center' : 'left'};
+        `}
+      >
+        <div>
+          <div
+            css={`
+              max-width: ${stackColumns ? `${62 * GU}px` : 'auto'};
+              margin: auto;
+            `}
+          >
+            <div
+              css={`
+                position: relative;
+                padding-top: 108%;
+                width: 100%;
+
+                margin-left: auto;
+                margin-right: auto;
+              `}
+            >
+              <img
+                alt="Redeem ANJ into ANTv2"
+                src={redeemAnjPng}
+                css={`
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                `}
+              />
+            </div>
+          </div>
+        </div>
+        <div>
+          <h2
+            css={`
+              font-weight: ${fontWeight.bold};
+              line-height: 1.2;
+              font-size: ${compactMode ? `35` : `48`}px;
+              margin-bottom: ${2.5 * GU}px;
+            `}
+          >
+            Redeem your ANJ&nbsp;into ANTv2
+          </h2>
+          <p
+            css={`
+              font-weight: ${fontWeight.medium};
+              font-size: ${compactMode ? `18` : `26`}px;
+              color: ${theme.contentSecondary};
+              margin-bottom: ${3 * GU}px;
+            `}
+          >
+            ANJ holders will be compensated with ANTv2 to ensure they can
+            continue participating in Aragon Court with equivalent economic
+            weight.
+          </p>
+          <Link
+            href={REDEEM_ANJ_PROPOSAL_URL}
+            css={`
+              font-weight: ${fontWeight.medium};
+              font-size: ${compactMode ? `17` : `20`}px;
+              text-decoration: none;
+            `}
+          >
+            Review the proposal
+          </Link>
+        </div>
+      </div>
+
       <div
         css={`
           display: grid;
