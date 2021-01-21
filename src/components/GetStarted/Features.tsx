@@ -27,6 +27,7 @@ function Features({
           align-items: center;
           grid-gap: ${10 * GU}px;
           text-align: ${stackColumns ? 'center' : 'left'};
+          margin-bottom: 96px;
         `}
       >
         <div>
@@ -39,7 +40,6 @@ function Features({
             <div
               css={`
                 position: relative;
-                padding-top: 108%;
                 width: 100%;
 
                 margin-left: auto;
@@ -50,9 +50,6 @@ function Features({
                 alt="Redeem ANJ into ANTv2"
                 src={redeemAnjPng}
                 css={`
-                  position: absolute;
-                  top: 0;
-                  left: 0;
                   width: 100%;
                 `}
               />
