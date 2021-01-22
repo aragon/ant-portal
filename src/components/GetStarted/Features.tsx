@@ -27,7 +27,6 @@ function Features({
           align-items: center;
           grid-gap: ${10 * GU}px;
           text-align: ${stackColumns ? 'center' : 'left'};
-          margin-bottom: 96px;
         `}
       >
         <div>
