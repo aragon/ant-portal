@@ -66,7 +66,7 @@ function Balances({
     return lpBalances.hasBalances ? openModalHandler : null
   }, [lpBalances])
 
-  return (
+  return accountConnected ? (
     <LayoutLimiter size="medium" {...props}>
       <div
         css={`
@@ -97,6 +97,12 @@ function Balances({
         onClose={() => setModalVisible(false)}
       />
     </LayoutLimiter>
+  ) : (
+    <div
+      css={`
+        margin-bottom: 192px;
+      `}
+    ></div>
   )
 }
 export default Balances
