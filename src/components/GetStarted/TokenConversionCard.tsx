@@ -188,6 +188,7 @@ function TokenConversionCard({
             <BrandButton
               mode="strong"
               size="large"
+              wide
               disabled={!balance || balance === '0'}
               onClick={() => {
                 if (tokenName === 'anj') {
