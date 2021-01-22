@@ -1,9 +1,7 @@
 import React, { ReactNode, useState, useEffect, useMemo } from 'react'
-import { useHistory } from 'react-router-dom'
 
 import {
   GU,
-  IconArrowRight,
   IconConnect,
   useTheme,
   useLayout,
@@ -12,7 +10,6 @@ import {
 import { fontWeight } from '../../style/font'
 import BrandButton from '../BrandButton/BrandButton'
 import LayoutLimiter from '../Layout/LayoutLimiter'
-import { CONVERTER_PATH } from '../../Routes'
 import { useAccountBalances } from '../../providers/AccountBalances'
 import { useAccountModule } from '../Account/AccountModuleProvider'
 
@@ -59,7 +56,6 @@ const MESSAGES: Record<BalanceStatus, ReactNode> = {
 }
 
 function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
-  const history = useHistory()
   const theme = useTheme()
   const { showAccount } = useAccountModule()
   const { antV1, antV2 } = useAccountBalances()
@@ -70,25 +66,7 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
 
   const primaryButton = useMemo(() => {
     if (balanceStatus === 'accountEnabled') {
-      return (
-        <BrandButton
-          mode="strong"
-          size="large"
-          onClick={() => history.push(CONVERTER_PATH)}
-        >
-          <>
-            Upgrade ANTv1{' '}
-            <IconArrowRight
-              css={`
-                opacity: 0.75;
-                margin-left: ${1 * GU}px;
-                margin-right: ${1 * GU}px;
-              `}
-            />{' '}
-            ANTv2
-          </>
-        </BrandButton>
-      )
+      return null
     }
 
     if (balanceStatus === 'default') {
@@ -112,7 +90,7 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
         label="Connect a different wallet"
       />
     )
-  }, [balanceStatus, history, showAccount])
+  }, [balanceStatus, showAccount])
 
   useEffect(() => {
     if (antV1.balance && antV2.balance) {
@@ -162,7 +140,9 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
             font-weight: ${fontWeight.bold};
             line-height: 1.2;
             margin-bottom: ${2.5 * GU}px;
-            font-size: ${compactMode ? `44` : `54`}px;
+            font-size: ${compactMode || balanceStatus === 'accountEnabled'
+              ? `44`
+              : `54`}px;
           `}
         >
           Upgrade to ANTv2
@@ -170,7 +150,9 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
         <p
           css={`
             font-weight: ${fontWeight.medium};
-            font-size: ${compactMode ? `22` : `26`}px;
+            font-size: ${compactMode || balanceStatus === 'accountEnabled'
+              ? `22`
+              : `26`}px;
             color: ${theme.contentSecondary};
             margin: auto;
             margin-bottom: ${4 * GU}px;
