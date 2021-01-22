@@ -56,6 +56,7 @@ function BrandButton({
           : ''};
 
         ${size === 'large' ? largeStyles : ''}
+        ${wide ? `width: 200px;` : ''}
       `}
       {...props}
     >
