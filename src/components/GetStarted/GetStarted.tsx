@@ -40,7 +40,7 @@ function GetStarted(): JSX.Element {
           )}
           <Balances
             css={`
-              padding-top: ${14 * GU}px;
+              padding-top: ${10 * GU}px;
               padding-bottom: ${17 * GU}px;
             `}
           />
