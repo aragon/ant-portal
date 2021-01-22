@@ -100,7 +100,7 @@ function Balances({
   ) : (
     <div
       css={`
-        margin-bottom: 192px;
+        padding-bottom: ${30 * GU}px;
       `}
     ></div>
   )
