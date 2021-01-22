@@ -22,15 +22,15 @@ type BalanceStatus =
 const MESSAGES: Record<BalanceStatus, ReactNode> = {
   default: (
     <>
-      Use the ANT Upgrade Portal to upgrade your ANT balance to the newest
-      version of the token contract. Connect your wallet to view the available
-      upgrades on your&nbsp;account.
+      Use the ANT Upgrade Portal to redeem your ANJ or upgrade your ANT balance
+      to the newest version of the token contract. Connect your wallet to view
+      the available upgrades on your account.
     </>
   ),
   accountEnabled: (
     <>
-      Use the ANT Upgrade Portal to upgrade your ANT balance to the newest
-      version of the token&nbsp;contract.
+      Use the ANT Upgrade Portal to redeem your ANJ or upgrade your ANT balance
+      to the newest version of the token contract.
     </>
   ),
   success: (
