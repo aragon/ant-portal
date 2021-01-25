@@ -1,6 +1,6 @@
 import React from 'react'
 // @ts-ignore
-import { useTheme, GU } from '@aragon/ui'
+import { useTheme, GU, Help } from '@aragon/ui'
 import { shadowDepth } from '../../../style/shadow'
 import { fontWeight } from '../../../style/font'
 import { radius } from '../../../style/radius'
@@ -107,15 +107,30 @@ function ConversionRate({
         >
           1 : <Rate value={CONVERSION_RATE} />
         </h4>
-        <h3
+        <div
           css={`
+            display: flex;
+            align-items: center;
             margin-bottom: ${0.5 * GU}px;
-            font-weight: ${fontWeight.medium};
-            font-size: 18px;
           `}
         >
-          Conversion rate
-        </h3>
+          <h3
+            css={`
+              font-weight: ${fontWeight.medium};
+              font-size: 18px;
+              ${isANJConversion ? `margin-right: ${1 * GU}px;` : ``}
+            `}
+          >
+            Conversion rate
+          </h3>
+          {isANJConversion && (
+            <Help hint="Why this rate?">
+              The proposal consists of locking ANJ’s price at rate (0.015 ANT
+              for 1 ANJ) and minting 549,862 ANT (1.37% inflation) to redeem all
+              ANJ in circulation at that rate.
+            </Help>
+          )}
+        </div>
         <p
           css={`
             color: ${theme.surfaceContentSecondary};
