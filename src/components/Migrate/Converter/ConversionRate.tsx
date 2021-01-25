@@ -3,15 +3,24 @@ import React from 'react'
 import { useTheme, GU } from '@aragon/ui'
 import { shadowDepth } from '../../../style/shadow'
 import { fontWeight } from '../../../style/font'
-import TokenGraphic from '../../TokenGraphic/TokenGraphic'
 import { radius } from '../../../style/radius'
+import { useMigrateState } from '../MigrateStateProvider'
+import TokenGraphic from '../../TokenGraphic/TokenGraphic'
 
 type ConversionRateProps = {
   compactMode: boolean
+  tokenSymbol: string
 }
 
-function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
+function ConversionRate({
+  compactMode,
+  tokenSymbol,
+}: ConversionRateProps): JSX.Element {
   const theme = useTheme()
+  const { conversionType } = useMigrateState()
+
+  const isANJConversion = conversionType === 'ANJ'
+  const CONVERSION_RATE = isANJConversion ? 0.015 : 1
 
   return (
     <div>
@@ -27,7 +36,10 @@ function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
           margin-bottom: ${3.5 * GU}px;
         `}
       >
-        <TokenGraphic tokenName="antV1" size={compactMode ? 80 : 100} />
+        <TokenGraphic
+          tokenName={isANJConversion ? 'anj' : 'antV1'}
+          size={compactMode ? 80 : 100}
+        />
         <TokenGraphic
           tokenName="antV2"
           size={compactMode ? 80 : 100}
@@ -65,7 +77,7 @@ function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
             -webkit-text-fill-color: transparent;
           `}
         >
-          1 : 1
+          1 : {CONVERSION_RATE}
         </h4>
         <h3
           css={`
@@ -89,7 +101,7 @@ function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
           >
             1
           </span>{' '}
-          ANTv1{' '}
+          {tokenSymbol}{' '}
           <span
             css={`
               margin-left: ${1 * GU}px;
@@ -104,7 +116,7 @@ function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
               color: ${theme.surfaceContent};
             `}
           >
-            1
+            {CONVERSION_RATE}
           </span>{' '}
           ANTv2
         </p>

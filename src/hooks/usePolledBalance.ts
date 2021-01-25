@@ -273,7 +273,7 @@ export function useAnjTokenBalance(
   const [tokenBalance, setTokenBalance] = useState<BigNumber | null>(
     // TODO: Fix me
     // Temporary hack because of lack of real tokens in Rinkeby
-    BigNumber.from('10000000000000000000')
+    BigNumber.from('99000000000000000000')
   )
 
   const tokenContract = useMemo(() => {

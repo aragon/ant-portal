@@ -17,8 +17,9 @@ import { radius } from '../../../style/radius'
 import ConversionRate from './ConversionRate'
 import PageHeading from '../../PageHeading/PageHeading'
 
-const TOKEN_SYMBOL: Record<TokenConversionType, string> = {
-  ANT: 'ANT',
+export const TOKEN_SYMBOL: Record<TokenConversionType, string> = {
+  ANT: 'ANTv1',
+  ANJ: 'ANJ',
 }
 
 const multiColumnLayout = css`
@@ -41,13 +42,16 @@ function ConverterForm(): JSX.Element {
   const theme = useTheme()
   const { layoutName } = useLayout()
   const { conversionType } = useMigrateState()
-  const { antV1 } = useAccountBalances()
-  const { balance, decimals } = antV1
+  const { antV1, anj } = useAccountBalances()
+
+  const isANJConversion = conversionType === 'ANJ'
+  const token = isANJConversion ? anj : antV1
+  const { balance, decimals } = token
 
   const compactMode = layoutName === 'small' || layoutName === 'medium'
   const tokenSymbol = TOKEN_SYMBOL[conversionType]
 
-  const formattedAntV1Balance = useMemo(
+  const formattedBalance = useMemo(
     () =>
       balance &&
       new TokenAmount(balance, decimals).format({
@@ -60,7 +64,9 @@ function ConverterForm(): JSX.Element {
     <>
       <PageHeading
         title="Aragon Upgrade"
-        description="How much ANTv1 would you like to upgrade?"
+        description={`How much ${tokenSymbol} would you like to ${
+          isANJConversion ? 'redeem' : 'upgrade'
+        }?`}
         css={`
           margin-bottom: ${7 * GU}px;
         `}
@@ -90,14 +96,14 @@ function ConverterForm(): JSX.Element {
               margin-bottom: ${1.5 * GU}px;
             `}
           >
-            Upgrade {tokenSymbol}v1
+            {isANJConversion ? 'Redeem' : 'Upgrade'} {tokenSymbol}
           </h2>
           <p
             css={`
               color: ${theme.surfaceContentSecondary};
             `}
           >
-            {formattedAntV1Balance ? (
+            {formattedBalance ? (
               <>
                 Balance:{' '}
                 <span
@@ -105,9 +111,9 @@ function ConverterForm(): JSX.Element {
                     word-break: break-all;
                   `}
                 >
-                  {formattedAntV1Balance}
+                  {formattedBalance}
                 </span>{' '}
-                {tokenSymbol}v1
+                {tokenSymbol}
               </>
             ) : (
               'Connect your wallet to see your balance'
@@ -123,7 +129,7 @@ function ConverterForm(): JSX.Element {
             padding: ${2 * GU}px;
           `}
         >
-          <ConversionRate compactMode={compactMode} />
+          <ConversionRate tokenSymbol={tokenSymbol} compactMode={compactMode} />
         </div>
         <div
           css={`

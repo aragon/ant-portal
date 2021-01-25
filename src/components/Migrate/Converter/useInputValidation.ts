@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import TokenAmount from 'token-amount'
 import { ValidationStatus } from '../types'
+import { useMigrateState } from '../MigrateStateProvider'
 import { useAccountBalances } from '../../../providers/AccountBalances'
 import { parseUnits } from '../../../utils/math-utils'
 import { BigNumber } from 'ethers'
@@ -13,8 +14,10 @@ type InputValidationReturn = {
 }
 
 function useInputValidation(amount: string): InputValidationReturn {
-  const { antV1 } = useAccountBalances()
-  const { balance, decimals } = antV1
+  const { conversionType } = useMigrateState()
+  const { antV1, anj } = useAccountBalances()
+  const token = conversionType === 'ANJ' ? anj : antV1
+  const { balance, decimals } = token
 
   const parsedAmountBn = useMemo(() => parseInputValue(amount, decimals), [
     amount,
@@ -30,6 +33,7 @@ function useInputValidation(amount: string): InputValidationReturn {
 
   const formattedAmount = useMemo((): string => {
     const formatted = new TokenAmount(parsedAmountBn, decimals).format({
+      commify: false,
       digits: decimals,
     })
 
