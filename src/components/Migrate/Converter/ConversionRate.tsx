@@ -12,6 +12,34 @@ type ConversionRateProps = {
   tokenSymbol: string
 }
 
+type RateProps = {
+  value: number
+}
+
+function Rate({ value }: RateProps): JSX.Element {
+  const valueAsString = value.toString()
+  if (valueAsString.indexOf('.') >= 0) {
+    const ints = valueAsString.split('.')[0]
+    const fractions = valueAsString.split('.')[1]
+
+    return (
+      <span>
+        <span>{ints}</span>
+        <span
+          css={`
+            font-size: 0.5em;
+            letter-spacing: -0.05em;
+          `}
+        >
+          .{fractions}
+        </span>
+      </span>
+    )
+  }
+
+  return <span>{value}</span>
+}
+
 function ConversionRate({
   compactMode,
   tokenSymbol,
@@ -77,7 +105,7 @@ function ConversionRate({
             -webkit-text-fill-color: transparent;
           `}
         >
-          1 : {CONVERSION_RATE}
+          1 : <Rate value={CONVERSION_RATE} />
         </h4>
         <h3
           css={`
