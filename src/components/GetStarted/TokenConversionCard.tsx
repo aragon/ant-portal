@@ -17,7 +17,7 @@ import { fontWeight } from '../../style/font'
 import { TokenName } from '../../token-info/types'
 import { tokenInfo } from '../../token-info/tokenInfo'
 import rightArrowPng from '../../assets/right-arrow.png'
-import { CONVERTER_PATH } from '../../Routes'
+import { CONVERTER_PATH, REDEEM_ANJ_PATH } from '../../Routes'
 
 type TokenConversionCardProps = {
   tokenName: TokenName
@@ -192,7 +192,7 @@ function TokenConversionCard({
               disabled={!balance || balance === '0'}
               onClick={() => {
                 if (tokenName === 'anj') {
-                  history.push(CONVERTER_PATH)
+                  history.push(REDEEM_ANJ_PATH)
                 } else {
                   history.push(CONVERTER_PATH)
                 }
