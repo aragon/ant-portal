@@ -5,6 +5,7 @@ import GetStarted from './components/GetStarted/GetStarted'
 import Migrate from './components/Migrate/Migrate'
 
 export const CONVERTER_PATH = '/converter'
+export const REDEEM_ANJ_PATH = '/redeem-anj'
 export const DISCLAIMER_PATH = '/disclaimer'
 
 export default function Routes(): JSX.Element {
@@ -16,6 +17,11 @@ export default function Routes(): JSX.Element {
         exact
         path={CONVERTER_PATH}
         render={() => <Migrate conversionType="ANT" />}
+      />
+      <Route
+        exact
+        path={REDEEM_ANJ_PATH}
+        render={() => <Migrate conversionType="ANJ" />}
       />
       <Redirect to="/" />
     </Switch>
