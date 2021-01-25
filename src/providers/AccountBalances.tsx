@@ -5,6 +5,7 @@ import {
   useBalancerStakedBalance,
   useIncentiveStakedBalance,
   useAntTokenBalance,
+  useAnjTokenBalance,
   useUniswapStakedBalance,
   useAntTotalSupply,
 } from '../hooks/usePolledBalance'
@@ -12,6 +13,7 @@ import { useWallet } from 'use-wallet'
 import { networkEnvironment } from '../environment'
 
 const ANT_TOKEN_DECIMALS = 18
+const ANJ_TOKEN_DECIMALS = 18 // TODO: Update once ANJ support is implemented
 
 const { contracts } = networkEnvironment
 
@@ -20,6 +22,7 @@ type PolledValue = BigNumber | null
 type BalancesContext = {
   antV1Balance: PolledValue
   antV2Balance: PolledValue
+  anjBalance: PolledValue
   antV2MigratorBalance: PolledValue
   antV2TotalSupply: PolledValue
   uniswapPoolBalance: PolledValue
@@ -31,6 +34,7 @@ type BalancesContext = {
 const AccountBalancesContext = React.createContext<BalancesContext>({
   antV1Balance: null,
   antV2Balance: null,
+  anjBalance: null,
   antV2MigratorBalance: null,
   antV2TotalSupply: null,
   uniswapPoolBalance: null,
@@ -46,6 +50,7 @@ function AccountBalancesProvider({
 }): JSX.Element {
   const { account } = useWallet()
 
+  const anjBalanceBn = useAnjTokenBalance(account)
   const antV1BalanceBn = useAntTokenBalance('v1', account)
   const antV2BalanceBn = useAntTokenBalance('v2', account)
   const antV2MigratorBalanceBn = useAntTokenBalance(
@@ -64,6 +69,7 @@ function AccountBalancesProvider({
     (): BalancesContext => ({
       antV1Balance: antV1BalanceBn,
       antV2Balance: antV2BalanceBn,
+      anjBalance: anjBalanceBn,
       antV2MigratorBalance: antV2MigratorBalanceBn,
       antV2TotalSupply: antV2TotalSupplyBn,
       uniswapPoolBalance: antInUniswapPoolBn,
@@ -74,6 +80,7 @@ function AccountBalancesProvider({
     [
       antV1BalanceBn,
       antV2BalanceBn,
+      anjBalanceBn,
       antV2MigratorBalanceBn,
       antV2TotalSupplyBn,
       antTokenPriceUsd,
@@ -101,6 +108,7 @@ type LpBalances = [LpPool, BigNumber][]
 type AccountBalances = {
   antV1: BalanceWithDecimals
   antV2: BalanceWithDecimals
+  anj: BalanceWithDecimals
   lpBalances: {
     all: LpBalances | null
     available: LpBalances | null
@@ -115,6 +123,7 @@ function useAccountBalances(): AccountBalances {
   const {
     antV1Balance,
     antV2Balance,
+    anjBalance,
     antV2MigratorBalance,
     antV2TotalSupply,
     antTokenPriceUsd,
@@ -161,6 +170,10 @@ function useAccountBalances(): AccountBalances {
     antV2: {
       balance: antV2Balance,
       decimals: ANT_TOKEN_DECIMALS,
+    },
+    anj: {
+      balance: anjBalance,
+      decimals: ANJ_TOKEN_DECIMALS,
     },
     lpBalances: {
       all: lpAllBalances,

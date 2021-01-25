@@ -22,6 +22,7 @@ export interface EnvNetworkConfig {
   contracts: {
     tokenAntV1: string
     tokenAntV2: string
+    tokenAnj: string
     migrator: string
     antEthUniswapPool?: string
     antUniIncentivePool?: string

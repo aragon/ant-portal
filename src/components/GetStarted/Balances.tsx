@@ -21,7 +21,7 @@ function Balances({
   const { account } = useWallet()
   const [modalVisible, setModalVisible] = useState(false)
   const { layoutName } = useLayout()
-  const { antV1, antV2, lpBalances } = useAccountBalances()
+  const { antV1, anj, lpBalances } = useAccountBalances()
   const stackedCards = layoutName === 'small' || layoutName === 'medium'
 
   const formattedAntV1Balance = useMemo(
@@ -33,13 +33,13 @@ function Balances({
     [antV1.balance, antV1.decimals]
   )
 
-  const formattedAntV2Balance = useMemo(
+  const formattedAnjBalance = useMemo(
     (): string | null =>
-      antV2.balance &&
-      new TokenAmount(antV2.balance, antV2.decimals).format({
+      anj.balance &&
+      new TokenAmount(anj.balance, anj.decimals).format({
         digits: FORMATTED_DIGITS,
       }),
-    [antV2.balance, antV2.decimals]
+    [anj.balance, anj.decimals]
   )
 
   const formattedLpBalanceTotal = useMemo((): string | null => {
@@ -77,7 +77,7 @@ function Balances({
       >
         <TokenConversionCard
           tokenName="anj"
-          balance={formattedAntV2Balance}
+          balance={formattedAnjBalance}
           accountConnected={accountConnected}
           showLpBalance={false}
         />
