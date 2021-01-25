@@ -27,6 +27,16 @@ const DESCRIPTIONS: Record<
     failed: 'Failed to approve ANTv1 spend',
     timeout: 'Approval to spend ANTv1 timed out',
   },
+  redeemANJ: {
+    confirmed: 'Successfully redeemed ANJ to ANTv2',
+    failed: 'Failed to redeem ANJ to ANTv2',
+    timeout: 'Redemption from ANJ to ANTv2 timed out',
+  },
+  approveANJ: {
+    confirmed: 'Successfully approved ANJ spend',
+    failed: 'Failed to approve ANJ spend',
+    timeout: 'Approval to spend ANJ timed out',
+  },
 }
 
 export function useActivityToast(): (
