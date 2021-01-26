@@ -14,6 +14,7 @@ const networks = new Map<EnvNetworkName, EnvNetworkConfig>([
         tokenAntV1: '0x960b236A07cf122663c4303350609A66A7B288C0',
         tokenAntV2: '0xa117000000f279D81A1D3cc75430fAA017FA5A2e',
         tokenAnj: '', // TODO: Add the address once ANJ is integrated
+        anjMigrator: '', // TODO: Add the address once ANJ is integrated
         migrator: '0x078BEbC744B819657e1927bF41aB8C74cBBF912D',
         antEthUniswapPool: '0xfa19de406e8f5b9100e4dd5cad8a503a6d686efe',
         antUniIncentivePool: '0xea4d68cf86bce59bf2bfa039b97794ce2c43debc',
@@ -32,9 +33,10 @@ const networks = new Map<EnvNetworkName, EnvNetworkConfig>([
       ipfsGateway: 'https://ipfs.eth.aragon.network/ipfs',
       contracts: {
         tokenAntV1: '0x7278e85BfFCE26A1C9f21b879595BD63F6289297',
-        tokenAntV2: '0xa117000000f279D81A1D3cc75430fAA017FA5A2e',
-        tokenAnj: '', // TODO: Add the address once ANJ is integrated
+        tokenAntV2: '0x76C5A9cD218aF5825642614F9eE4252006466663',
         migrator: '0x078BEbC744B819657e1927bF41aB8C74cBBF912D',
+        tokenAnj: '0xbECb878454209aB79f8C66f59c920FF0a5C3BA09',
+        anjMigrator: '0x956CD94FB249CeC730Ab38EAEe6bb66eb5FfD6Fc',
       },
     },
   ],
