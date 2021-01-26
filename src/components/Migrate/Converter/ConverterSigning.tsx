@@ -12,6 +12,7 @@ import {
   useAntTokenV1Contract,
   useAnjTokenContract,
   useMigratorContract,
+  useAnjMigratorContract,
 } from '../../../hooks/useContract'
 import { networkEnvironment } from '../../../environment'
 import { useMigrateState } from '../MigrateStateProvider'
@@ -44,6 +45,7 @@ function ConverterSigning({
   const antTokenV1Contract = useAntTokenV1Contract()
   const anjTokenContract = useAnjTokenContract()
   const migratorContract = useMigratorContract()
+  const anjMigratorContract = useAnjMigratorContract()
   const stackedButtons = layoutName === 'small'
   const isANJConversion = conversionType === 'ANJ'
 
@@ -84,15 +86,20 @@ function ConverterSigning({
     }
 
     if (signingConfiguration === 'withinAnExistingAllowance') {
-      return migratorContract?.functions.migrate(convertAmount)
+      return anjMigratorContract?.functions.migrate(convertAmount)
     }
 
     return anjTokenContract?.functions.approveAndCall(
-      contracts.migrator,
+      contracts.anjMigrator,
       convertAmount,
       '0x'
     )
-  }, [anjTokenContract, migratorContract, convertAmount, signingConfiguration])
+  }, [
+    anjTokenContract,
+    anjMigratorContract,
+    convertAmount,
+    signingConfiguration,
+  ])
 
   const addUpgradeActivity = useCallback(
     (tx) => {
@@ -233,7 +240,7 @@ function ConverterSigning({
               : antTokenV1Contract
 
             const tx = await contract?.functions.approve(
-              contracts.migrator, // TODO: Use the new migrator for ANJ once implemented
+              contracts.anjMigrator,
               '0'
             )
 
