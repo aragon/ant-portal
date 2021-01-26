@@ -246,10 +246,7 @@ export function useAntTokenBalance(
 
         // Avoid unnessesary re-renders by only updating value when it has actually changed
         if (mounted() && (!tokenBalance || !balance.eq(tokenBalance))) {
-          // TODO: Fix me
-          // Temporary hack because of lack of real tokens in Rinkeby
-          setTokenBalance(BigNumber.from('10000000000000000000'))
-          // setTokenBalance(balance)
+          setTokenBalance(balance)
         }
       } catch (err) {
         captureErrorWithSentry(err)
@@ -270,11 +267,7 @@ export function useAnjTokenBalance(
 ): BigNumber | null {
   const anjTokenContract = useAnjTokenContract(readOnly)
   const mounted = useMounted()
-  const [tokenBalance, setTokenBalance] = useState<BigNumber | null>(
-    // TODO: Fix me
-    // Temporary hack because of lack of real tokens in Rinkeby
-    BigNumber.from('99000000000000000000')
-  )
+  const [tokenBalance, setTokenBalance] = useState<BigNumber | null>(null)
 
   const tokenContract = useMemo(() => {
     return anjTokenContract
@@ -285,9 +278,7 @@ export function useAnjTokenBalance(
       if (!tokenContract || !account) {
         // Clear any existing balance
         if (mounted()) {
-          // TODO: Uncomment me
-          // Temporary hack because of lack of real tokens in Rinkeby
-          // setTokenBalance(null)
+          setTokenBalance(null)
         }
         return
       }
