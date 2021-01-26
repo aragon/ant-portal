@@ -180,7 +180,7 @@ function ConverterSigning({
 
     const redeemANJSteps = [
       {
-        title: 'Initiate redemption',
+        title: 'Initiate ANJ redemption',
         descriptions: {
           waiting: 'Waiting for signature…',
           prompting: 'Sign transaction…',
