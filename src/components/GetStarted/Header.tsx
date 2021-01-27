@@ -42,9 +42,8 @@ const MESSAGES: Record<BalanceStatus, ReactNode> = {
       <span role="img" aria-label="party">
         🎊
       </span>{' '}
-      You have upgraded all your ANTv1 balance to ANTv2. This account doesn’t
-      hold any more ANTv1. You can continue to upgrade ANTv1 held in a
-      different&nbsp;account.
+      You can continue to upgrade ANTv1 held or redeem your ANJ in a different
+      account.
     </>
   ),
   noMigrationsAvailable: (
