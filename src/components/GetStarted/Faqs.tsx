@@ -84,6 +84,33 @@ const FAQS_ITEMS: [string, ReactNode][] = [
     </>,
   ],
   [
+    'Why I need to redeem my ANJ?',
+    <>
+      <p>
+        ANJ was launched in February 2020 as the work token for Aragon Court
+        jurors. Since then, over 250 jurors have activated their ANJ to
+        adjudicate disputes in Aragon Court. While that makes sense in theory,
+        the drawbacks outnumber that single benefit.
+      </p>
+      <p>
+        Even with that success, community members and other participants have
+        raised questions about ANJ, starting with why a separate token is really
+        needed.
+      </p>
+      <p>
+        The main reason to have multiple tokens was to isolate the
+        cryptoeconomic incentives — so that jurors have a set of incentives
+        different to those of ANT holders.
+      </p>
+      <p>
+        Read more in{' '}
+        <Link href="https://aragon.org/blog/merge-anj">
+          https://aragon.org/blog/merge-anj
+        </Link>
+      </p>
+    </>,
+  ],
+  [
     'For how long will this upgrade last?',
     <p>
       Users will be able to use the Upgrade Portal as many times as they’d like.
