@@ -58,7 +58,7 @@ const MESSAGES: Record<BalanceStatus, ReactNode> = {
 function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
   const theme = useTheme()
   const { showAccount } = useAccountModule()
-  const { antV1, antV2 } = useAccountBalances()
+  const { antV1, antV2, anj } = useAccountBalances()
   const { layoutName } = useLayout()
   const [balanceStatus, setBalanceStatus] = useState<BalanceStatus>('default')
 
@@ -93,8 +93,12 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
   }, [balanceStatus, showAccount])
 
   useEffect(() => {
-    if (antV1.balance && antV2.balance) {
-      if (antV1.balance.isZero() && antV2.balance.gt('0')) {
+    if (antV1.balance && antV2.balance && anj.balance) {
+      if (
+        antV1.balance.isZero() &&
+        anj.balance.isZero() &&
+        antV2.balance.gt('0')
+      ) {
         setBalanceStatus('success')
         return
       }
@@ -109,7 +113,7 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
     }
 
     setBalanceStatus('default')
-  }, [antV1.balance, antV2.balance])
+  }, [antV1.balance, antV2.balance, anj.balance])
 
   return (
     <LayoutLimiter {...props}>
