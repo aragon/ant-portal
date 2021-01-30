@@ -27,6 +27,9 @@ type TokenConversionCardProps = {
   showLpBalance?: boolean
   lpInfoAvailable?: boolean
   onLpClick?: (() => void) | null
+  available?: boolean
+  rate?: number
+  lockupPeriod?: number | null
 }
 
 function TokenConversionCard({
@@ -37,6 +40,9 @@ function TokenConversionCard({
   lpInfoAvailable,
   showLpBalance,
   onLpClick,
+  available = true,
+  rate,
+  lockupPeriod = null,
 }: TokenConversionCardProps): JSX.Element {
   const theme = useTheme()
   const history = useHistory()
@@ -95,7 +101,7 @@ function TokenConversionCard({
         background-color: ${theme.surface};
         box-shadow: ${shadowDepth.high};
         border-radius: ${radius.high};
-        padding: ${compactMode ? 4 * GU : 5 * GU}px;
+        padding: ${3 * GU}px;
 
         max-width: ${90 * GU}px;
         margin-left: auto;
@@ -105,15 +111,17 @@ function TokenConversionCard({
     >
       <div
         css={`
+          height: ${!available ? `100%` : ``};
           display: flex;
           justify-content: space-between;
-          padding-bottom: ${4 * GU}px;
-          margin-bottom: ${4.5 * GU}px;
-          border-bottom: 1px solid ${theme.border};
+          padding-bottom: ${available ? `${4 * GU}px;` : ``};
+          margin-bottom: ${available ? `${4.5 * GU}px;` : ``};
+          border-bottom: ${available ? `1px solid ${theme.border}` : ``};
         `}
       >
         <div
           css={`
+            height: ${!available ? `100%` : ``};
             display: flex;
             align-items: center;
             flex: 1;
@@ -121,6 +129,53 @@ function TokenConversionCard({
             flex-direction: column;
           `}
         >
+          {tokenName === 'anj' ? (
+            <div
+              css={`
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                padding-bottom: ${4 * GU}px;
+              `}
+            >
+              <div
+                css={`
+                  font-weight: bold;
+                  font-size: 1.2em;
+                `}
+              >
+                {lockupPeriod && lockupPeriod > 0
+                  ? `${lockupPeriod} Months lockup`
+                  : `No Lockup`}
+              </div>
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                `}
+              >
+                ANJ/ANT: {rate}
+              </div>
+            </div>
+          ) : (
+            <div
+              css={`
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                padding-bottom: ${3 * GU}px;
+              `}
+            >
+              <div
+                css={`
+                  font-weight: bold;
+                  font-size: 1.2em;
+                `}
+              >
+                For ANTv1 Holders
+              </div>
+            </div>
+          )}
           <div
             css={`
               display: flex;
@@ -180,84 +235,108 @@ function TokenConversionCard({
               {tokenTitle} to ANTv2
             </h3>
           </div>
-          <div
-            css={`
-              padding-top: ${2 * GU}px;
-            `}
-          >
-            <BrandButton
-              mode="strong"
-              size="large"
-              wide
-              disabled={!balance || balance === '0'}
-              onClick={() => {
-                if (tokenName === 'anj') {
-                  history.push(REDEEM_ANJ_PATH)
-                } else {
-                  history.push(CONVERTER_PATH)
-                }
-              }}
-              label="Start now"
-            />
-          </div>
+          {available ? (
+            <div
+              css={`
+                padding-top: ${2 * GU}px;
+              `}
+            >
+              <BrandButton
+                mode="strong"
+                size="large"
+                wide
+                disabled={!balance || balance === '0'}
+                onClick={() => {
+                  if (tokenName === 'anj') {
+                    history.push(REDEEM_ANJ_PATH)
+                  } else {
+                    history.push(CONVERTER_PATH)
+                  }
+                }}
+                label="Start now"
+              />
+            </div>
+          ) : (
+            <div
+              css={`
+                padding-top: ${2 * GU}px;
+                width: 100%;
+                height: 100%;
+              `}
+            >
+              <BrandButton
+                mode="strong"
+                size="large"
+                wide
+                disabled={true}
+                label="Coming soon"
+                css={`
+                  width: 100%;
+                  height: 100%;
+                `}
+              />
+            </div>
+          )}
         </div>
       </div>
-      <div
-        css={`
-          font-size: 18px;
-          line-height: 1;
-        `}
-      >
-        {accountConnected ? (
-          <ul>
-            <BalanceItem
-              title={
-                <span>
-                  Wallet{' '}
+      {available && (
+        <div
+          css={`
+            font-size: 18px;
+            line-height: 1;
+          `}
+        >
+          {accountConnected ? (
+            <ul>
+              <BalanceItem
+                title={
+                  <span>
+                    Wallet{' '}
+                    <span
+                      css={`
+                        font-weight: bold;
+                      `}
+                    >
+                      {tokenTitle}
+                    </span>{' '}
+                    balance
+                  </span>
+                }
+                amount={balance}
+                compactMode={compactMode}
+                tokenName={tokenName}
+              />
+
+              {showLpBalance &&
+                (lpInfoAvailable ? (
+                  <BalanceItem
+                    title={lpModalButton}
+                    amount={lpTotalBalance}
+                    skeletonWidth={18 * GU}
+                    compactMode={compactMode}
+                    tokenName={tokenName}
+                  />
+                ) : (
                   <span
                     css={`
-                      font-weight: bold;
+                      color: ${theme.contentSecondary};
                     `}
                   >
-                    {tokenTitle}
-                  </span>{' '}
-                  balance
-                </span>
-              }
-              amount={balance}
-              compactMode={compactMode}
-              tokenName={tokenName}
-            />
-
-            {showLpBalance &&
-              (lpInfoAvailable ? (
-                <BalanceItem
-                  title={lpModalButton}
-                  amount={lpTotalBalance}
-                  skeletonWidth={18 * GU}
-                  compactMode={compactMode}
-                  tokenName={tokenName}
-                />
-              ) : (
-                <span
-                  css={`
-                    color: ${theme.contentSecondary};
-                  `}
-                >
-                  Distribution unavailable on Rinkeby
-                </span>
-              ))}
-          </ul>
-        ) : (
-          <p
-            css={`
-              color: ${theme.contentSecondary};
-            `}
-          >
-            Enable account to see your balance
-          </p>
-        )}
-      </div>
+                    Distribution unavailable on Rinkeby
+                  </span>
+                ))}
+            </ul>
+          ) : (
+            <p
+              css={`
+                color: ${theme.contentSecondary};
+              `}
+            >
+              Enable account to see your balance
+            </p>
+          )}
+        </div>
+      )}
     </div>
   )
 }
