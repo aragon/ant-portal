@@ -17,6 +17,7 @@ import { fontWeight } from '../../style/font'
 import { TokenName } from '../../token-info/types'
 import { tokenInfo } from '../../token-info/tokenInfo'
 import rightArrowPng from '../../assets/right-arrow.png'
+import LockIcon from '../icons/LockIcon'
 import { CONVERTER_PATH, REDEEM_ANJ_PATH } from '../../Routes'
 
 type TokenConversionCardProps = {
@@ -265,6 +266,7 @@ function TokenConversionCard({
               `}
             >
               <BrandButton
+                icon={<LockIcon />}
                 mode="strong"
                 size="large"
                 wide
@@ -272,7 +274,7 @@ function TokenConversionCard({
                 label="Coming soon"
                 css={`
                   width: 100%;
-                  height: 100%;
+                  height: ${14.75 * GU}px;
                 `}
               />
             </div>
