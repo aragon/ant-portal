@@ -89,7 +89,7 @@ function Balances({
           accountConnected={accountConnected}
           showLpBalance={false}
           available={false}
-          rate={0.44}
+          rate={0.044}
           lockupPeriod={12}
         />
         <TokenConversionCard
