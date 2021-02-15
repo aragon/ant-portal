@@ -226,13 +226,13 @@ type BalanceItemType = {
   tokenName: TokenName
 }
 
-function BalanceItem({
+export const BalanceItem = ({
   title,
   amount,
   skeletonWidth = 14 * GU,
   compactMode,
   tokenName,
-}: BalanceItemType) {
+}: BalanceItemType): JSX.Element => {
   return (
     <li
       css={`

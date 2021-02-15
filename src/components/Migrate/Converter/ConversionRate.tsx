@@ -1,17 +1,54 @@
 import React from 'react'
 // @ts-ignore
-import { useTheme, GU } from '@aragon/ui'
+import { useTheme, GU, Help } from '@aragon/ui'
 import { shadowDepth } from '../../../style/shadow'
 import { fontWeight } from '../../../style/font'
-import TokenGraphic from '../../TokenGraphic/TokenGraphic'
 import { radius } from '../../../style/radius'
+import { useMigrateState } from '../MigrateStateProvider'
+import TokenGraphic from '../../TokenGraphic/TokenGraphic'
 
 type ConversionRateProps = {
   compactMode: boolean
+  tokenSymbol: string
 }
 
-function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
+type RateProps = {
+  value: number
+}
+
+function Rate({ value }: RateProps): JSX.Element {
+  const valueAsString = value.toString()
+  if (valueAsString.indexOf('.') >= 0) {
+    const ints = valueAsString.split('.')[0]
+    const fractions = valueAsString.split('.')[1]
+
+    return (
+      <span>
+        <span>{ints}</span>
+        <span
+          css={`
+            font-size: 0.5em;
+            letter-spacing: -0.05em;
+          `}
+        >
+          .{fractions}
+        </span>
+      </span>
+    )
+  }
+
+  return <span>{value}</span>
+}
+
+function ConversionRate({
+  compactMode,
+  tokenSymbol,
+}: ConversionRateProps): JSX.Element {
   const theme = useTheme()
+  const { conversionType } = useMigrateState()
+
+  const isANJConversion = conversionType === 'ANJ'
+  const CONVERSION_RATE = isANJConversion ? 0.015 : 1
 
   return (
     <div>
@@ -27,7 +64,10 @@ function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
           margin-bottom: ${3.5 * GU}px;
         `}
       >
-        <TokenGraphic tokenName="antV1" size={compactMode ? 80 : 100} />
+        <TokenGraphic
+          tokenName={isANJConversion ? 'anj' : 'antV1'}
+          size={compactMode ? 80 : 100}
+        />
         <TokenGraphic
           tokenName="antV2"
           size={compactMode ? 80 : 100}
@@ -65,17 +105,32 @@ function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
             -webkit-text-fill-color: transparent;
           `}
         >
-          1 : 1
+          1 : <Rate value={CONVERSION_RATE} />
         </h4>
-        <h3
+        <div
           css={`
+            display: flex;
+            align-items: center;
             margin-bottom: ${0.5 * GU}px;
-            font-weight: ${fontWeight.medium};
-            font-size: 18px;
           `}
         >
-          Conversion rate
-        </h3>
+          <h3
+            css={`
+              font-weight: ${fontWeight.medium};
+              font-size: 18px;
+              ${isANJConversion ? `margin-right: ${1 * GU}px;` : ``}
+            `}
+          >
+            Conversion rate
+          </h3>
+          {isANJConversion && (
+            <Help hint="Why this rate?">
+              The proposal consists of locking ANJ’s price at rate (0.015 ANT
+              for 1 ANJ) and minting 549,862 ANT (1.37% inflation) to redeem all
+              ANJ in circulation at that rate.
+            </Help>
+          )}
+        </div>
         <p
           css={`
             color: ${theme.surfaceContentSecondary};
@@ -89,7 +144,7 @@ function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
           >
             1
           </span>{' '}
-          ANTv1{' '}
+          {tokenSymbol}{' '}
           <span
             css={`
               margin-left: ${1 * GU}px;
@@ -104,7 +159,7 @@ function ConversionRate({ compactMode }: ConversionRateProps): JSX.Element {
               color: ${theme.surfaceContent};
             `}
           >
-            1
+            {CONVERSION_RATE}
           </span>{' '}
           ANTv2
         </p>

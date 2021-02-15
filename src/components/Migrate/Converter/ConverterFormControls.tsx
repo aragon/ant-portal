@@ -20,7 +20,10 @@ import { shadowDepth } from '../../../style/shadow'
 import { useAccountModule } from '../../Account/AccountModuleProvider'
 import { useHistory } from 'react-router-dom'
 import { getEtherscanUrl } from '../../../utils/etherscan'
-import { useAntTokenV1Contract } from '../../../hooks/useContract'
+import {
+  useAnjTokenContract,
+  useAntTokenV1Contract,
+} from '../../../hooks/useContract'
 import { useWallet } from '../../../providers/Wallet'
 import { BigNumber } from 'ethers'
 import { mockPromiseLatency } from '../../../mock'
@@ -40,7 +43,7 @@ function ConverterFormControls({
   const history = useHistory()
   const [amount, setAmount] = useState('')
   const theme = useTheme()
-  const { updateConvertAmount } = useMigrateState()
+  const { updateConvertAmount, conversionType } = useMigrateState()
   const { showAccount } = useAccountModule()
   const { layoutName } = useLayout()
   const {
@@ -60,6 +63,9 @@ function ConverterFormControls({
 
   const antV2ContractUrl = getEtherscanUrl(contracts.tokenAntV2)
   const stackedButtons = layoutName === 'small'
+
+  const isANJConversion = conversionType === 'ANJ'
+  const CONVERSION_RATE = isANJConversion ? 0.015 : 1
 
   const handleAmountChange = useCallback((event) => {
     const value = event.target.value
@@ -106,12 +112,13 @@ function ConverterFormControls({
             margin-bottom: ${1 * GU}px;
           `}
         >
-          Enter the amount you would like to upgrade
+          Enter the amount you would like to{' '}
+          {isANJConversion ? 'redeem' : 'upgrade'}
         </h3>
 
         <TextInput
           wide
-          placeholder={`0.0 ${tokenSymbol}v1`}
+          placeholder={`0.0 ${tokenSymbol}`}
           value={amount}
           onChange={handleAmountChange}
           css={`
@@ -162,9 +169,9 @@ function ConverterFormControls({
             ${validationStatus === 'valid' ? `color ${theme.accent};` : ''}
           `}
         >
-          {formattedAmount}
+          {parseFloat(formattedAmount) * CONVERSION_RATE}
         </span>{' '}
-        {tokenSymbol}v2
+        ANTv2
       </p>
       <Info
         css={`
@@ -215,8 +222,15 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
   const mounted = useMounted()
   const { account } = useWallet()
   const [allowanceCheckLoading, setAllowanceCheckLoading] = useState(false)
-  const { goToSigning, changeSigningConfiguration } = useMigrateState()
+  const {
+    goToSigning,
+    changeSigningConfiguration,
+    conversionType,
+  } = useMigrateState()
   const antTokenV1Contract = useAntTokenV1Contract()
+  const anjTokenContract = useAnjTokenContract()
+  const contract =
+    conversionType === 'ANJ' ? anjTokenContract : antTokenV1Contract
 
   const handleCheckAllowanceAndProceed = useCallback(async () => {
     try {
@@ -224,8 +238,8 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
         throw new Error('No account is connected!')
       }
 
-      if (!antTokenV1Contract) {
-        throw new Error('The ANTv1 token contract is not defined!')
+      if (!contract) {
+        throw new Error(`The ${conversionType} token contract is not defined!`)
       }
 
       setAllowanceCheckLoading(true)
@@ -236,10 +250,7 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
 
       const {
         remaining: allowanceRemaining,
-      } = await antTokenV1Contract.functions.allowance(
-        account,
-        contracts.migrator
-      )
+      } = await contract.functions.allowance(account, contracts.migrator)
 
       // Prevent async set state errors if component is unmounted before promise resolves
       if (!mounted()) {
@@ -265,8 +276,9 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
       console.error(err)
     }
   }, [
-    antTokenV1Contract,
+    contract,
     goToSigning,
+    conversionType,
     account,
     mounted,
     setAllowanceCheckLoading,

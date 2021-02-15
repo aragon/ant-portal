@@ -11,7 +11,7 @@ type ButtonStatus = ValidationStatus | 'loading'
 
 const BUTTON_MESSAGES: Record<ButtonStatus, string> = {
   notConnected: 'Connect wallet',
-  insufficientBalance: 'Insufficient ANT balance',
+  insufficientBalance: 'Insufficient balance',
   noAmount: 'Enter an amount',
   valid: 'Continue',
   loading: 'Loading…',

@@ -9,12 +9,15 @@ import { useWallet } from '../providers/Wallet'
 import { networkEnvironment } from '../environment'
 import tokenAntV1Abi from '../abi/token-ant-v1.json'
 import tokenAntV2Abi from '../abi/token-ant-v1.json'
+import tokenAnjAbi from '../abi/token-anj.json'
 import migratorAbi from '../abi/migrator.json'
+import anjMigratorAbi from '../abi/anj-migrator.json'
 import uniswapPoolAbi from '../abi/uniswap-pool.json'
 import incentivePoolAbi from '../abi/incentive-pool.json'
 import balancerPoolAbi from '../abi/balancer-pool.json'
 import { TokenAntV1 } from '../abi/types/TokenAntV1'
 import { TokenAntV2 } from '../abi/types/TokenAntV2'
+import { TokenAnj } from '../abi/types/TokenAnj'
 import { Migrator } from '../abi/types/Migrator'
 import { UniswapPool } from '../abi/types/UniswapPool'
 import { IncentivePool } from '../abi/types/IncentivePool'
@@ -74,6 +77,26 @@ export function useMigratorContract(readOnly?: boolean): Migrator | null {
   return useContract<Migrator>({
     address: migrator,
     abi: migratorAbi,
+    readOnly,
+  })
+}
+
+export function useAnjMigratorContract(readOnly?: boolean): Migrator | null {
+  const { anjMigrator } = contracts
+
+  return useContract<Migrator>({
+    address: anjMigrator,
+    abi: anjMigratorAbi,
+    readOnly,
+  })
+}
+
+export function useAnjTokenContract(readOnly?: boolean): TokenAnj | null {
+  const { tokenAnj } = contracts
+
+  return useContract<TokenAntV1>({
+    address: tokenAnj,
+    abi: tokenAnjAbi,
     readOnly,
   })
 }

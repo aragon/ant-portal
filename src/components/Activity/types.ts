@@ -2,7 +2,11 @@ export type ActivityFinalStatus = 'confirmed' | 'failed' | 'timeout'
 
 export type ActivityStatus = ActivityFinalStatus | 'pending'
 
-export type ActivityActionType = 'upgradeANT' | 'approveANT'
+export type ActivityActionType =
+  | 'upgradeANT'
+  | 'approveANT'
+  | 'redeemANJ'
+  | 'approveANJ'
 
 export type Activity = {
   createdAt: number

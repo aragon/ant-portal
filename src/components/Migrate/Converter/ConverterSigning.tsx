@@ -10,7 +10,9 @@ import SigningInfo from './SigningInfo'
 import { StepHandleSignProps } from '../../Stepper/types'
 import {
   useAntTokenV1Contract,
+  useAnjTokenContract,
   useMigratorContract,
+  useAnjMigratorContract,
 } from '../../../hooks/useContract'
 import { networkEnvironment } from '../../../environment'
 import { useMigrateState } from '../MigrateStateProvider'
@@ -33,17 +35,25 @@ function ConverterSigning({
   const history = useHistory()
   const { layoutName } = useLayout()
   const { account } = useWallet()
-  const { convertAmount, goToForm, signingConfiguration } = useMigrateState()
-  const { antV1 } = useAccountBalances()
+  const {
+    convertAmount,
+    goToForm,
+    signingConfiguration,
+    conversionType,
+  } = useMigrateState()
+  const { antV1, anj } = useAccountBalances()
   const antTokenV1Contract = useAntTokenV1Contract()
+  const anjTokenContract = useAnjTokenContract()
   const migratorContract = useMigratorContract()
+  const anjMigratorContract = useAnjMigratorContract()
   const stackedButtons = layoutName === 'small'
+  const isANJConversion = conversionType === 'ANJ'
 
   const handleBackToHome = useCallback(() => {
     history.push('/')
   }, [history])
 
-  const migrationContractInteraction = useCallback(():
+  const antMigrationContractInteraction = useCallback(():
     | Promise<ContractTransaction>
     | undefined => {
     if (!convertAmount) {
@@ -68,6 +78,29 @@ function ConverterSigning({
     signingConfiguration,
   ])
 
+  const anjMigrationContractInteraction = useCallback(():
+    | Promise<ContractTransaction>
+    | undefined => {
+    if (!convertAmount) {
+      throw new Error('No amount was provided!')
+    }
+
+    if (signingConfiguration === 'withinAnExistingAllowance') {
+      return anjMigratorContract?.functions.migrate(convertAmount)
+    }
+
+    return anjTokenContract?.functions.approveAndCall(
+      contracts.anjMigrator,
+      convertAmount,
+      '0x'
+    )
+  }, [
+    anjTokenContract,
+    anjMigratorContract,
+    convertAmount,
+    signingConfiguration,
+  ])
+
   const addUpgradeActivity = useCallback(
     (tx) => {
       const formattedAmount = new TokenAmount(
@@ -86,8 +119,26 @@ function ConverterSigning({
     [addActivity, convertAmount, antV1.decimals]
   )
 
+  const addRedeemActivity = useCallback(
+    (tx) => {
+      const formattedAmount = new TokenAmount(
+        convertAmount ?? 0,
+        anj.decimals
+      ).format({
+        digits: anj.decimals,
+      })
+
+      addActivity(
+        tx,
+        'redeemANJ',
+        `Redeem ${formattedAmount} ANJ to ${formattedAmount} ANTv2`
+      )
+    },
+    [addActivity, convertAmount, anj.decimals]
+  )
+
   const transactionSteps = useMemo(() => {
-    const steps = [
+    const upgradeANTSteps = [
       {
         title: 'Initiate upgrade',
         descriptions: {
@@ -111,7 +162,7 @@ function ConverterSigning({
               throw new Error('No amount was provided!')
             }
 
-            const tx = await migrationContractInteraction()
+            const tx = await antMigrationContractInteraction()
 
             if (tx) {
               addUpgradeActivity(tx)
@@ -126,6 +177,44 @@ function ConverterSigning({
         },
       },
     ]
+
+    const redeemANJSteps = [
+      {
+        title: 'Initiate ANJ redemption',
+        descriptions: {
+          waiting: 'Waiting for signature…',
+          prompting: 'Sign transaction…',
+          working: 'Sign transaction…',
+          success: 'Transaction signed',
+          error: 'An error has occured',
+        },
+        handleSign: async ({
+          setSuccess,
+          setError,
+          setHash,
+        }: StepHandleSignProps): Promise<void> => {
+          try {
+            if (!convertAmount) {
+              throw new Error('No amount was provided!')
+            }
+
+            const tx = await anjMigrationContractInteraction()
+
+            if (tx) {
+              addRedeemActivity(tx)
+              setHash(tx.hash)
+            }
+
+            setSuccess()
+          } catch (err) {
+            console.error(err)
+            setError()
+          }
+        },
+      },
+    ]
+
+    const steps = isANJConversion ? redeemANJSteps : upgradeANTSteps
 
     // When the requested migration amount exceeds an existing allowance we need to add a step
     // to reset it to 0 before using "approveAndCall"
@@ -146,13 +235,21 @@ function ConverterSigning({
           setHash,
         }: StepHandleSignProps): Promise<void> => {
           try {
-            const tx = await antTokenV1Contract?.functions.approve(
-              contracts.migrator,
+            const contract = isANJConversion
+              ? anjTokenContract
+              : antTokenV1Contract
+
+            const tx = await contract?.functions.approve(
+              contracts.anjMigrator,
               '0'
             )
 
             if (tx) {
-              addActivity(tx, 'approveANT', 'Approve ANTv1 spend')
+              if (isANJConversion) {
+                addActivity(tx, 'approveANT', 'Approve ANTv1 spend')
+              } else {
+                addActivity(tx, 'approveANJ', 'Approve ANJ spend')
+              }
               setHash(tx.hash)
             }
 
@@ -174,17 +271,25 @@ function ConverterSigning({
     return steps
   }, [
     antTokenV1Contract,
+    anjTokenContract,
+    isANJConversion,
     convertAmount,
     signingConfiguration,
-    migrationContractInteraction,
+    antMigrationContractInteraction,
+    anjMigrationContractInteraction,
     addActivity,
     addUpgradeActivity,
+    addRedeemActivity,
   ])
   return (
     <>
       <PageHeading
         title="Aragon Upgrade"
-        description="Upgrading your ANTv1"
+        description={
+          isANJConversion
+            ? 'Redeeming your ANJ for ANTv2'
+            : 'Upgrading your ANTv1'
+        }
         css={`
           margin-bottom: ${7 * GU}px;
         `}
@@ -240,7 +345,7 @@ function ConverterSigning({
                     margin: auto;
                   `}
                 >
-                  Back to Migrate
+                  Back to Homepage
                 </BrandButton>
               )}
             </div>

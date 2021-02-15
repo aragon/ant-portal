@@ -9,6 +9,7 @@ import {
 import { useWallet } from '../providers/Wallet'
 import { captureErrorWithSentry } from '../sentry'
 import {
+  useAnjTokenContract,
   useAntTokenV1Contract,
   useAntTokenV2Contract,
   useBalancerPoolContract,
@@ -229,6 +230,48 @@ export function useAntTokenBalance(
 
     return contracts[tokenVersion]
   }, [antTokenV1Contract, antTokenV2Contract, tokenVersion])
+
+  const getBalance = useCallback(
+    async (clear) => {
+      if (!tokenContract || !account) {
+        // Clear any existing balance
+        if (mounted()) {
+          setTokenBalance(null)
+        }
+        return
+      }
+
+      try {
+        const { balance } = await tokenContract.functions.balanceOf(account)
+
+        // Avoid unnessesary re-renders by only updating value when it has actually changed
+        if (mounted() && (!tokenBalance || !balance.eq(tokenBalance))) {
+          setTokenBalance(balance)
+        }
+      } catch (err) {
+        captureErrorWithSentry(err)
+        clear()
+      }
+    },
+    [account, mounted, tokenContract, tokenBalance]
+  )
+
+  useInterval(getBalance, POLL_INTERVAL)
+
+  return tokenBalance
+}
+
+export function useAnjTokenBalance(
+  account: string | null,
+  readOnly?: boolean
+): BigNumber | null {
+  const anjTokenContract = useAnjTokenContract(readOnly)
+  const mounted = useMounted()
+  const [tokenBalance, setTokenBalance] = useState<BigNumber | null>(null)
+
+  const tokenContract = useMemo(() => {
+    return anjTokenContract
+  }, [anjTokenContract])
 
   const getBalance = useCallback(
     async (clear) => {
