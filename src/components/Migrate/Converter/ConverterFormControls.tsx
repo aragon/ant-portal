@@ -28,6 +28,7 @@ import { useWallet } from '../../../providers/Wallet'
 import { BigNumber } from 'ethers'
 import { mockPromiseLatency } from '../../../mock'
 import { useMounted } from '../../../hooks/useMounted'
+import { CONVERSION_RATE, ANJ_CONVERSIONS } from '../conversionUtils'
 
 const FLOAT_REGEX = /^\d*[.]?\d*$/
 
@@ -64,8 +65,8 @@ function ConverterFormControls({
   const antV2ContractUrl = getEtherscanUrl(contracts.tokenAntV2)
   const stackedButtons = layoutName === 'small'
 
-  const isANJConversion = conversionType === 'ANJ'
-  const CONVERSION_RATE = isANJConversion ? 0.015 : 1
+  const isANJConversion = ANJ_CONVERSIONS.has(conversionType)
+  const conversionRate = CONVERSION_RATE[conversionType]
 
   const handleAmountChange = useCallback((event) => {
     const value = event.target.value
@@ -169,7 +170,7 @@ function ConverterFormControls({
             ${validationStatus === 'valid' ? `color ${theme.accent};` : ''}
           `}
         >
-          {parseFloat(formattedAmount) * CONVERSION_RATE}
+          {parseFloat(formattedAmount) * conversionRate}
         </span>{' '}
         ANTv2
       </p>
@@ -229,8 +230,9 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
   } = useMigrateState()
   const antTokenV1Contract = useAntTokenV1Contract()
   const anjTokenContract = useAnjTokenContract()
-  const contract =
-    conversionType === 'ANJ' ? anjTokenContract : antTokenV1Contract
+  const contract = ANJ_CONVERSIONS.has(conversionType)
+    ? anjTokenContract
+    : antTokenV1Contract
 
   const handleCheckAllowanceAndProceed = useCallback(async () => {
     try {
