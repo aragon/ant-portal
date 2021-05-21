@@ -26,7 +26,6 @@ import { ANJ_CONVERSIONS, MIGRATORS } from '../conversionUtils'
 
 const { contracts } = networkEnvironment
 
-
 type ConverterSigningProps = {
   mockSigningSteps?: 1 | 2 | 3
 }
@@ -244,7 +243,7 @@ function ConverterSigning({
       },
     ]
 
-    const steps = isANJConversion? redeemANJSteps: upgradeANTSteps;
+    const steps = isANJConversion ? redeemANJSteps : upgradeANTSteps
 
     // When the requested migration amount exceeds an existing allowance we need to add a step
     // to reset it to 0 before using "approveAndCall"
@@ -270,10 +269,7 @@ function ConverterSigning({
               : antTokenV1Contract
 
             const migrator = MIGRATORS[conversionType]
-            const tx = await contract?.functions.approve(
-              migrator,
-              '0'
-            )
+            const tx = await contract?.functions.approve(migrator, '0')
 
             if (tx) {
               if (isANJConversion) {
