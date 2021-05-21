@@ -124,7 +124,7 @@ function ConversionRate({
           >
             Conversion rate
           </h3>
-          {isANJConversion && (
+          {conversionType === 'ANJ' && (
             <Help hint="Why this rate?">
               The proposal consists of locking ANJ’s price at rate (
               {conversionRate} ANT for 1 ANJ) and minting 549,862 ANT (1.37%

@@ -13,6 +13,7 @@ import {
   useAnjTokenContract,
   useMigratorContract,
   useAnjMigratorContract,
+  useAnjLockMigratorContract,
 } from '../../../hooks/useContract'
 import { networkEnvironment } from '../../../environment'
 import { useMigrateState } from '../MigrateStateProvider'
@@ -21,9 +22,10 @@ import { ContractTransaction } from 'ethers'
 import PageHeading from '../../PageHeading/PageHeading'
 import { useActivity } from '../../Activity/ActivityProvider'
 import { useAccountBalances } from '../../../providers/AccountBalances'
-import { ANJ_CONVERSIONS } from '../conversionUtils'
+import { ANJ_CONVERSIONS, MIGRATORS } from '../conversionUtils'
 
 const { contracts } = networkEnvironment
+
 
 type ConverterSigningProps = {
   mockSigningSteps?: 1 | 2 | 3
@@ -47,6 +49,7 @@ function ConverterSigning({
   const anjTokenContract = useAnjTokenContract()
   const migratorContract = useMigratorContract()
   const anjMigratorContract = useAnjMigratorContract()
+  const anjLockMigratorContract = useAnjLockMigratorContract()
   const stackedButtons = layoutName === 'small'
   const isANJConversion = ANJ_CONVERSIONS.has(conversionType)
 
@@ -98,6 +101,29 @@ function ConverterSigning({
   }, [
     anjTokenContract,
     anjMigratorContract,
+    convertAmount,
+    signingConfiguration,
+  ])
+
+  const anjLockMigrationContractInteraction = useCallback(():
+    | Promise<ContractTransaction>
+    | undefined => {
+    if (!convertAmount) {
+      throw new Error('No amount was provided!')
+    }
+
+    if (signingConfiguration === 'withinAnExistingAllowance') {
+      return anjLockMigratorContract?.functions.migrate(convertAmount)
+    }
+
+    return anjTokenContract?.functions.approveAndCall(
+      contracts.anjLockMigrator,
+      convertAmount,
+      '0x'
+    )
+  }, [
+    anjTokenContract,
+    anjLockMigratorContract,
     convertAmount,
     signingConfiguration,
   ])
@@ -199,7 +225,10 @@ function ConverterSigning({
               throw new Error('No amount was provided!')
             }
 
-            const tx = await anjMigrationContractInteraction()
+            const tx =
+              conversionType === 'ANJ'
+                ? await anjMigrationContractInteraction()
+                : await anjLockMigrationContractInteraction()
 
             if (tx) {
               addRedeemActivity(tx)
@@ -215,7 +244,7 @@ function ConverterSigning({
       },
     ]
 
-    const steps = isANJConversion ? redeemANJSteps : upgradeANTSteps
+    const steps = isANJConversion? redeemANJSteps: upgradeANTSteps;
 
     // When the requested migration amount exceeds an existing allowance we need to add a step
     // to reset it to 0 before using "approveAndCall"
@@ -240,16 +269,17 @@ function ConverterSigning({
               ? anjTokenContract
               : antTokenV1Contract
 
+            const migrator = MIGRATORS[conversionType]
             const tx = await contract?.functions.approve(
-              contracts.anjMigrator,
+              migrator,
               '0'
             )
 
             if (tx) {
               if (isANJConversion) {
-                addActivity(tx, 'approveANT', 'Approve ANTv1 spend')
-              } else {
                 addActivity(tx, 'approveANJ', 'Approve ANJ spend')
+              } else {
+                addActivity(tx, 'approveANT', 'Approve ANTv1 spend')
               }
               setHash(tx.hash)
             }
@@ -276,8 +306,10 @@ function ConverterSigning({
     isANJConversion,
     convertAmount,
     signingConfiguration,
+    conversionType,
     antMigrationContractInteraction,
     anjMigrationContractInteraction,
+    anjLockMigrationContractInteraction,
     addActivity,
     addUpgradeActivity,
     addRedeemActivity,

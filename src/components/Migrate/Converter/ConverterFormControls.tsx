@@ -28,7 +28,7 @@ import { useWallet } from '../../../providers/Wallet'
 import { BigNumber } from 'ethers'
 import { mockPromiseLatency } from '../../../mock'
 import { useMounted } from '../../../hooks/useMounted'
-import { CONVERSION_RATE, ANJ_CONVERSIONS } from '../conversionUtils'
+import { CONVERSION_RATE, ANJ_CONVERSIONS, MIGRATORS } from '../conversionUtils'
 
 const FLOAT_REGEX = /^\d*[.]?\d*$/
 
@@ -250,9 +250,10 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
       // Without it the flicker can feel very subtly jarring
       await mockPromiseLatency(200)
 
+      const migrator = MIGRATORS[conversionType]
       const {
         remaining: allowanceRemaining,
-      } = await contract.functions.allowance(account, contracts.migrator)
+      } = await contract.functions.allowance(account, migrator)
 
       // Prevent async set state errors if component is unmounted before promise resolves
       if (!mounted()) {

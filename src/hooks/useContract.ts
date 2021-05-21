@@ -12,6 +12,7 @@ import tokenAntV2Abi from '../abi/token-ant-v1.json'
 import tokenAnjAbi from '../abi/token-anj.json'
 import migratorAbi from '../abi/migrator.json'
 import anjMigratorAbi from '../abi/anj-migrator.json'
+import anjLockMigratorAbi from '../abi/anj-lock-migrator.json'
 import uniswapPoolAbi from '../abi/uniswap-pool.json'
 import incentivePoolAbi from '../abi/incentive-pool.json'
 import balancerPoolAbi from '../abi/balancer-pool.json'
@@ -87,6 +88,18 @@ export function useAnjMigratorContract(readOnly?: boolean): Migrator | null {
   return useContract<Migrator>({
     address: anjMigrator,
     abi: anjMigratorAbi,
+    readOnly,
+  })
+}
+
+export function useAnjLockMigratorContract(
+  readOnly?: boolean
+): Migrator | null {
+  const { anjLockMigrator } = contracts
+
+  return useContract<Migrator>({
+    address: anjLockMigrator,
+    abi: anjLockMigratorAbi,
     readOnly,
   })
 }
