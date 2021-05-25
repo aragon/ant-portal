@@ -248,9 +248,11 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
       // Without it the flicker can feel very subtly jarring
       await mockPromiseLatency(200)
 
+      const migrator =
+        conversionType === 'ANJ' ? contracts.anjMigrator : contracts.migrator
       const {
         remaining: allowanceRemaining,
-      } = await contract.functions.allowance(account, contracts.migrator)
+      } = await contract.functions.allowance(account, migrator)
 
       // Prevent async set state errors if component is unmounted before promise resolves
       if (!mounted()) {
