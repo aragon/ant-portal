@@ -239,10 +239,11 @@ function ConverterSigning({
               ? anjTokenContract
               : antTokenV1Contract
 
-            const tx = await contract?.functions.approve(
-              contracts.anjMigrator,
-              '0'
-            )
+            const migrator = isANJConversion
+              ? contracts.anjMigrator
+              : contracts.migrator
+
+            const tx = await contract?.functions.approve(migrator, '0')
 
             if (tx) {
               if (isANJConversion) {
