@@ -11,9 +11,9 @@ import { StepHandleSignProps } from '../../Stepper/types'
 import {
   useAntTokenV1Contract,
   useAnjTokenContract,
-  useMigratorContract,
-  useAnjMigratorContract,
-  useAnjLockMigratorContract,
+  useAntV2MigratorContract,
+  useAnjNoLockMinterMigratorContract,
+  useAnjLockMinterMigratorContract,
 } from '../../../hooks/useContract'
 import { networkEnvironment } from '../../../environment'
 import { useMigrateState } from '../MigrateStateProvider'
@@ -46,9 +46,9 @@ function ConverterSigning({
   const { antV1, anj } = useAccountBalances()
   const antTokenV1Contract = useAntTokenV1Contract()
   const anjTokenContract = useAnjTokenContract()
-  const migratorContract = useMigratorContract()
-  const anjMigratorContract = useAnjMigratorContract()
-  const anjLockMigratorContract = useAnjLockMigratorContract()
+  const antV2MigratorContract = useAntV2MigratorContract()
+  const anjNoLockMinterMigratorContract = useAnjNoLockMinterMigratorContract()
+  const anjLockMinterMigratorContract = useAnjLockMinterMigratorContract()
   const stackedButtons = layoutName === 'small'
   const isANJConversion = ANJ_CONVERSIONS.has(conversionType)
 
@@ -66,22 +66,22 @@ function ConverterSigning({
     // We need to call the "migrate" method directly when there is an existing
     // allowance amount, otherwise we can use "appoveAndCall" on the v1 contract
     if (signingConfiguration === 'withinAnExistingAllowance') {
-      return migratorContract?.functions.migrate(convertAmount)
+      return antV2MigratorContract?.functions.migrate(convertAmount)
     }
 
     return antTokenV1Contract?.functions.approveAndCall(
-      contracts.migrator,
+      contracts.antV2Migrator,
       convertAmount,
       '0x'
     )
   }, [
     antTokenV1Contract,
-    migratorContract,
+    antV2MigratorContract,
     convertAmount,
     signingConfiguration,
   ])
 
-  const anjMigrationContractInteraction = useCallback(():
+  const anjNoLockMigrationContractInteraction = useCallback(():
     | Promise<ContractTransaction>
     | undefined => {
     if (!convertAmount) {
@@ -89,17 +89,17 @@ function ConverterSigning({
     }
 
     if (signingConfiguration === 'withinAnExistingAllowance') {
-      return anjMigratorContract?.functions.migrate(convertAmount)
+      return anjNoLockMinterMigratorContract?.functions.migrate(convertAmount)
     }
 
     return anjTokenContract?.functions.approveAndCall(
-      contracts.anjMigrator,
+      contracts.anjNoLockMinterMigrator,
       convertAmount,
       '0x'
     )
   }, [
     anjTokenContract,
-    anjMigratorContract,
+    anjNoLockMinterMigratorContract,
     convertAmount,
     signingConfiguration,
   ])
@@ -112,17 +112,17 @@ function ConverterSigning({
     }
 
     if (signingConfiguration === 'withinAnExistingAllowance') {
-      return anjLockMigratorContract?.functions.migrate(convertAmount)
+      return anjLockMinterMigratorContract?.functions.migrate(convertAmount)
     }
 
     return anjTokenContract?.functions.approveAndCall(
-      contracts.anjLockMigrator,
+      contracts.anjLockMinterMigrator,
       convertAmount,
       '0x'
     )
   }, [
     anjTokenContract,
-    anjLockMigratorContract,
+    anjLockMinterMigratorContract,
     convertAmount,
     signingConfiguration,
   ])
@@ -226,7 +226,7 @@ function ConverterSigning({
 
             const tx =
               conversionType === 'ANJ'
-                ? await anjMigrationContractInteraction()
+                ? await anjNoLockMigrationContractInteraction()
                 : await anjLockMigrationContractInteraction()
 
             if (tx) {
@@ -304,7 +304,7 @@ function ConverterSigning({
     signingConfiguration,
     conversionType,
     antMigrationContractInteraction,
-    anjMigrationContractInteraction,
+    anjNoLockMigrationContractInteraction,
     anjLockMigrationContractInteraction,
     addActivity,
     addUpgradeActivity,

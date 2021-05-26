@@ -9,9 +9,9 @@ export const CONVERSION_RATE: Record<TokenConversionType, number> = {
 
 const { contracts } = networkEnvironment
 export const MIGRATORS: Record<TokenConversionType, string> = {
-  ANT: contracts.migrator,
-  ANJ: contracts.anjMigrator,
-  'ANJ-LOCK': contracts.anjLockMigrator,
+  ANT: contracts.antV2Migrator,
+  ANJ: contracts.anjNoLockMinterMigrator,
+  'ANJ-LOCK': contracts.anjLockMinterMigrator,
 }
 
 export const ANJ_CONVERSIONS = new Set(['ANJ', 'ANJ-LOCK'])

@@ -23,9 +23,9 @@ export interface EnvNetworkConfig {
     tokenAntV1: string
     tokenAntV2: string
     tokenAnj: string
-    anjMigrator: string
-    migrator: string
-    anjLockMigrator: string
+    anjLockMinterMigrator: string
+    anjNoLockMinterMigrator: string
+    antV2Migrator: string
     antEthUniswapPool?: string
     antUniIncentivePool?: string
     antEthBalancerPool?: string
