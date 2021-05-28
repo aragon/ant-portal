@@ -20,6 +20,7 @@ export interface EnvNetworkConfig {
   }
   ipfsGateway: string
   contracts: {
+    court: string
     tokenAntV1: string
     tokenAntV2: string
     tokenAnj: string

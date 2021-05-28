@@ -6,7 +6,6 @@ import {
   useTheme,
   useLayout,
   Info,
-  IconExternal,
   GU,
   // @ts-ignore
 } from '@aragon/ui'
@@ -29,20 +28,65 @@ import { BigNumber } from 'ethers'
 import { mockPromiseLatency } from '../../../mock'
 import { useMounted } from '../../../hooks/useMounted'
 import { CONVERSION_RATE, ANJ_CONVERSIONS, MIGRATORS } from '../conversionUtils'
+import { TokenConversionType } from '../types'
+import { useAntStakingMinimum } from '../../../hooks/usePolledBalance'
+import { useAccountBalances } from '../../../providers/AccountBalances'
+import TokenAmount from 'token-amount'
+import StakingInfo from './StakingInfo'
+import ValidationWarning from './ValidationWarning'
 
 const FLOAT_REGEX = /^\d*[.]?\d*$/
 
 const { contracts } = networkEnvironment
 
+type FormControlsProps = {
+  tokenSymbol: string
+}
+
 type ConverterFormControlsProps = {
+  conversionType: TokenConversionType
   tokenSymbol: string
 }
 
 function ConverterFormControls({
+  conversionType,
   tokenSymbol,
 }: ConverterFormControlsProps): JSX.Element {
+  return conversionType === 'ANJ-LOCK' ? (
+    <LockConverterFormControls tokenSymbol={tokenSymbol} />
+  ) : (
+    <BaseConverterFormControls tokenSymbol={tokenSymbol} />
+  )
+}
+
+function LockConverterFormControls({
+  tokenSymbol,
+}: FormControlsProps): JSX.Element {
+  const { updateMinConvertAmount } = useMigrateState()
+  const { anj, antV2 } = useAccountBalances()
+  const antStakingMinimum = useAntStakingMinimum()
+
+  useEffect(() => {
+    if (!antStakingMinimum) {
+      return
+    }
+    const rate = 1 / CONVERSION_RATE['ANJ-LOCK']
+    const amount = new TokenAmount(antStakingMinimum, antV2.decimals).convert(
+      rate,
+      anj.decimals
+    )
+    updateMinConvertAmount(amount)
+  }, [anj.decimals, antV2.decimals, updateMinConvertAmount, antStakingMinimum])
+
+  return <BaseConverterFormControls tokenSymbol={tokenSymbol} />
+}
+
+function BaseConverterFormControls({
+  tokenSymbol,
+}: FormControlsProps): JSX.Element {
   const history = useHistory()
   const [amount, setAmount] = useState('')
+  const [showError, setShowError] = useState(false)
   const theme = useTheme()
   const { updateConvertAmount, conversionType } = useMigrateState()
   const { showAccount } = useAccountModule()
@@ -53,6 +97,7 @@ function ConverterFormControls({
     validationStatus,
     parsedAmountBn,
   } = useInputValidation(amount)
+
   const {
     handleCheckAllowanceAndProceed,
     allowanceCheckLoading,
@@ -68,17 +113,21 @@ function ConverterFormControls({
   const isANJConversion = ANJ_CONVERSIONS.has(conversionType)
   const conversionRate = CONVERSION_RATE[conversionType]
 
-  const handleAmountChange = useCallback((event) => {
-    const value = event.target.value
+  const handleAmountChange = useCallback(
+    (event) => {
+      const value = event.target.value
 
-    if (FLOAT_REGEX.test(value)) {
-      setAmount(value)
-    }
-  }, [])
+      setShowError(false)
+      if (FLOAT_REGEX.test(value)) {
+        setAmount(value)
+      }
+    },
+    [setAmount]
+  )
 
   const handleMaxClick = useCallback(() => {
     setAmount(maxAmount)
-  }, [maxAmount])
+  }, [maxAmount, setAmount])
 
   const handleSubmit = useCallback(
     (event) => {
@@ -86,10 +135,13 @@ function ConverterFormControls({
 
       if (validationStatus === 'notConnected') {
         showAccount()
+        return
       }
 
       if (validationStatus === 'valid') {
         handleCheckAllowanceAndProceed()
+      } else {
+        setShowError(true)
       }
     },
     [validationStatus, handleCheckAllowanceAndProceed, showAccount]
@@ -174,6 +226,7 @@ function ConverterFormControls({
         </span>{' '}
         ANTv2
       </p>
+      {conversionType === 'ANJ-LOCK' && <StakingInfo />}
       <Info
         css={`
           margin-top: ${3 * GU}px;
@@ -192,14 +245,11 @@ function ConverterFormControls({
         >
           {' '}
           Review {tokenSymbol}v2 token contract{' '}
-          <IconExternal
-            size="small"
-            css={`
-              margin-left: ${0.5 * GU}px;
-            `}
-          />
         </Link>
       </Info>
+      {showError && !allowanceCheckLoading && (
+        <ValidationWarning status={validationStatus} />
+      )}
       <div
         css={`
           display: grid;

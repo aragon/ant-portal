@@ -11,6 +11,7 @@ import tokenAntV1Abi from '../abi/token-ant-v1.json'
 import tokenAntV2Abi from '../abi/token-ant-v1.json'
 import tokenAnjAbi from '../abi/token-anj.json'
 import migratorAbi from '../abi/migrator.json'
+import courtAbi from '../abi/court.json'
 import anjNoLockMinterMigratorAbi from '../abi/anj-migrator.json'
 import anjLockMinterMigratorAbi from '../abi/anj-lock-migrator.json'
 import uniswapPoolAbi from '../abi/uniswap-pool.json'
@@ -23,6 +24,7 @@ import { Migrator } from '../abi/types/Migrator'
 import { UniswapPool } from '../abi/types/UniswapPool'
 import { IncentivePool } from '../abi/types/IncentivePool'
 import { BalancerPool } from '../abi/types/BalancerPool'
+import { Court } from '../abi/types/Court'
 
 const { endpoints, contracts } = networkEnvironment
 
@@ -166,6 +168,16 @@ export function useBalancerPoolContract(
   return useContract<BalancerPool>({
     address: antEthBalancerPool,
     abi: balancerPoolAbi,
+    readOnly,
+  })
+}
+
+export function useCourtContract(readOnly?: boolean): Court | null {
+  const { court } = contracts
+
+  return useContract<Court>({
+    address: court,
+    abi: courtAbi,
     readOnly,
   })
 }

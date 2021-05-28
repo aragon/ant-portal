@@ -138,7 +138,10 @@ function ConverterForm(): JSX.Element {
             grid-area: inputs;
           `}
         >
-          <ConverterFormControls tokenSymbol={tokenSymbol} />
+          <ConverterFormControls
+            conversionType={conversionType}
+            tokenSymbol={tokenSymbol}
+          />
         </div>
       </div>
     </>
