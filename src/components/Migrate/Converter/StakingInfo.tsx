@@ -18,7 +18,7 @@ function StakingInfo(): JSX.Element {
             margin-bottom: 0;
           `}
         >
-          To be a juror you need at least {minConvertAmount} ANT staked on
+          To be a guardian you need at least {minConvertAmount} ANJ that will be converted into ANT to be staked on
           Court.{' '}
           <Link
             href={'https://aragon.org/old/court'}

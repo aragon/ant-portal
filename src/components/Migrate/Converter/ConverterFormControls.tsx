@@ -244,7 +244,7 @@ function BaseConverterFormControls({
           `}
         >
           {' '}
-          Review {tokenSymbol}v2 token contract{' '}
+          Review ANTv2 token contract{' '}
         </Link>
       </Info>
       {showError && !allowanceCheckLoading && (

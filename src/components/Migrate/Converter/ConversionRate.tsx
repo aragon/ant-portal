@@ -172,7 +172,7 @@ function ConversionRate({
               font-size: ${fontWeight.light};
             `}
           >
-            Your {tokenSymbol} will be locked on Aragon Court until October 5th,
+            Your new ANT will be locked on Aragon Court until October 5th,
             2021
           </p>
         )}
