@@ -29,7 +29,7 @@ function ValidationWarning({ status }: ValidationWarningProps): JSX.Element {
         <Info
           mode="warning"
           css={`
-            margin-bottom: ${3 * GU}px;
+            margin-top: ${GU}px;
           `}
         >
           {content}

@@ -20,10 +20,11 @@ const BUTTON_MESSAGES: Record<ButtonStatus, string> = {
 
 type ConverterButtonProps = {
   status: ButtonStatus
+  agree: boolean
 }
 
-function ConverterButton({ status }: ConverterButtonProps): JSX.Element {
-  const disableButton = status === 'loading'
+function ConverterButton({ status, agree }: ConverterButtonProps): JSX.Element {
+  const disableButton = status === 'loading' || !agree
 
   const icon = useMemo(() => {
     if (status === 'notConnected') {

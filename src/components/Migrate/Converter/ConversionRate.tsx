@@ -164,18 +164,6 @@ function ConversionRate({
           </span>{' '}
           ANTv2
         </p>
-        {conversionType === 'ANJ-LOCK' && (
-          <p
-            css={`
-              color: ${theme.surfaceContentSecondary};
-              text-align: center;
-              font-size: ${fontWeight.light};
-            `}
-          >
-            Your new ANT will be locked on Aragon Court until October 5th,
-            2021
-          </p>
-        )}
       </div>
     </div>
   )
