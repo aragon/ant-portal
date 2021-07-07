@@ -64,7 +64,7 @@ function StakingInfo(): JSX.Element {
           that will be converted into ANT to be{' '}
           <b>staked until October 5th, 2021</b> on Aragon Court.{' '}
           <StyledLink
-            href={'https://blog.aragon.org/next-steps-for-the-ant-anj-merger/'}
+            href={'https://help.aragon.org/article/98-anj-conversion-faq'}
           >
             <b>{ARROW} Learn more</b>
           </StyledLink>
