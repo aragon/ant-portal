@@ -150,7 +150,7 @@ function TokenConversionCard({
                 `}
               >
                 {lockupPeriod && lockupPeriod > 0
-                  ? `${lockupPeriod} Months lockup`
+                  ? `Locked until Oct 5th`
                   : `No Lockup`}
               </div>
               <div
@@ -335,6 +335,16 @@ function TokenConversionCard({
                     Distribution unavailable on Rinkeby
                   </span>
                 ))}
+
+                {(lockupPeriod && (lockupPeriod > 0)) ? <span
+                    css={`
+                      color: ${theme.contentSecondary};
+                    `}
+                  >
+                    Available until September 5th, 2021
+                  </span> : <></>}
+
+                
             </ul>
           ) : (
             <p
