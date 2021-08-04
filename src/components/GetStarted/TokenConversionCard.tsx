@@ -336,15 +336,17 @@ function TokenConversionCard({
                   </span>
                 ))}
 
-                {(lockupPeriod && (lockupPeriod > 0)) ? <span
-                    css={`
-                      color: ${theme.contentSecondary};
-                    `}
-                  >
-                    Available until September 5th, 2021
-                  </span> : <></>}
-
-                
+              {lockupPeriod && lockupPeriod > 0 ? (
+                <span
+                  css={`
+                    color: ${theme.contentSecondary};
+                  `}
+                >
+                  Available until September 5th, 2021
+                </span>
+              ) : (
+                <></>
+              )}
             </ul>
           ) : (
             <p
