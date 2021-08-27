@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom'
 import { fontWeight } from '../../style/font'
 import BrandButton from '../BrandButton/BrandButton'
 import ConverterFormControls from '../Migrate/Converter/ConverterFormControls'
+import styled from 'styled-components'
 
 const FLOAT_REGEX = /^\d*[.]?\d*$/
 
@@ -43,50 +44,46 @@ export function BaseCheckerFormControls(): JSX.Element {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label
-        css={`
-          display: block;
-        `}
-      >
-        <h3
-          css={`
-            font-weight: ${fontWeight.light};
-            margin-bottom: ${1 * GU}px;
-            font-size: 22px;
-          `}
-        >
-          Enter your Govern DAO executor address
-        </h3>
-
-        <TextInput
+      <Label>
+        <LabelText>Enter your Govern DAO executor address</LabelText>
+        <StyledInput
           wide
           placeholder={`0x01234..cdef`}
           value={amount}
           onChange={handleAmountChange}
-          css={`
-            font-variant-numeric: tabular-nums;
-            display: block;
-          `}
         />
-      </label>
+      </Label>
 
       {/* {showError && !allowanceCheckLoading && (
         <ValidationWarning status={validationStatus} />
       )} */}
 
-      <div
-        css={`
-          display: grid;
-          grid-gap: ${1 * GU}px;
-          grid-template-columns: ${stackedButtons ? 'auto' : '1fr 1fr'};
-          margin-top: ${2 * GU}px;
-        `}
-      >
+      <ButtonRow stacked={stackedButtons}>
         <BrandButton mode="strong" wide type="submit" label={'Check'} />
         <BrandButton wide onClick={handleNavigateHome} label={'Back'} />
-      </div>
+      </ButtonRow>
     </form>
   )
 }
+
+const LabelText = styled.h3`
+  font-weight: ${fontWeight.light};
+  margin-bottom: ${1 * GU}px;
+  font-size: 22px;
+`
+
+const Label = styled.label`
+  display: block;
+`
+const StyledInput = styled(TextInput)`
+  font-variant-numeric: tabular-nums;
+  display: block;
+`
+const ButtonRow = styled.div<{ stacked: boolean }>`
+  display: grid;
+  grid-gap: ${1 * GU}px;
+  grid-template-columns: ${(props) => (props.stacked ? 'auto' : '1fr 1fr')};
+  margin-top: ${2 * GU}px;
+`
 
 export default ConverterFormControls

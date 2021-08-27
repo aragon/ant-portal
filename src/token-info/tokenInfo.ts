@@ -19,4 +19,8 @@ export const tokenInfo: Record<
     suffix: 'ANJ',
     graphic: anjTokenSvg,
   },
+  opt: {
+    suffix: 'Option',
+    graphic: anjTokenSvg,
+  },
 }
