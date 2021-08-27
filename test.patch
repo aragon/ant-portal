@@ -1,0 +1,555 @@
+diff --git a/package.json b/package.json
+index 32943df..caaa2f8 100644
+--- a/package.json
++++ b/package.json
+@@ -43,6 +43,7 @@
+     "polished": "^4.0.2",
+     "react": "^16.13.1",
+     "react-dom": "^16.13.1",
++    "react-if": "^4.0.1",
+     "react-scripts": "3.4.3",
+     "react-spring": "^8.0.27",
+     "react-use-measure": "^2.0.2",
+@@ -89,7 +90,7 @@
+     "test": "react-app-rewired test --passWithNoTests --watchAll=false",
+     "testWatch": "yarn test --watchAll=true",
+     "eject": "react-scripts eject",
+-    "lint": "eslint --ext ts,tsx src --max-warnings 0 && yarn typecheck",
++    "lint": "eslint --ext ts,tsx src && yarn typecheck",
+     "typecheck": "tsc",
+     "sync-assets": "rimraf ./public/aragon-ui && copy-aragon-ui-assets ./public && yarn generateAbiTypes",
+     "generateAbiTypes": "rimraf ./src/abi/types && typechain --target ethers-v5 --outDir ./src/abi/types './src/abi/*.json'"
+diff --git a/src/Routes.tsx b/src/Routes.tsx
+index fc4c571..701e0ef 100644
+--- a/src/Routes.tsx
++++ b/src/Routes.tsx
+@@ -1,5 +1,6 @@
+ import React from 'react'
+ import { Redirect, Route, Switch } from 'react-router-dom'
++import Check from './components/Check/Check'
+ import Disclaimer from './components/Disclaimer/Disclaimer'
+ import GetStarted from './components/GetStarted/GetStarted'
+ import Migrate from './components/Migrate/Migrate'
+@@ -8,6 +9,7 @@ export const CONVERTER_PATH = '/converter'
+ export const REDEEM_ANJ_PATH = '/redeem-anj'
+ export const REDEEM_ANJ_LOCK_PATH = '/redeem-anj-lock'
+ export const DISCLAIMER_PATH = '/disclaimer'
++export const GOVERN_PATH = '/govern'
+ 
+ export default function Routes(): JSX.Element {
+   return (
+@@ -19,6 +21,7 @@ export default function Routes(): JSX.Element {
+         path={CONVERTER_PATH}
+         render={() => <Migrate conversionType="ANT" />}
+       />
++      <Route exact path={GOVERN_PATH} render={() => <Check />} />
+       <Route
+         exact
+         path={REDEEM_ANJ_PATH}
+diff --git a/src/components/Check/Check.tsx b/src/components/Check/Check.tsx
+new file mode 100644
+index 0000000..e5ee366
+--- /dev/null
++++ b/src/components/Check/Check.tsx
+@@ -0,0 +1,46 @@
++import React from 'react'
++// @ts-ignore
++import { GU } from '@aragon/ui'
++import LayoutGutter from '../Layout/LayoutGutter'
++import AnimateEntrance from '../AnimateEntrance/AnimateEntrance'
++import Checker from './Checker'
++
++function Check(): JSX.Element {
++  return (
++    <AnimateEntrance
++      css={`
++        display: flex;
++        align-items: center;
++        justify-content: center;
++        height: 100%;
++        flex: 1;
++      `}
++    >
++      <LayoutGutter
++        css={`
++          padding-top: ${7 * GU}px;
++          padding-bottom: ${10 * GU}px;
++        `}
++      >
++        <div
++          css={`
++            margin-top: -${4 * GU}px;
++            width: 100%;
++          `}
++        >
++          <div
++            css={`
++              display: flex;
++              justify-content: center;
++              width: 100%;
++            `}
++          >
++            <Checker />
++          </div>
++        </div>
++      </LayoutGutter>
++    </AnimateEntrance>
++  )
++}
++
++export default Check
+diff --git a/src/components/Check/Checker.tsx b/src/components/Check/Checker.tsx
+new file mode 100644
+index 0000000..1cbfaf9
+--- /dev/null
++++ b/src/components/Check/Checker.tsx
+@@ -0,0 +1,79 @@
++import React, { useEffect, useState } from 'react'
++import { animated, Transition } from 'react-spring/renderprops'
++import {
++  GU,
++  // @ts-ignore
++} from '@aragon/ui'
++import { useDisableAnimation } from '../../hooks/useDisableAnimation'
++import { springs } from '../../style/springs'
++import CheckerForm from './CheckerForm'
++
++const AnimatedDiv = animated.div
++
++type CheckState = 'init' | 'other'
++
++function Checker(): JSX.Element {
++  const [direction, setDirection] = useState<1 | -1>(-1)
++  const [animationDisabled, enableAnimation] = useDisableAnimation()
++  const [checkState, setCheckState] = useState<CheckState>('init')
++
++  useEffect(() => {
++    if (checkState === 'init') {
++      setDirection(-1)
++    }
++
++    if (checkState === 'init') {
++      setDirection(1)
++    }
++  }, [checkState])
++
++  return (
++    <Transition
++      items={checkState}
++      config={springs.tight}
++      onStart={enableAnimation}
++      immediate={animationDisabled}
++      from={{
++        opacity: 0,
++        transform: `translate3d(${15 * GU * -direction}px, 0, 0)`,
++      }}
++      enter={{
++        opacity: 1,
++        transform: 'translate3d(0, 0, 0)',
++      }}
++      leave={{
++        opacity: 0,
++        position: 'absolute' as const,
++        transform: `translate3d(${15 * GU * direction}px, 0, 0)`,
++      }}
++      native
++    >
++      {(currentStage) =>
++        currentStage === 'init'
++          ? (animationProps) => (
++              <AnimatedDiv
++                style={animationProps}
++                css={`
++                  width: 100%;
++                  max-width: ${120 * GU}px;
++                `}
++              >
++                <CheckerForm />
++              </AnimatedDiv>
++            )
++          : (animationProps) => (
++              <AnimatedDiv
++                style={animationProps}
++                css={`
++                  width: 100%;
++                `}
++              >
++                <CheckerForm />
++              </AnimatedDiv>
++            )
++      }
++    </Transition>
++  )
++}
++
++export default Checker
+diff --git a/src/components/Check/CheckerControls.tsx b/src/components/Check/CheckerControls.tsx
+new file mode 100644
+index 0000000..0bebf24
+--- /dev/null
++++ b/src/components/Check/CheckerControls.tsx
+@@ -0,0 +1,92 @@
++import React, { useCallback, useState } from 'react'
++import {
++  TextInput,
++  useLayout,
++  GU,
++  // @ts-ignore
++} from '@aragon/ui'
++import { useHistory } from 'react-router-dom'
++import { fontWeight } from '../../style/font'
++import BrandButton from '../BrandButton/BrandButton'
++import ConverterFormControls from '../Migrate/Converter/ConverterFormControls'
++
++const FLOAT_REGEX = /^\d*[.]?\d*$/
++
++export function BaseCheckerFormControls(): JSX.Element {
++  const history = useHistory()
++  const [amount, setAmount] = useState('')
++  const [showError, setShowError] = useState(false)
++  const { layoutName } = useLayout()
++
++  const handleNavigateHome = useCallback(() => {
++    history.push('/')
++  }, [history])
++
++  const stackedButtons = layoutName === 'small'
++
++  const handleAmountChange = useCallback(
++    (event) => {
++      const value = event.target.value
++
++      setShowError(false)
++      if (FLOAT_REGEX.test(value)) {
++        setAmount(value)
++      }
++    },
++    [setAmount]
++  )
++
++  const handleSubmit = useCallback((event) => {
++    event.preventDefault()
++    console.log('hi')
++  }, [])
++
++  return (
++    <form onSubmit={handleSubmit}>
++      <label
++        css={`
++          display: block;
++        `}
++      >
++        <h3
++          css={`
++            font-weight: ${fontWeight.light};
++            margin-bottom: ${1 * GU}px;
++            font-size: 22px;
++          `}
++        >
++          Enter your Govern DAO executor address
++        </h3>
++
++        <TextInput
++          wide
++          placeholder={`0x01234..cdef`}
++          value={amount}
++          onChange={handleAmountChange}
++          css={`
++            font-variant-numeric: tabular-nums;
++            display: block;
++          `}
++        />
++      </label>
++
++      {/* {showError && !allowanceCheckLoading && (
++        <ValidationWarning status={validationStatus} />
++      )} */}
++
++      <div
++        css={`
++          display: grid;
++          grid-gap: ${1 * GU}px;
++          grid-template-columns: ${stackedButtons ? 'auto' : '1fr 1fr'};
++          margin-top: ${2 * GU}px;
++        `}
++      >
++        <BrandButton mode="strong" wide type="submit" label={'Check'} />
++        <BrandButton wide onClick={handleNavigateHome} label={'Back'} />
++      </div>
++    </form>
++  )
++}
++
++export default ConverterFormControls
+diff --git a/src/components/Check/CheckerForm.tsx b/src/components/Check/CheckerForm.tsx
+new file mode 100644
+index 0000000..eb5d77f
+--- /dev/null
++++ b/src/components/Check/CheckerForm.tsx
+@@ -0,0 +1,73 @@
++import React from 'react'
++import { css } from 'styled-components'
++import {
++  useTheme,
++  useLayout,
++  GU,
++  // @ts-ignore
++} from '@aragon/ui'
++import { radius } from '../../style/radius'
++import { shadowDepth } from '../../style/shadow'
++import PageHeading from '../PageHeading/PageHeading'
++import { BaseCheckerFormControls } from './CheckerControls'
++import OptionRate from './OptionRate'
++
++function CheckerForm(): JSX.Element {
++  const theme = useTheme()
++  const { layoutName } = useLayout()
++  const compactMode = layoutName === 'small' || layoutName === 'medium'
++
++  return (
++    <>
++      <PageHeading
++        title="Aragon Govern Reward Program"
++        description={`Check how many options your DAO is entitled to receive`}
++        css={`
++          margin-bottom: ${7 * GU}px;
++        `}
++      />
++      <div
++        css={`
++          padding: ${compactMode ? 4 * GU : 6 * GU}px;
++          background-color: ${theme.surface};
++          box-shadow: ${shadowDepth.high};
++          border-radius: ${radius.high};
++          display: grid;
++          grid-gap: ${4 * GU}px;
++          ${compactMode ? stackedLayout : multiColumnLayout}
++        `}
++      >
++        <div
++          css={`
++            display: flex;
++            align-items: center;
++            justify-content: center;
++            grid-area: rate;
++            padding: ${2 * GU}px;
++          `}
++        >
++          <OptionRate tokenSymbol="OPT" compactMode={compactMode} />
++        </div>
++        <BaseCheckerFormControls />
++      </div>
++    </>
++  )
++}
++
++const multiColumnLayout = css`
++  grid-template-columns: 55% auto;
++  grid-template-rows: auto auto;
++  grid-template-areas:
++    'title rate'
++    'inputs rate';
++`
++
++const stackedLayout = css`
++  grid-template-rows: auto auto auto;
++  grid-template-areas:
++    'title'
++    'rate'
++    'inputs';
++`
++
++export default CheckerForm
+diff --git a/src/components/Check/OptionRate.tsx b/src/components/Check/OptionRate.tsx
+new file mode 100644
+index 0000000..ba30840
+--- /dev/null
++++ b/src/components/Check/OptionRate.tsx
+@@ -0,0 +1,158 @@
++import React from 'react'
++// @ts-ignore
++import { GU, useTheme } from '@aragon/ui'
++import { fontWeight } from '../../style/font'
++import { radius } from '../../style/radius'
++import { shadowDepth } from '../../style/shadow'
++import TokenGraphic from '../TokenGraphic/TokenGraphic'
++
++type OptionRateProps = {
++  compactMode: boolean
++  tokenSymbol: string
++}
++
++type RateProps = {
++  value: number
++}
++
++function Rate({ value }: RateProps): JSX.Element {
++  const valueAsString = value.toString()
++  if (valueAsString.indexOf('.') >= 0) {
++    const ints = valueAsString.split('.')[0]
++    const fractions = valueAsString.split('.')[1]
++
++    return (
++      <span>
++        <span>{ints}</span>
++        <span
++          css={`
++            font-size: 0.5em;
++            letter-spacing: -0.05em;
++          `}
++        >
++          .{fractions}
++        </span>
++      </span>
++    )
++  }
++
++  return <span>{value}</span>
++}
++
++function OptionRate({
++  compactMode,
++  tokenSymbol,
++}: OptionRateProps): JSX.Element {
++  const theme = useTheme()
++  const conversionRate = 0.05
++  const isANJConversion = true
++
++  return (
++    <div>
++      <div
++        css={`
++          display: flex;
++          padding: ${2 * GU}px;
++          background-color: ${theme.surface};
++
++          // Create pill corners
++          border-radius: ${radius.pill};
++          box-shadow: ${shadowDepth.high};
++          margin-bottom: ${3.5 * GU}px;
++        `}
++      >
++        <TokenGraphic tokenName={'antV1'} size={compactMode ? 80 : 100} />
++        <TokenGraphic
++          tokenName="antV2"
++          size={compactMode ? 80 : 100}
++          shadow
++          css={`
++            margin-left: -${1 * GU}px;
++          `}
++        />
++      </div>
++      <div
++        css={`
++          display: flex;
++          flex-direction: column;
++          align-items: center;
++        `}
++      >
++        <h4
++          css={`
++            font-size: ${compactMode ? 52 : 60}px;
++            font-weight: ${fontWeight.semiBold};
++
++            // Optically offset left edge of number 1 for centering
++            margin-left: -0.15em;
++            letter-spacing: -0.075em;
++
++            line-height: 1;
++            margin-bottom: ${1.75 * GU}px;
++
++            background: linear-gradient(
++              160deg,
++              ${theme.accentStart} -20%,
++              ${theme.accentEnd} 60%
++            );
++            -webkit-background-clip: text;
++            -webkit-text-fill-color: transparent;
++          `}
++        >
++          1 : <Rate value={conversionRate} />
++        </h4>
++        <div
++          css={`
++            display: flex;
++            align-items: center;
++            margin-bottom: ${0.5 * GU}px;
++          `}
++        >
++          <h3
++            css={`
++              font-weight: ${fontWeight.medium};
++              font-size: 18px;
++              ${isANJConversion ? `margin-right: ${1 * GU}px;` : ``}
++            `}
++          >
++            Conversion rate
++          </h3>
++        </div>
++        <p
++          css={`
++            color: ${theme.surfaceContentSecondary};
++            letter-spacing: 0.04em;
++          `}
++        >
++          <span
++            css={`
++              color: ${theme.surfaceContent};
++            `}
++          >
++            1
++          </span>{' '}
++          {tokenSymbol}{' '}
++          <span
++            css={`
++              margin-left: ${1 * GU}px;
++              margin-right: ${1 * GU}px;
++              color: ${theme.contentSecondary};
++            `}
++          >
++            :
++          </span>{' '}
++          <span
++            css={`
++              color: ${theme.surfaceContent};
++            `}
++          >
++            {conversionRate}
++          </span>{' '}
++          ANTv2
++        </p>
++      </div>
++    </div>
++  )
++}
++
++export default OptionRate
+diff --git a/src/token-info/tokenInfo.ts b/src/token-info/tokenInfo.ts
+index a85d237..895e473 100644
+--- a/src/token-info/tokenInfo.ts
++++ b/src/token-info/tokenInfo.ts
+@@ -19,4 +19,8 @@ export const tokenInfo: Record<
+     suffix: 'ANJ',
+     graphic: anjTokenSvg,
+   },
++  opt: {
++    suffix: 'Option',
++    graphic: anjTokenSvg,
++  },
+ }
+diff --git a/yarn.lock b/yarn.lock
+index ea98f4b..df9e074 100644
+--- a/yarn.lock
++++ b/yarn.lock
+@@ -12358,6 +12358,11 @@ react-error-overlay@^6.0.7:
+   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.7.tgz#1dcfb459ab671d53f660a991513cb2f0a0553108"
+   integrity sha512-TAv1KJFh3RhqxNvhzxj6LeT5NWklP6rDr2a0jaTfsZ5wSZWHOGeqQyejUp3xxLfPt2UpyJEcVQB/zyPcmonNFA==
+ 
++react-if@^4.0.1:
++  version "4.0.1"
++  resolved "https://registry.yarnpkg.com/react-if/-/react-if-4.0.1.tgz#fd60599f585a55d417d94f9a576047869994fcae"
++  integrity sha512-TyfDGdBrIAHntLM5YkRbszeqcyzucB3m2ddF46XH10wTZ8SE2ZjNPD8qNphTJ+7j36SZ4qMvqmlMntcsczLAXQ==
++
+ react-is@^16.12.0, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
+   version "16.13.1"
+   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
