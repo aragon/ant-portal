@@ -1,5 +1,5 @@
 import React from 'react'
-import { css } from 'styled-components'
+import styled, { css } from 'styled-components'
 import {
   useTheme,
   useLayout,
@@ -26,30 +26,12 @@ function CheckerForm(): JSX.Element {
           margin-bottom: ${7 * GU}px;
         `}
       />
-      <div
-        css={`
-          padding: ${compactMode ? 4 * GU : 6 * GU}px;
-          background-color: ${theme.surface};
-          box-shadow: ${shadowDepth.high};
-          border-radius: ${radius.high};
-          display: grid;
-          grid-gap: ${4 * GU}px;
-          ${compactMode ? stackedLayout : multiColumnLayout}
-        `}
-      >
-        <div
-          css={`
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            grid-area: rate;
-            padding: ${2 * GU}px;
-          `}
-        >
+      <WhiteSection theme={theme} isCompact={compactMode}>
+        <OptionSection>
           <OptionRate tokenSymbol="OPT" compactMode={compactMode} />
-        </div>
+        </OptionSection>
         <BaseCheckerFormControls />
-      </div>
+      </WhiteSection>
     </>
   )
 }
@@ -64,10 +46,24 @@ const multiColumnLayout = css`
 
 const stackedLayout = css`
   grid-template-rows: auto auto auto;
-  grid-template-areas:
-    'title'
-    'rate'
-    'inputs';
+  grid-template-areas: 'title' 'rate' 'inputs';
+`
+const WhiteSection = styled.div<{ theme: any; isCompact: boolean }>`
+  padding: ${(props) => (props.isCompact ? 4 * GU : 6 * GU)}px;
+  background-color: ${(props) => props.theme.surface};
+  box-shadow: ${shadowDepth.high};
+  border-radius: ${radius.high};
+  display: grid;
+  grid-gap: ${4 * GU}px;
+  ${(props) => (props.isCompact ? stackedLayout : multiColumnLayout)}
+`
+
+const OptionSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-area: rate;
+  padding: ${2 * GU}px;
 `
 
 export default CheckerForm

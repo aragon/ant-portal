@@ -1,6 +1,6 @@
 import React from 'react'
 // @ts-ignore
-import { GU, useTheme } from '@aragon/ui'
+import { GU, useTheme, useLayout } from '@aragon/ui'
 import { fontWeight } from '../../style/font'
 import { radius } from '../../style/radius'
 import { shadowDepth } from '../../style/shadow'
@@ -39,11 +39,10 @@ function Rate({ value }: RateProps): JSX.Element {
   return <span>{value}</span>
 }
 
-function OptionRate({
-  compactMode,
-  tokenSymbol,
-}: OptionRateProps): JSX.Element {
+function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
   const theme = useTheme()
+  const { layoutName } = useLayout()
+  const compactMode = layoutName === 'small' || layoutName === 'medium'
   const conversionRate = 0.05
   const isANJConversion = true
 
