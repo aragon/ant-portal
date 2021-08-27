@@ -5,6 +5,7 @@ import { fontWeight } from '../../style/font'
 import { radius } from '../../style/radius'
 import { shadowDepth } from '../../style/shadow'
 import TokenGraphic from '../TokenGraphic/TokenGraphic'
+import styled from 'styled-components'
 
 type OptionRateProps = {
   compactMode: boolean
@@ -114,7 +115,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
               ${isANJConversion ? `margin-right: ${1 * GU}px;` : ``}
             `}
           >
-            Conversion rate
+            Current conversion rate
           </h3>
         </div>
         <p
@@ -123,14 +124,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
             letter-spacing: 0.04em;
           `}
         >
-          <span
-            css={`
-              color: ${theme.surfaceContent};
-            `}
-          >
-            1
-          </span>{' '}
-          {tokenSymbol}{' '}
+          <NumberSpan color={theme.surfaceContent}>1</NumberSpan> {tokenSymbol}{' '}
           <span
             css={`
               margin-left: ${1 * GU}px;
@@ -140,18 +134,24 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
           >
             :
           </span>{' '}
-          <span
-            css={`
-              color: ${theme.surfaceContent};
-            `}
-          >
-            {conversionRate}
-          </span>{' '}
+          <NumberSpan color={theme.surfaceContent}>{conversionRate}</NumberSpan>{' '}
           ANTv2
+        </p>
+        <p
+          css={`
+            color: ${theme.surfaceContentSecondary};
+            letter-spacing: 0.04em;
+          `}
+        >
+          Expiry Date: September 30th 2021
         </p>
       </div>
     </div>
   )
 }
+
+const NumberSpan = styled.span<{ color: any }>`
+  color: ${(props) => props.color};
+`
 
 export default OptionRate

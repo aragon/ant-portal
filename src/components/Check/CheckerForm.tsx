@@ -26,7 +26,7 @@ function CheckerForm(): JSX.Element {
           margin-bottom: ${7 * GU}px;
         `}
       />
-      <WhiteSection theme={theme} isCompact={compactMode}>
+      <WhiteSection surface={theme.surface} isCompact={compactMode}>
         <OptionSection>
           <OptionRate tokenSymbol="OPT" compactMode={compactMode} />
         </OptionSection>
@@ -48,9 +48,9 @@ const stackedLayout = css`
   grid-template-rows: auto auto auto;
   grid-template-areas: 'title' 'rate' 'inputs';
 `
-const WhiteSection = styled.div<{ theme: any; isCompact: boolean }>`
+const WhiteSection = styled.div<{ surface: any; isCompact: boolean }>`
   padding: ${(props) => (props.isCompact ? 4 * GU : 6 * GU)}px;
-  background-color: ${(props) => props.theme.surface};
+  background-color: ${(props) => props.surface};
   box-shadow: ${shadowDepth.high};
   border-radius: ${radius.high};
   display: grid;
