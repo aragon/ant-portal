@@ -48,7 +48,7 @@ export function BaseCheckerFormControls(): JSX.Element {
         <LabelText>Enter your Govern DAO executor address</LabelText>
         <StyledInput
           wide
-          placeholder={`0x01234..cdef`}
+          placeholder={`0x01234...cdef`}
           value={amount}
           onChange={handleAmountChange}
         />

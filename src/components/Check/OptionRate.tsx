@@ -5,39 +5,12 @@ import { fontWeight } from '../../style/font'
 import { radius } from '../../style/radius'
 import { shadowDepth } from '../../style/shadow'
 import TokenGraphic from '../TokenGraphic/TokenGraphic'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+import { Rate } from '../Migrate/Converter/ConversionRate'
 
 type OptionRateProps = {
   compactMode: boolean
   tokenSymbol: string
-}
-
-type RateProps = {
-  value: number
-}
-
-function Rate({ value }: RateProps): JSX.Element {
-  const valueAsString = value.toString()
-  if (valueAsString.indexOf('.') >= 0) {
-    const ints = valueAsString.split('.')[0]
-    const fractions = valueAsString.split('.')[1]
-
-    return (
-      <span>
-        <span>{ints}</span>
-        <span
-          css={`
-            font-size: 0.5em;
-            letter-spacing: -0.05em;
-          `}
-        >
-          .{fractions}
-        </span>
-      </span>
-    )
-  }
-
-  return <span>{value}</span>
 }
 
 function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
@@ -49,18 +22,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
 
   return (
     <div>
-      <div
-        css={`
-          display: flex;
-          padding: ${2 * GU}px;
-          background-color: ${theme.surface};
-
-          // Create pill corners
-          border-radius: ${radius.pill};
-          box-shadow: ${shadowDepth.high};
-          margin-bottom: ${3.5 * GU}px;
-        `}
-      >
+      <Pill color={theme.surface}>
         <TokenGraphic tokenName={'antV1'} size={compactMode ? 80 : 100} />
         <TokenGraphic
           tokenName="antV2"
@@ -70,7 +32,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
             margin-left: -${1 * GU}px;
           `}
         />
-      </div>
+      </Pill>
       <div
         css={`
           display: flex;
@@ -118,40 +80,48 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
             Current conversion rate
           </h3>
         </div>
-        <p
-          css={`
-            color: ${theme.surfaceContentSecondary};
-            letter-spacing: 0.04em;
-          `}
-        >
+        <SecondaryParagraph color={theme.surfaceContentSecondary}>
           <NumberSpan color={theme.surfaceContent}>1</NumberSpan> {tokenSymbol}{' '}
-          <span
-            css={`
-              margin-left: ${1 * GU}px;
-              margin-right: ${1 * GU}px;
-              color: ${theme.contentSecondary};
-            `}
-          >
-            :
-          </span>{' '}
+          <ColonSpan color={theme.contentSecondary}>:</ColonSpan>{' '}
           <NumberSpan color={theme.surfaceContent}>{conversionRate}</NumberSpan>{' '}
           ANTv2
-        </p>
-        <p
-          css={`
-            color: ${theme.surfaceContentSecondary};
-            letter-spacing: 0.04em;
-          `}
-        >
-          Expiry Date: September 30th 2021
-        </p>
+        </SecondaryParagraph>
+        <SecondaryParagraph color={theme.surfaceContentSecondary}>
+          <b>Expiry Date:</b> September 30th 2021
+        </SecondaryParagraph>
       </div>
     </div>
   )
 }
 
-const NumberSpan = styled.span<{ color: any }>`
+const Pill = styled.div<{ color: any }>`
+  display: flex;
+  padding: ${2 * GU}px;
+  background-color: ${(props) => props.color};
+
+  // Create pill corners
+  border-radius: ${radius.pill};
+  box-shadow: ${shadowDepth.high};
+  margin-bottom: ${3.5 * GU}px;
+`
+
+const withColor = css<{ color: any }>`
   color: ${(props) => props.color};
+`
+
+const NumberSpan = styled.span`
+  ${withColor}
+`
+
+const ColonSpan = styled.span`
+  ${withColor}
+  margin-left: ${1 * GU}px;
+  margin-right: ${1 * GU}px;
+`
+
+const SecondaryParagraph = styled.p`
+  ${withColor}
+  letter-spacing: 0.04em;
 `
 
 export default OptionRate

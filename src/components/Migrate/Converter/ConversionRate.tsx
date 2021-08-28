@@ -17,9 +17,11 @@ type RateProps = {
   value: number
 }
 
-function Rate({ value }: RateProps): JSX.Element {
+export function Rate({ value }: RateProps): JSX.Element {
   const valueAsString = value.toString()
-  if (valueAsString.indexOf('.') >= 0) {
+  const hasDecimals = valueAsString.indexOf('.') >= 0
+
+  if (hasDecimals) {
     const ints = valueAsString.split('.')[0]
     const fractions = valueAsString.split('.')[1]
 
