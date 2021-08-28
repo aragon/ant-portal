@@ -7,6 +7,7 @@ import { shadowDepth } from '../../style/shadow'
 import TokenGraphic from '../TokenGraphic/TokenGraphic'
 import styled, { css } from 'styled-components'
 import { Rate } from '../Migrate/Converter/ConversionRate'
+import Tooltip from './Tooltip'
 
 type OptionRateProps = {
   compactMode: boolean
@@ -79,6 +80,11 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
           >
             Current conversion rate
           </h3>
+          <Tooltip
+            hoverText={
+              'This rate depends on the total value that is migrated by all DAOs to Govern. Learn more here'
+            }
+          />
         </div>
         <SecondaryParagraph color={theme.surfaceContentSecondary}>
           <NumberSpan color={theme.surfaceContent}>1</NumberSpan> {tokenSymbol}{' '}
