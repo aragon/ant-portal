@@ -53,7 +53,7 @@ const TooltipBalloon = styled.div`
   }
 `
 
-export const Tooltip = ({ hoverText }: { hoverText: string }) => {
+export const Tooltip = ({ hoverText }: { hoverText: string }): JSX.Element => {
   return (
     <CircleContainer>
       <Circle>

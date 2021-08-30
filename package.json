@@ -90,7 +90,7 @@
     "test": "react-app-rewired test --passWithNoTests --watchAll=false",
     "testWatch": "yarn test --watchAll=true",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext ts,tsx src && yarn typecheck",
+    "lint": "eslint --ext ts,tsx src --max-warnings 0 && yarn typecheck",
     "typecheck": "tsc",
     "sync-assets": "rimraf ./public/aragon-ui && copy-aragon-ui-assets ./public && yarn generateAbiTypes",
     "generateAbiTypes": "rimraf ./src/abi/types && typechain --target ethers-v5 --outDir ./src/abi/types './src/abi/*.json'"
