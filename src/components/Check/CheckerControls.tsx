@@ -11,10 +11,11 @@ import { fontWeight } from '../../style/font'
 import BrandButton from '../BrandButton/BrandButton'
 import ConverterFormControls from '../Migrate/Converter/ConverterFormControls'
 import styled from 'styled-components'
-import { When } from 'react-if'
+import { Case, Switch } from 'react-if'
+import { optionsInfo } from '../../token-info/optioins'
 
 const FORTY_DIGITS_HEX = /^0x[0-9a-fA-F]{40}$/s
-type ComponentState = 'init' | 'error' | 'options'
+type ComponentState = 'init' | 'error' | 'options' | 'no options'
 
 export function BaseCheckerFormControls(): JSX.Element {
   const history = useHistory()
@@ -35,12 +36,14 @@ export function BaseCheckerFormControls(): JSX.Element {
   }, [])
 
   const handleSubmit = () => {
-    const isValidValue = FORTY_DIGITS_HEX.test(address)
-    if (!isValidValue) setState('error')
-    else {
-      setOptions(42) // TODO get number of options from json
+    const isValidAddress = FORTY_DIGITS_HEX.test(address)
+    if (!isValidAddress) return setState('error')
+
+    const optionsAmount = optionsInfo[address]
+    if (optionsAmount) {
+      setOptions(optionsAmount.amount) // TODO get number of options from json
       setState('options')
-    }
+    } else setState('no options')
   }
 
   return (
@@ -67,13 +70,25 @@ export function BaseCheckerFormControls(): JSX.Element {
         <BrandButton wide onClick={handleNavigateHome} label={'Back'} />
       </ButtonRow>
       <InfoColumn>
-        <When condition={state === 'error'}>
-          <Info mode={'error'}>This address is invalid</Info>
-        </When>
-        <When condition={state === 'options'}>
-          <Info>Your DAO is entitled to {options} options</Info>
-          <Info mode={'warning'}>This address is invalid</Info>
-        </When>
+        <Switch>
+          <Case condition={state === 'error'}>
+            <Info mode={'error'}>This address is invalid</Info>
+          </Case>
+          <Case condition={state === 'options'}>
+            <Info>Your DAO is entitled to {options} options</Info>
+            <Info mode={'warning'}>
+              To learn how to convert your options into ANT after the expiry
+              date, refer to <a href={'aragon.org'}>this</a> article.
+            </Info>
+          </Case>
+          <Case condition={state === 'no options'}>
+            <Info>Your DAO is not entitled to receive options</Info>
+            <Info mode={'warning'}>
+              To learn how to convert your options into ANT after the expiry
+              date, refer to <a href={'aragon.org'}>this</a> article.
+            </Info>
+          </Case>
+        </Switch>
       </InfoColumn>
     </form>
   )
