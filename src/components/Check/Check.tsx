@@ -3,44 +3,44 @@ import React from 'react'
 import { GU } from '@aragon/ui'
 import LayoutGutter from '../Layout/LayoutGutter'
 import AnimateEntrance from '../AnimateEntrance/AnimateEntrance'
-import Checker from './Checker'
+import CheckerForm from './CheckerForm'
+import styled from 'styled-components'
 
 function Check(): JSX.Element {
   return (
-    <AnimateEntrance
-      css={`
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        flex: 1;
-      `}
-    >
-      <LayoutGutter
-        css={`
-          padding-top: ${7 * GU}px;
-          padding-bottom: ${10 * GU}px;
-        `}
-      >
+    <StyledAnimationEntrance>
+      <PaddedLayoutGutter>
         <div
           css={`
             margin-top: -${4 * GU}px;
             width: 100%;
+            display: flex;
+            justify-content: center;
           `}
         >
           <div
             css={`
-              display: flex;
-              justify-content: center;
               width: 100%;
+              max-width: ${120 * GU}px;
             `}
           >
-            <Checker />
+            <CheckerForm />
           </div>
         </div>
-      </LayoutGutter>
-    </AnimateEntrance>
+      </PaddedLayoutGutter>
+    </StyledAnimationEntrance>
   )
 }
+const PaddedLayoutGutter = styled(LayoutGutter)`
+  padding-top: ${7 * GU}px;
+  padding-bottom: ${10 * GU}px;
+`
+const StyledAnimationEntrance = styled(AnimateEntrance)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex: 1;
+`
 
 export default Check
