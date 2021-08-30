@@ -14,13 +14,13 @@ import styled from 'styled-components'
 import { When } from 'react-if'
 
 const FORTY_DIGITS_HEX = /^0x[0-9a-fA-F]{40}$/s
+type ComponentState = 'init' | 'error' | 'options'
 
 export function BaseCheckerFormControls(): JSX.Element {
   const history = useHistory()
-  const [address, setAddress] = useState('')
   const { layoutName } = useLayout()
-  const [showError, setShowError] = useState(false)
-  const [showOptions, setShowOptions] = useState(false)
+  const [address, setAddress] = useState('')
+  const [state, setState] = useState<ComponentState>('init')
   const [options, setOptions] = useState(42)
 
   const handleNavigateHome = useCallback(() => {
@@ -36,10 +36,10 @@ export function BaseCheckerFormControls(): JSX.Element {
 
   const handleSubmit = () => {
     const isValidValue = FORTY_DIGITS_HEX.test(address)
-    if (!isValidValue) setShowError(true)
+    if (!isValidValue) setState('error')
     else {
-      setOptions(42) //get number of options from json
-      setShowOptions(true)
+      setOptions(42) // TODO get number of options from json
+      setState('options')
     }
   }
 
@@ -56,10 +56,6 @@ export function BaseCheckerFormControls(): JSX.Element {
         />
       </Label>
 
-      {/* {showError && !allowanceCheckLoading && (
-        <ValidationWarning status={validationStatus} />
-      )} */}
-
       <ButtonRow stacked={stackedButtons}>
         <BrandButton
           mode="strong"
@@ -68,22 +64,17 @@ export function BaseCheckerFormControls(): JSX.Element {
           disabled={!address}
           label={'Check'}
         />
-        {/* <BrandButton
-          mode="strong"
-          wide
-          type="submit"
-          label={'Check'}
-          disabled={!isValidValue}
-        /> */}
         <BrandButton wide onClick={handleNavigateHome} label={'Back'} />
       </ButtonRow>
-      <When condition={showError}>
-        <Info mode={'error'}>This address is invalid</Info>
-      </When>
-      <When condition={showOptions}>
-        <Info>Your DAO is entitled to {options} options</Info>
-        <Info mode={'warning'}>This address is invalid</Info>
-      </When>
+      <InfoColumn>
+        <When condition={state === 'error'}>
+          <Info mode={'error'}>This address is invalid</Info>
+        </When>
+        <When condition={state === 'options'}>
+          <Info>Your DAO is entitled to {options} options</Info>
+          <Info mode={'warning'}>This address is invalid</Info>
+        </When>
+      </InfoColumn>
     </form>
   )
 }
@@ -105,7 +96,12 @@ const ButtonRow = styled.div<{ stacked: boolean }>`
   grid-gap: ${1 * GU}px;
   grid-template-columns: ${(props) => (props.stacked ? 'auto' : '1fr 1fr')};
   margin-top: ${2 * GU}px;
-  margin-bottom: ${2 * GU}px;
+`
+
+const InfoColumn = styled.div`
+  & > section {
+    margin-top: ${2 * GU}px;
+  }
 `
 
 export default ConverterFormControls
