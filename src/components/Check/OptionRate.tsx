@@ -24,7 +24,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
   return (
     <div>
       <Pill color={theme.surface}>
-        <TokenGraphic tokenName={'antV1'} size={compactMode ? 80 : 100} />
+        <TokenGraphic tokenName={'opt'} shadow size={compactMode ? 80 : 100} />
         <TokenGraphic
           tokenName="antV2"
           size={compactMode ? 80 : 100}
@@ -34,13 +34,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
           `}
         />
       </Pill>
-      <div
-        css={`
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        `}
-      >
+      <TextContainer>
         <h4
           css={`
             font-size: ${compactMode ? 52 : 60}px;
@@ -95,13 +89,14 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
         <SecondaryParagraph color={theme.surfaceContentSecondary}>
           <b>Expiry Date:</b> September 30th 2021
         </SecondaryParagraph>
-      </div>
+      </TextContainer>
     </div>
   )
 }
 
 const Pill = styled.div<{ color: any }>`
   display: flex;
+  justify-content: center;
   padding: ${2 * GU}px;
   background-color: ${(props) => props.color};
 
@@ -128,6 +123,12 @@ const ColonSpan = styled.span`
 const SecondaryParagraph = styled.p`
   ${withColor}
   letter-spacing: 0.04em;
+`
+
+const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
 export default OptionRate
