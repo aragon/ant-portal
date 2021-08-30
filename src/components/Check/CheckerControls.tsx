@@ -3,6 +3,7 @@ import {
   TextInput,
   useLayout,
   GU,
+  Info,
   // @ts-ignore
 } from '@aragon/ui'
 import { useHistory } from 'react-router-dom'
@@ -10,14 +11,17 @@ import { fontWeight } from '../../style/font'
 import BrandButton from '../BrandButton/BrandButton'
 import ConverterFormControls from '../Migrate/Converter/ConverterFormControls'
 import styled from 'styled-components'
+import { When } from 'react-if'
 
-const FLOAT_REGEX = /^\d*[.]?\d*$/
+const FORTY_DIGITS_HEX = /^0x[0-9a-fA-F]{40}$/s
 
 export function BaseCheckerFormControls(): JSX.Element {
   const history = useHistory()
-  const [amount, setAmount] = useState('')
-  const [showError, setShowError] = useState(false)
+  const [address, setAddress] = useState('')
   const { layoutName } = useLayout()
+  const [showError, setShowError] = useState(false)
+  const [showOptions, setShowOptions] = useState(false)
+  const [options, setOptions] = useState(42)
 
   const handleNavigateHome = useCallback(() => {
     history.push('/')
@@ -25,22 +29,19 @@ export function BaseCheckerFormControls(): JSX.Element {
 
   const stackedButtons = layoutName === 'small'
 
-  const handleAmountChange = useCallback(
-    (event) => {
-      const value = event.target.value
-
-      setShowError(false)
-      if (FLOAT_REGEX.test(value)) {
-        setAmount(value)
-      }
-    },
-    [setAmount]
-  )
-
-  const handleSubmit = useCallback((event) => {
-    event.preventDefault()
-    console.log('hi')
+  const handleAddressChange = useCallback((event) => {
+    const value = event.target.value
+    setAddress(value)
   }, [])
+
+  const handleSubmit = () => {
+    const isValidValue = FORTY_DIGITS_HEX.test(address)
+    if (!isValidValue) setShowError(true)
+    else {
+      setOptions(42) //get number of options from json
+      setShowOptions(true)
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -48,9 +49,10 @@ export function BaseCheckerFormControls(): JSX.Element {
         <LabelText>Enter your Govern DAO executor address</LabelText>
         <StyledInput
           wide
+          type={'text'}
           placeholder={`0x01234...cdef`}
-          value={amount}
-          onChange={handleAmountChange}
+          value={address}
+          onChange={handleAddressChange}
         />
       </Label>
 
@@ -59,9 +61,29 @@ export function BaseCheckerFormControls(): JSX.Element {
       )} */}
 
       <ButtonRow stacked={stackedButtons}>
-        <BrandButton mode="strong" wide type="submit" label={'Check'} />
+        <BrandButton
+          mode="strong"
+          wide
+          type="submit"
+          disabled={!address}
+          label={'Check'}
+        />
+        {/* <BrandButton
+          mode="strong"
+          wide
+          type="submit"
+          label={'Check'}
+          disabled={!isValidValue}
+        /> */}
         <BrandButton wide onClick={handleNavigateHome} label={'Back'} />
       </ButtonRow>
+      <When condition={showError}>
+        <Info mode={'error'}>This address is invalid</Info>
+      </When>
+      <When condition={showOptions}>
+        <Info>Your DAO is entitled to {options} options</Info>
+        <Info mode={'warning'}>This address is invalid</Info>
+      </When>
     </form>
   )
 }
@@ -76,7 +98,6 @@ const Label = styled.label`
   display: block;
 `
 const StyledInput = styled(TextInput)`
-  font-variant-numeric: tabular-nums;
   display: block;
 `
 const ButtonRow = styled.div<{ stacked: boolean }>`
@@ -84,6 +105,7 @@ const ButtonRow = styled.div<{ stacked: boolean }>`
   grid-gap: ${1 * GU}px;
   grid-template-columns: ${(props) => (props.stacked ? 'auto' : '1fr 1fr')};
   margin-top: ${2 * GU}px;
+  margin-bottom: ${2 * GU}px;
 `
 
 export default ConverterFormControls
