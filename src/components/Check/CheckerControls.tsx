@@ -12,7 +12,7 @@ import BrandButton from '../BrandButton/BrandButton'
 import ConverterFormControls from '../Migrate/Converter/ConverterFormControls'
 import styled from 'styled-components'
 import { Case, Switch } from 'react-if'
-import { optionsInfo } from '../../token-info/optioins'
+import { optionsInfo } from '../../token-info/options'
 
 const FORTY_DIGITS_HEX = /^0x[0-9a-fA-F]{40}$/s
 type ComponentState = 'init' | 'error' | 'options' | 'no options'
