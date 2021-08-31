@@ -379,3 +379,24 @@ export function useAntStakingMinimum(readOnly?: boolean): BigNumber | null {
 
   return minStakeAmount
 }
+
+export function useOptionConversionRate(): number {
+  const [rate, setRate] = useState(0.05)
+
+  const getBalance = useCallback(async (clear) => {
+    try {
+      const response = await fetch(
+        'https://datafeed-rinkeby.aragon.org/organizations'
+      )
+      const data = await response.json()
+      setRate(data.option)
+    } catch (err) {
+      captureErrorWithSentry(err)
+      clear()
+    }
+  }, [])
+
+  useInterval(getBalance, POLL_INTERVAL)
+
+  return rate
+}

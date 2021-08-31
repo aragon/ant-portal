@@ -8,6 +8,7 @@ import TokenGraphic from '../TokenGraphic/TokenGraphic'
 import styled, { css } from 'styled-components'
 import { Rate } from '../Migrate/Converter/ConversionRate'
 import Tooltip from './Tooltip'
+import { useOptionConversionRate } from '../../hooks/usePolledBalance'
 
 type OptionRateProps = {
   compactMode: boolean
@@ -18,8 +19,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
   const theme = useTheme()
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small' || layoutName === 'medium'
-  const conversionRate = 0.05
-  const isANJConversion = true
+  const conversionRate = useOptionConversionRate()
 
   return (
     <div>
@@ -69,7 +69,6 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
             css={`
               font-weight: ${fontWeight.medium};
               font-size: 18px;
-              ${isANJConversion ? `margin-right: ${1 * GU}px;` : ``}
             `}
           >
             Current conversion rate
