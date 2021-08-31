@@ -80,7 +80,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://blog.aragon.org/uma-kpi-options-airdrop-now-live-for-aragon-govern-daos/"
+                href="https://help.aragon.org/article/99-aragon-govern-migration-reward-program#redeeming"
               >
                 here
               </a>
