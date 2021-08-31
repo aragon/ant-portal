@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 
 const CircleContainer = styled.div`
@@ -53,13 +53,13 @@ const TooltipBalloon = styled.div`
   }
 `
 
-export const Tooltip = ({ hoverText }: { hoverText: string }): JSX.Element => {
+export const Tooltip = ({ children }: { children: ReactNode }): JSX.Element => {
   return (
     <CircleContainer>
       <Circle>
         <QuestionMark>?</QuestionMark>
       </Circle>
-      <TooltipBalloon>{hoverText}</TooltipBalloon>
+      <TooltipBalloon>{children}</TooltipBalloon>
     </CircleContainer>
   )
 }

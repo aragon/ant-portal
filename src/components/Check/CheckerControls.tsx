@@ -22,7 +22,7 @@ export function BaseCheckerFormControls(): JSX.Element {
   const { layoutName } = useLayout()
   const [address, setAddress] = useState('')
   const [state, setState] = useState<ComponentState>('init')
-  const [options, setOptions] = useState(42)
+  const [options, setOptions] = useState(0)
 
   const handleNavigateHome = useCallback(() => {
     history.push('/')
@@ -76,21 +76,34 @@ export function BaseCheckerFormControls(): JSX.Element {
           </Case>
           <Case condition={state === 'options'}>
             <Info>Your DAO is entitled to {options} options</Info>
-            <Info mode={'warning'}>
-              To learn how to convert your options into ANT after the expiry
-              date, refer to <a href={'aragon.org'}>this</a> article.
-            </Info>
+            <ConversionInfo />
           </Case>
           <Case condition={state === 'no options'}>
             <Info>Your DAO is not entitled to receive options</Info>
-            <Info mode={'warning'}>
-              To learn how to convert your options into ANT after the expiry
-              date, refer to <a href={'aragon.org'}>this</a> article.
-            </Info>
+            <ConversionInfo />
           </Case>
         </Switch>
       </InfoColumn>
     </form>
+  )
+}
+
+function ConversionInfo() {
+  return (
+    <Info mode={'warning'}>
+      To learn how to convert your options into ANT after the expiry date, refer
+      to{' '}
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href={
+          'https://help.aragon.org/article/108-redeeming-aragon-govern-reward-kpi-options'
+        }
+      >
+        this article
+      </a>
+      .
+    </Info>
   )
 }
 

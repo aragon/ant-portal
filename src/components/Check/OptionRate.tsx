@@ -73,11 +73,19 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
           >
             Current conversion rate
           </h3>
-          <Tooltip
-            hoverText={
-              'This rate depends on the total value that is migrated by all DAOs to Govern. Learn more here'
-            }
-          />
+          <Tooltip>
+            <p>
+              This rate depends on the total value that is migrated by all DAOs
+              to Govern. Learn more{' '}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://blog.aragon.org/uma-kpi-options-airdrop-now-live-for-aragon-govern-daos/"
+              >
+                here
+              </a>
+            </p>
+          </Tooltip>
         </div>
         <SecondaryParagraph color={theme.surfaceContentSecondary}>
           <NumberSpan color={theme.surfaceContent}>1</NumberSpan> {tokenSymbol}{' '}
