@@ -9,7 +9,7 @@ export const CONVERTER_PATH = '/converter'
 export const REDEEM_ANJ_PATH = '/redeem-anj'
 export const REDEEM_ANJ_LOCK_PATH = '/redeem-anj-lock'
 export const DISCLAIMER_PATH = '/disclaimer'
-export const GOVERN_PATH = '/govern'
+export const GOVERN_PATH = '/governReward'
 
 export default function Routes(): JSX.Element {
   return (

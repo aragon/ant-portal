@@ -28,7 +28,7 @@ function CheckerForm(): JSX.Element {
       />
       <WhiteSection surface={theme.surface} isCompact={compactMode}>
         <OptionSection>
-          <OptionRate tokenSymbol="OPT" compactMode={compactMode} />
+          <OptionRate tokenSymbol="option" compactMode={compactMode} />
         </OptionSection>
         <BaseCheckerFormControls />
       </WhiteSection>
