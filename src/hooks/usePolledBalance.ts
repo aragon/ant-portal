@@ -385,9 +385,7 @@ export function useOptionConversionRate(): number {
 
   const getBalance = useCallback(async (clear) => {
     try {
-      const response = await fetch(
-        'https://datafeed-rinkeby.aragon.org/organizations'
-      )
+      const response = await fetch('https://datafeed.aragon.org/organizations')
       const data = await response.json()
       setRate(data.option)
     } catch (err) {
