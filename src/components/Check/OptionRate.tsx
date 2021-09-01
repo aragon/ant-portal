@@ -1,13 +1,12 @@
 import React from 'react'
 // @ts-ignore
-import { GU, useTheme, useLayout } from '@aragon/ui'
+import { GU, useTheme, useLayout, Help } from '@aragon/ui'
 import { fontWeight } from '../../style/font'
 import { radius } from '../../style/radius'
 import { shadowDepth } from '../../style/shadow'
 import TokenGraphic from '../TokenGraphic/TokenGraphic'
 import styled, { css } from 'styled-components'
 import { Rate } from '../Migrate/Converter/ConversionRate'
-import Tooltip from './Tooltip'
 import { useOptionConversionRate } from '../../hooks/usePolledBalance'
 
 type OptionRateProps = {
@@ -73,7 +72,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
           >
             Current conversion rate
           </h3>
-          <Tooltip>
+          <Help>
             <p>
               This rate depends on the total value that is migrated by all DAOs
               to Govern. Learn more{' '}
@@ -85,7 +84,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
                 here
               </a>
             </p>
-          </Tooltip>
+          </Help>
         </div>
         <SecondaryParagraph color={theme.surfaceContentSecondary}>
           <NumberSpan color={theme.surfaceContent}>1</NumberSpan> {tokenSymbol}{' '}
