@@ -13,8 +13,9 @@ import ConverterFormControls from '../Migrate/Converter/ConverterFormControls'
 import styled from 'styled-components'
 import { Case, Switch } from 'react-if'
 import { optionsInfo } from '../../token-info/options'
+import { isAddress } from 'ethers/lib/utils'
+import { constants } from 'ethers/lib/index'
 
-const FORTY_DIGITS_HEX = /^0x[0-9a-fA-F]{40}$/s
 type ComponentState = 'init' | 'error' | 'options' | 'no options'
 
 export function BaseCheckerFormControls(): JSX.Element {
@@ -36,12 +37,11 @@ export function BaseCheckerFormControls(): JSX.Element {
   }, [])
 
   const handleSubmit = () => {
-    const isValidAddress = FORTY_DIGITS_HEX.test(address)
-    if (!isValidAddress) return setState('error')
+    if (!isAddress(address)) return setState('error')
 
     const optionsAmount = optionsInfo[address]
     if (optionsAmount) {
-      setOptions(optionsAmount.amount) // TODO get number of options from json
+      setOptions(optionsAmount.amount)
       setState('options')
     } else setState('no options')
   }
@@ -53,7 +53,7 @@ export function BaseCheckerFormControls(): JSX.Element {
         <StyledInput
           wide
           type={'text'}
-          placeholder={`0x01234...cdef`}
+          placeholder={constants.AddressZero}
           value={address}
           onChange={handleAddressChange}
         />
