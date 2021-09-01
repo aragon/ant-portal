@@ -16,7 +16,7 @@ import { optionsInfo } from '../../token-info/options'
 import { isAddress } from 'ethers/lib/utils'
 import { constants } from 'ethers/lib/index'
 
-type ComponentState = 'init' | 'error' | 'options' | 'no options'
+type ComponentState = 'init' | 'error' | 'options' | 'no options' | 'with tx'
 
 export function BaseCheckerFormControls(): JSX.Element {
   const history = useHistory()
@@ -24,6 +24,7 @@ export function BaseCheckerFormControls(): JSX.Element {
   const [address, setAddress] = useState('')
   const [state, setState] = useState<ComponentState>('init')
   const [options, setOptions] = useState(0)
+  const [tx, setTx] = useState('')
 
   const handleNavigateHome = useCallback(() => {
     history.push('/')
@@ -40,10 +41,11 @@ export function BaseCheckerFormControls(): JSX.Element {
     if (!isAddress(address)) return setState('error')
 
     const optionsAmount = optionsInfo[address]
-    if (optionsAmount) {
-      setOptions(optionsAmount.amount)
-      setState('options')
-    } else setState('no options')
+    if (!optionsAmount) return setState('no options')
+    setOptions(optionsAmount.amount)
+    if (!optionsAmount.txHash) return setState('options')
+    setTx(optionsAmount.txHash)
+    return setState('with tx')
   }
 
   return (
@@ -74,12 +76,25 @@ export function BaseCheckerFormControls(): JSX.Element {
           <Case condition={state === 'error'}>
             <Info mode={'error'}>This address is invalid</Info>
           </Case>
+          <Case condition={state === 'no options'}>
+            <Info>Your DAO is not entitled to receive options</Info>
+            <ConversionInfo />
+          </Case>
           <Case condition={state === 'options'}>
             <Info>Your DAO is entitled to {options} options</Info>
             <ConversionInfo />
           </Case>
-          <Case condition={state === 'no options'}>
-            <Info>Your DAO is not entitled to receive options</Info>
+          <Case condition={state === 'with tx'}>
+            <Info>
+              Your DAO has received {options}. Check the transaction{' '}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`https://etherscan.io/tx/${tx}`}
+              >
+                here
+              </a>
+            </Info>
             <ConversionInfo />
           </Case>
         </Switch>
