@@ -49,7 +49,7 @@ export function BaseCheckerFormControls(): JSX.Element {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <Label>
         <LabelText>Enter your Govern DAO executor address</LabelText>
         <StyledInput
@@ -65,9 +65,9 @@ export function BaseCheckerFormControls(): JSX.Element {
         <BrandButton
           mode="strong"
           wide
-          type="submit"
           disabled={!address}
           label={'Check'}
+          onClick={handleSubmit}
         />
         <BrandButton wide onClick={handleNavigateHome} label={'Back'} />
       </ButtonRow>
@@ -99,7 +99,7 @@ export function BaseCheckerFormControls(): JSX.Element {
           </Case>
         </Switch>
       </InfoColumn>
-    </form>
+    </div>
   )
 }
 
