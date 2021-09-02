@@ -1,18 +1,9 @@
-type TokenAddress = string
-type TransactionHash = string
-type OptionInfo = {
-  amount: number
-  txHash?: TransactionHash
-}
+export type DaoAddress = string
+export type TxHash = string
 
-// TODO Add information for migration options here
-export const optionsInfo: Record<TokenAddress, OptionInfo> = {
-  '0x8367dc645e31321CeF3EeD91a10a5b7077e21f70': {
-    amount: 42,
-  },
-  '0x000000000000000000000000000000000000dEaD': {
-    amount: -1,
-    txHash:
-      '0x7b6f030dbbf8ee4e22488b4edf239f0e9cdbaa54fcef985c81d324bd3cbccffb',
-  },
+// Add tx hashes (values) for DAOs (keys) that received their options.
+export const optionsInfo: Record<DaoAddress, TxHash> = {
+  // this is an example entry:
+  // '0x8367dc645e31321CeF3EeD91a10a5b7077e21f70':
+  //   '0x7b6f030dbbf8ee4e22488b4edf239f0e9cdbaa54fcef985c81d324bd3cbccffb',
 }

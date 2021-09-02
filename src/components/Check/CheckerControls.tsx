@@ -12,19 +12,26 @@ import BrandButton from '../BrandButton/BrandButton'
 import ConverterFormControls from '../Migrate/Converter/ConverterFormControls'
 import styled from 'styled-components'
 import { Case, Switch } from 'react-if'
-import { optionsInfo } from '../../token-info/options'
+import { DaoAddress, optionsInfo, TxHash } from '../../token-info/options'
 import { isAddress } from 'ethers/lib/utils'
 import { constants } from 'ethers/lib/index'
 
-type ComponentState = 'init' | 'error' | 'options' | 'no options' | 'with tx'
+type ComponentState =
+  | 'init'
+  | 'invalid address'
+  | 'error'
+  | 'options'
+  | 'no options'
+  | 'with tx'
 
 export function BaseCheckerFormControls(): JSX.Element {
   const history = useHistory()
   const { layoutName } = useLayout()
-  const [address, setAddress] = useState('')
-  const [state, setState] = useState<ComponentState>('init')
+
+  const [address, setAddress] = useState<DaoAddress>('')
+  const [tx, setTx] = useState<TxHash>('')
   const [options, setOptions] = useState(0)
-  const [tx, setTx] = useState('')
+  const [state, setState] = useState<ComponentState>('init')
 
   const handleNavigateHome = useCallback(() => {
     history.push('/')
@@ -37,15 +44,24 @@ export function BaseCheckerFormControls(): JSX.Element {
     setAddress(value)
   }, [])
 
-  const handleSubmit = () => {
-    if (!isAddress(address)) return setState('error')
-
-    const optionsAmount = optionsInfo[address]
-    if (!optionsAmount) return setState('no options')
-    setOptions(optionsAmount.amount)
-    if (!optionsAmount.txHash) return setState('options')
-    setTx(optionsAmount.txHash)
-    return setState('with tx')
+  const handleSubmit = async () => {
+    if (!isAddress(address)) return setState('invalid address')
+    try {
+      const response = await fetch(
+        `https://datafeed.aragon.org/organizations/${address}`
+      )
+      if (response.status === 404) return setState('no options')
+      if (response.ok) {
+        const data = await response.json()
+        setOptions(data.value)
+      }
+      const tx: TxHash = optionsInfo[address]
+      if (!tx) return setState('options')
+      setTx(tx)
+      return setState('with tx')
+    } catch (err) {
+      return setState('error')
+    }
   }
 
   return (
@@ -73,26 +89,31 @@ export function BaseCheckerFormControls(): JSX.Element {
       </ButtonRow>
       <InfoColumn>
         <Switch>
+          <Case condition={state === 'invalid address'}>
+            <Info mode={'error'}>This address is invalid.</Info>
+          </Case>
           <Case condition={state === 'error'}>
-            <Info mode={'error'}>This address is invalid</Info>
+            <Info mode={'error'}>
+              Something went wrong while fetching data. Please try again later.
+            </Info>
           </Case>
           <Case condition={state === 'no options'}>
-            <Info>Your DAO is not entitled to receive options</Info>
+            <Info>Your DAO is not entitled to receive any options.</Info>
             <ConversionInfo />
           </Case>
           <Case condition={state === 'options'}>
-            <Info>Your DAO is entitled to {options} options</Info>
+            <Info>Your DAO is entitled to {options} options.</Info>
             <ConversionInfo />
           </Case>
           <Case condition={state === 'with tx'}>
             <Info>
-              Your DAO has received {options}. Check the transaction{' '}
+              Your DAO has received {options} options. Check the transaction{' '}
               <a
                 target="_blank"
                 rel="noopener noreferrer"
                 href={`https://etherscan.io/tx/${tx}`}
               >
-                here
+                here.
               </a>
             </Info>
             <ConversionInfo />
@@ -112,7 +133,7 @@ function ConversionInfo() {
         target="_blank"
         rel="noopener noreferrer"
         href={
-          'https://help.aragon.org/article/108-redeeming-aragon-govern-reward-kpi-options'
+          'https://help.aragon.org/article/99-aragon-govern-migration-reward-program#redeeming'
         }
       >
         this article
