@@ -24,6 +24,7 @@ const SHADOW: Record<TokenName, string> = {
     '#9c7974',
     0.2
   )}`,
+  opt: `0px 24px 54px rgba(5, 50, 62, 0.21);`,
 }
 
 function TokenAntGraphic({
