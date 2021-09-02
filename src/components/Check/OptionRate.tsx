@@ -68,7 +68,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
             css={`
               font-weight: ${fontWeight.medium};
               font-size: 18px;
-              margin-right: 8px;
+              margin-right: ${1 * GU};
             `}
           >
             Current conversion rate
