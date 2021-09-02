@@ -133,7 +133,7 @@ function ConversionInfo() {
         target="_blank"
         rel="noopener noreferrer"
         href={
-          'https://help.aragon.org/article/108-redeeming-aragon-govern-reward-kpi-options'
+          'https://help.aragon.org/article/99-aragon-govern-migration-reward-program#redeeming'
         }
       >
         this article

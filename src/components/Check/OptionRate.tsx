@@ -68,6 +68,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
             css={`
               font-weight: ${fontWeight.medium};
               font-size: 18px;
+              margin-right: 8px;
             `}
           >
             Current conversion rate
@@ -79,7 +80,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://help.aragon.org/article/99-aragon-govern-migration-reward-program#redeeming"
+                href="https://blog.aragon.org/uma-kpi-options-airdrop-now-live-for-aragon-govern-daos/"
               >
                 here
               </a>
