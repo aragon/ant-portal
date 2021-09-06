@@ -1,4 +1,4 @@
-export type TokenConversionType = 'ANT' | 'ANJ' | 'ANJ-LOCK'
+export type TokenConversionType = 'ANT' | 'ANJ'
 export type ConversionStage = 'form' | 'signing'
 export type ValidationError =
   | 'insufficientBalance'
@@ -14,5 +14,4 @@ export type ValidationStatus =
 export const TOKEN_SYMBOL: Record<TokenConversionType, string> = {
   ANT: 'ANTv1',
   ANJ: 'ANJ',
-  'ANJ-LOCK': 'ANJ',
 }

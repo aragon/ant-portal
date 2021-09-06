@@ -13,7 +13,6 @@ import {
   useAnjTokenContract,
   useAntV2MigratorContract,
   useAnjNoLockMinterMigratorContract,
-  useAnjLockMinterMigratorContract,
 } from '../../../hooks/useContract'
 import { networkEnvironment } from '../../../environment'
 import { useMigrateState } from '../MigrateStateProvider'
@@ -48,7 +47,6 @@ function ConverterSigning({
   const anjTokenContract = useAnjTokenContract()
   const antV2MigratorContract = useAntV2MigratorContract()
   const anjNoLockMinterMigratorContract = useAnjNoLockMinterMigratorContract()
-  const anjLockMinterMigratorContract = useAnjLockMinterMigratorContract()
   const stackedButtons = layoutName === 'small'
   const isANJConversion = ANJ_CONVERSIONS.has(conversionType)
 
@@ -100,29 +98,6 @@ function ConverterSigning({
   }, [
     anjTokenContract,
     anjNoLockMinterMigratorContract,
-    convertAmount,
-    signingConfiguration,
-  ])
-
-  const anjLockMigrationContractInteraction = useCallback(():
-    | Promise<ContractTransaction>
-    | undefined => {
-    if (!convertAmount) {
-      throw new Error('No amount was provided!')
-    }
-
-    if (signingConfiguration === 'withinAnExistingAllowance') {
-      return anjLockMinterMigratorContract?.functions.migrate(convertAmount)
-    }
-
-    return anjTokenContract?.functions.approveAndCall(
-      contracts.anjLockMinterMigrator,
-      convertAmount,
-      '0x'
-    )
-  }, [
-    anjTokenContract,
-    anjLockMinterMigratorContract,
     convertAmount,
     signingConfiguration,
   ])
@@ -224,10 +199,7 @@ function ConverterSigning({
               throw new Error('No amount was provided!')
             }
 
-            const tx =
-              conversionType === 'ANJ'
-                ? await anjNoLockMigrationContractInteraction()
-                : await anjLockMigrationContractInteraction()
+            const tx = await anjNoLockMigrationContractInteraction()
 
             if (tx) {
               addRedeemActivity(tx)
@@ -305,7 +277,6 @@ function ConverterSigning({
     conversionType,
     antMigrationContractInteraction,
     anjNoLockMigrationContractInteraction,
-    anjLockMigrationContractInteraction,
     addActivity,
     addUpgradeActivity,
     addRedeemActivity,

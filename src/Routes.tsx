@@ -7,7 +7,6 @@ import Migrate from './components/Migrate/Migrate'
 
 export const CONVERTER_PATH = '/converter'
 export const REDEEM_ANJ_PATH = '/redeem-anj'
-export const REDEEM_ANJ_LOCK_PATH = '/redeem-anj-lock'
 export const DISCLAIMER_PATH = '/disclaimer'
 export const GOVERN_PATH = '/governReward'
 
@@ -26,11 +25,6 @@ export default function Routes(): JSX.Element {
         exact
         path={REDEEM_ANJ_PATH}
         render={() => <Migrate conversionType="ANJ" />}
-      />
-      <Route
-        exact
-        path={REDEEM_ANJ_LOCK_PATH}
-        render={() => <Migrate conversionType="ANJ-LOCK" />}
       />
       <Redirect to="/" />
     </Switch>

@@ -21,7 +21,6 @@ import { ANJ_CONVERSIONS } from '../conversionUtils'
 export const TOKEN_SYMBOL: Record<TokenConversionType, string> = {
   ANT: 'ANTv1',
   ANJ: 'ANJ',
-  'ANJ-LOCK': 'ANJ',
 }
 
 const multiColumnLayout = css`

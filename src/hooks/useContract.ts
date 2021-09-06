@@ -13,7 +13,6 @@ import tokenAnjAbi from '../abi/token-anj.json'
 import migratorAbi from '../abi/migrator.json'
 import courtAbi from '../abi/court.json'
 import anjNoLockMinterMigratorAbi from '../abi/anj-migrator.json'
-import anjLockMinterMigratorAbi from '../abi/anj-lock-migrator.json'
 import uniswapPoolAbi from '../abi/uniswap-pool.json'
 import incentivePoolAbi from '../abi/incentive-pool.json'
 import balancerPoolAbi from '../abi/balancer-pool.json'
@@ -92,18 +91,6 @@ export function useAnjNoLockMinterMigratorContract(
   return useContract<Migrator>({
     address: anjNoLockMinterMigrator,
     abi: anjNoLockMinterMigratorAbi,
-    readOnly,
-  })
-}
-
-export function useAnjLockMinterMigratorContract(
-  readOnly?: boolean
-): Migrator | null {
-  const { anjLockMinterMigrator } = contracts
-
-  return useContract<Migrator>({
-    address: anjLockMinterMigrator,
-    abi: anjLockMinterMigratorAbi,
     readOnly,
   })
 }
