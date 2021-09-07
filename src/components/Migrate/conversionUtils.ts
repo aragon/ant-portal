@@ -11,5 +11,3 @@ export const MIGRATORS: Record<TokenConversionType, string> = {
   ANT: contracts.antV2Migrator,
   ANJ: contracts.anjNoLockMinterMigrator,
 }
-
-export const ANJ_CONVERSIONS = new Set(['ANJ'])

@@ -5,7 +5,6 @@ import { useMigrateState } from '../MigrateStateProvider'
 import { useAccountBalances } from '../../../providers/AccountBalances'
 import { parseUnits } from '../../../utils/math-utils'
 import { BigNumber } from 'ethers'
-import { ANJ_CONVERSIONS } from '../conversionUtils'
 
 type InputValidationReturn = {
   parsedAmountBn: BigNumber
@@ -17,7 +16,7 @@ type InputValidationReturn = {
 function useInputValidation(amount: string): InputValidationReturn {
   const { conversionType } = useMigrateState()
   const { antV1, anj } = useAccountBalances()
-  const token = ANJ_CONVERSIONS.has(conversionType) ? anj : antV1
+  const token = conversionType === 'ANJ' ? anj : antV1
   const { balance, decimals } = token
 
   const parsedAmountBn = useMemo(() => parseInputValue(amount, decimals), [

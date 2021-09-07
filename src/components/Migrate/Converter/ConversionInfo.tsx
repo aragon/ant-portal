@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 // @ts-ignore
 import { Info, Link, GU } from '@aragon/ui'
 import { getEtherscanUrl } from '../../../utils/etherscan'
@@ -20,21 +20,13 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `
 
-type OneWayMessageProps = {
-  arrow?: ReactNode
-  boldLink?: boolean
-}
-
-function OneWayMessage({
-  arrow = null,
-  boldLink = false,
-}: OneWayMessageProps): JSX.Element {
+function OneWayMessage(): JSX.Element {
   return (
     <div>
       This conversion is a one way path.{' '}
       <StyledLink href={antV2ContractUrl} style={{ textDecoration: 'none' }}>
-        <label style={{ fontWeight: boldLink ? 'bold' : 'normal' }}>
-          {arrow} Review ANTv2 token contract
+        <label style={{ fontWeight: 'normal' }}>
+          Review ANTv2 token contract
         </label>
       </StyledLink>
     </div>

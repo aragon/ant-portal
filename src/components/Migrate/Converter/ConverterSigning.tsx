@@ -21,7 +21,7 @@ import { ContractTransaction } from 'ethers'
 import PageHeading from '../../PageHeading/PageHeading'
 import { useActivity } from '../../Activity/ActivityProvider'
 import { useAccountBalances } from '../../../providers/AccountBalances'
-import { ANJ_CONVERSIONS, MIGRATORS } from '../conversionUtils'
+import { MIGRATORS } from '../conversionUtils'
 
 const { contracts } = networkEnvironment
 
@@ -48,7 +48,7 @@ function ConverterSigning({
   const antV2MigratorContract = useAntV2MigratorContract()
   const anjNoLockMinterMigratorContract = useAnjNoLockMinterMigratorContract()
   const stackedButtons = layoutName === 'small'
-  const isANJConversion = ANJ_CONVERSIONS.has(conversionType)
+  const isANJConversion = conversionType === 'ANJ'
 
   const handleBackToHome = useCallback(() => {
     history.push('/')

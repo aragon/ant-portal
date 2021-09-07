@@ -16,7 +16,6 @@ import ConverterFormControls from './ConverterFormControls'
 import { radius } from '../../../style/radius'
 import ConversionRate from './ConversionRate'
 import PageHeading from '../../PageHeading/PageHeading'
-import { ANJ_CONVERSIONS } from '../conversionUtils'
 
 export const TOKEN_SYMBOL: Record<TokenConversionType, string> = {
   ANT: 'ANTv1',
@@ -45,7 +44,7 @@ function ConverterForm(): JSX.Element {
   const { conversionType } = useMigrateState()
   const { antV1, anj } = useAccountBalances()
 
-  const isANJConversion = ANJ_CONVERSIONS.has(conversionType)
+  const isANJConversion = conversionType === 'ANJ'
   const token = isANJConversion ? anj : antV1
   const { balance, decimals } = token
 

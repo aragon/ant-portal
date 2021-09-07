@@ -23,7 +23,7 @@ import { useWallet } from '../../../providers/Wallet'
 import { BigNumber } from 'ethers'
 import { mockPromiseLatency } from '../../../mock'
 import { useMounted } from '../../../hooks/useMounted'
-import { CONVERSION_RATE, ANJ_CONVERSIONS, MIGRATORS } from '../conversionUtils'
+import { CONVERSION_RATE, MIGRATORS } from '../conversionUtils'
 import { TokenConversionType } from '../types'
 import ConversionInfo from './ConversionInfo'
 import ValidationWarning from './ValidationWarning'
@@ -40,6 +40,7 @@ type ConverterFormControlsProps = {
 }
 
 function ConverterFormControls({
+  conversionType,
   tokenSymbol,
 }: ConverterFormControlsProps): JSX.Element {
   return <BaseConverterFormControls tokenSymbol={tokenSymbol} />
@@ -74,7 +75,7 @@ function BaseConverterFormControls({
 
   const stackedButtons = layoutName === 'small'
 
-  const isANJConversion = ANJ_CONVERSIONS.has(conversionType)
+  const isANJConversion = conversionType === 'ANJ'
   const conversionRate = CONVERSION_RATE[conversionType]
 
   const handleAmountChange = useCallback(
@@ -226,7 +227,7 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
   } = useMigrateState()
   const antTokenV1Contract = useAntTokenV1Contract()
   const anjTokenContract = useAnjTokenContract()
-  const contract = ANJ_CONVERSIONS.has(conversionType)
+  const contract = conversionType === 'ANJ'
     ? anjTokenContract
     : antTokenV1Contract
 
