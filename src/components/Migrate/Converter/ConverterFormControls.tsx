@@ -227,9 +227,8 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
   } = useMigrateState()
   const antTokenV1Contract = useAntTokenV1Contract()
   const anjTokenContract = useAnjTokenContract()
-  const contract = conversionType === 'ANJ'
-    ? anjTokenContract
-    : antTokenV1Contract
+  const contract =
+    conversionType === 'ANJ' ? anjTokenContract : antTokenV1Contract
 
   const handleCheckAllowanceAndProceed = useCallback(async () => {
     try {
