@@ -4,7 +4,6 @@ import {
   TextInput,
   useTheme,
   useLayout,
-  Checkbox,
   GU,
   // @ts-ignore
 } from '@aragon/ui'
@@ -24,11 +23,8 @@ import { useWallet } from '../../../providers/Wallet'
 import { BigNumber } from 'ethers'
 import { mockPromiseLatency } from '../../../mock'
 import { useMounted } from '../../../hooks/useMounted'
-import { CONVERSION_RATE, ANJ_CONVERSIONS, MIGRATORS } from '../conversionUtils'
+import { CONVERSION_RATE, MIGRATORS } from '../conversionUtils'
 import { TokenConversionType } from '../types'
-import { useAntStakingMinimum } from '../../../hooks/usePolledBalance'
-import { useAccountBalances } from '../../../providers/AccountBalances'
-import TokenAmount from 'token-amount'
 import ConversionInfo from './ConversionInfo'
 import ValidationWarning from './ValidationWarning'
 
@@ -47,32 +43,6 @@ function ConverterFormControls({
   conversionType,
   tokenSymbol,
 }: ConverterFormControlsProps): JSX.Element {
-  return conversionType === 'ANJ-LOCK' ? (
-    <LockConverterFormControls tokenSymbol={tokenSymbol} />
-  ) : (
-    <BaseConverterFormControls tokenSymbol={tokenSymbol} />
-  )
-}
-
-function LockConverterFormControls({
-  tokenSymbol,
-}: FormControlsProps): JSX.Element {
-  const { updateMinConvertAmount } = useMigrateState()
-  const { anj, antV2 } = useAccountBalances()
-  const antStakingMinimum = useAntStakingMinimum()
-
-  useEffect(() => {
-    if (!antStakingMinimum) {
-      return
-    }
-    const rate = 1 / CONVERSION_RATE['ANJ-LOCK']
-    const amount = new TokenAmount(antStakingMinimum, antV2.decimals).convert(
-      rate,
-      anj.decimals
-    )
-    updateMinConvertAmount(amount)
-  }, [anj.decimals, antV2.decimals, updateMinConvertAmount, antStakingMinimum])
-
   return <BaseConverterFormControls tokenSymbol={tokenSymbol} />
 }
 
@@ -86,7 +56,7 @@ function BaseConverterFormControls({
   const { updateConvertAmount, conversionType } = useMigrateState()
   const { showAccount } = useAccountModule()
   const { layoutName } = useLayout()
-  const [agree, setAgree] = useState(conversionType !== 'ANJ-LOCK')
+  const [agree] = useState(true)
   const {
     formattedAmount,
     maxAmount,
@@ -105,7 +75,7 @@ function BaseConverterFormControls({
 
   const stackedButtons = layoutName === 'small'
 
-  const isANJConversion = ANJ_CONVERSIONS.has(conversionType)
+  const isANJConversion = conversionType === 'ANJ'
   const conversionRate = CONVERSION_RATE[conversionType]
 
   const handleAmountChange = useCallback(
@@ -227,23 +197,6 @@ function BaseConverterFormControls({
       )}
 
       <ConversionInfo />
-      {conversionType === 'ANJ-LOCK' && (
-        <div
-          style={{
-            display: 'flex',
-            columnGap: `${GU}px`,
-            marginBottom: `${2 * GU}px`,
-          }}
-        >
-          <Checkbox
-            checked={agree}
-            onChange={(checked: boolean) => setAgree(checked)}
-          />
-          <label>
-            I agree with the above conditions &amp; obligations of the staking.
-          </label>
-        </div>
-      )}
       <div
         css={`
           display: grid;
@@ -274,9 +227,8 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
   } = useMigrateState()
   const antTokenV1Contract = useAntTokenV1Contract()
   const anjTokenContract = useAnjTokenContract()
-  const contract = ANJ_CONVERSIONS.has(conversionType)
-    ? anjTokenContract
-    : antTokenV1Contract
+  const contract =
+    conversionType === 'ANJ' ? anjTokenContract : antTokenV1Contract
 
   const handleCheckAllowanceAndProceed = useCallback(async () => {
     try {

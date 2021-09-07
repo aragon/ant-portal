@@ -6,7 +6,7 @@ import { fontWeight } from '../../../style/font'
 import { radius } from '../../../style/radius'
 import { useMigrateState } from '../MigrateStateProvider'
 import TokenGraphic from '../../TokenGraphic/TokenGraphic'
-import { CONVERSION_RATE, ANJ_CONVERSIONS } from '../conversionUtils'
+import { CONVERSION_RATE } from '../conversionUtils'
 
 type ConversionRateProps = {
   compactMode: boolean
@@ -50,7 +50,7 @@ function ConversionRate({
   const theme = useTheme()
   const { conversionType } = useMigrateState()
 
-  const isANJConversion = ANJ_CONVERSIONS.has(conversionType)
+  const isANJConversion = conversionType === 'ANJ'
   const conversionRate = CONVERSION_RATE[conversionType]
 
   return (

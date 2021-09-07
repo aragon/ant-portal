@@ -73,7 +73,7 @@ function Balances({
         css={`
           display: grid;
           grid-gap: ${4 * GU}px;
-          grid-template-columns: ${stackedCards ? '1fr' : '1fr 1fr 1fr'};
+          grid-template-columns: ${stackedCards ? '1fr' : '1fr 1fr'};
         `}
       >
         <TokenConversionCard
@@ -83,14 +83,6 @@ function Balances({
           showLpBalance={false}
           rate={CONVERSION_RATE['ANJ']}
           lockupPeriod={0}
-        />
-        <TokenConversionCard
-          tokenName="anj"
-          balance={formattedAnjBalance}
-          accountConnected={accountConnected}
-          showLpBalance={false}
-          rate={CONVERSION_RATE['ANJ-LOCK']}
-          lockupPeriod={12}
         />
         <TokenConversionCard
           tokenName="antV1"
