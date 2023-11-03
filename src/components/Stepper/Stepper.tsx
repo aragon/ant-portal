@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Transition, animated } from 'react-spring/renderprops'
 // @ts-ignore
-import { springs, noop, useTheme, GU } from '@aragon/ui'
+import { springs, noop, GU } from '@aragon/ui'
 import Step from './Step/Step'
 import { useDisableAnimation } from '../../hooks/useDisableAnimation'
 import { useMounted } from '../../hooks/useMounted'
 import useStepperLayout from './useStepperLayout'
 import { StepItems, StepperStatus } from './types'
 import useStepState from './useStepState'
+import { theme as localTheme } from '../../style/theme'
 
 const AnimatedDiv = animated.div
 
@@ -38,7 +39,6 @@ function Stepper({
   renderInfo,
   ...props
 }: StepperProps): JSX.Element {
-  const theme = useTheme()
   const mounted = useMounted()
   const [stepperStatus, setStepperStatus] = useState<StepperStatus>(
     INITIAL_STEPPER_STATUS
@@ -184,7 +184,7 @@ function Stepper({
                   css={`
                     text-align: center;
                     margin-bottom: ${2 * GU}px;
-                    color: ${theme.surfaceContentSecondary};
+                    color: ${localTheme.secondary};
                   `}
                 >
                   {stepperStage + 1} out of {steps.length} transactions

@@ -1,15 +1,15 @@
 import React, { ReactNode, useCallback } from 'react'
 // @ts-ignore
-import { Link, useLayout, useTheme, IconArrowLeft, GU } from '@aragon/ui'
+import { Link, useLayout, IconArrowLeft, GU } from '@aragon/ui'
 import LayoutGutter from '../Layout/LayoutGutter'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import { fontWeight } from '../../style/font'
 import AnimateEntrance from '../AnimateEntrance/AnimateEntrance'
 import { useHistory } from 'react-router-dom'
+import { theme as localTheme } from '../../style/theme'
+import { TermsAndConditions } from '../TermsAndConditions/TermsAndConditionsText'
 
-const BLOG_POST_URL = 'https://aragon.org/blog/antv2'
-
-function Disclaimer(): JSX.Element {
+function TermsPage(): JSX.Element {
   const { layoutName } = useLayout()
   const history = useHistory()
   const compactMode = layoutName === 'small'
@@ -64,48 +64,32 @@ function Disclaimer(): JSX.Element {
               font-size: ${compactMode ? `44` : `54`}px;
             `}
           >
-            Disclaimer
+            Terms and Conditions
           </h1>
-          <Paragraph compactMode={compactMode}>
-            The ANT migration is solely a technical upgrade to adopt the latest
-            technical developments of Ethereum tokens.{' '}
-            <Link
-              href={BLOG_POST_URL}
-              css={`
-                font-weight: ${fontWeight.medium};
-                text-decoration: none;
-              `}
-            >
-              Read more here
-            </Link>
-            . ANTv2 is not a new token. ANTv2 is the upgraded version of ANT.
-            ANTv2 will maintain the same functionality as ANTv1.
-          </Paragraph>
+          <TermsContainer compactMode={compactMode}>
+            <TermsAndConditions />
+          </TermsContainer>
         </LayoutLimiter>
       </AnimateEntrance>
     </LayoutGutter>
   )
 }
 
-function Paragraph({
+function TermsContainer({
   children,
-  compactMode,
 }: {
   children: ReactNode
   compactMode: boolean
 }) {
-  const theme = useTheme()
-
   return (
     <p
       css={`
-        &:not(:last-child) {
-          margin-bottom: ${3 * GU}px;
+        & > * {
+          margin-bottom: ${2 * GU}px;
         }
         font-weight: ${fontWeight.medium};
-        font-size: ${compactMode ? `18` : `26`}px;
         line-height: 1.6;
-        color: ${theme.contentSecondary};
+        color: ${localTheme.secondary};
       `}
     >
       {children}
@@ -113,4 +97,4 @@ function Paragraph({
   )
 }
 
-export default Disclaimer
+export default TermsPage

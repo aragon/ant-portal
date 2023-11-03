@@ -72,7 +72,7 @@ export function useIncentiveStakedBalance(
         ) {
           setLastStakedBalance(stakedBalance)
         }
-      } catch (err) {
+      } catch (err: any) {
         captureErrorWithSentry(err)
         clear()
       }
@@ -139,7 +139,7 @@ export function useUniswapStakedBalance(
         ) {
           setLastStakedBalance(stakedBalance)
         }
-      } catch (err) {
+      } catch (err: any) {
         captureErrorWithSentry(err)
         clear()
       }
@@ -166,7 +166,11 @@ export function useBalancerStakedBalance(
 
   const getStakedBalance = useCallback(
     async (clear) => {
-      if (!balancerPoolContract || !account) {
+      if (
+        !balancerPoolContract ||
+        !account ||
+        !networkEnvironment.contracts.tokenAntV1
+      ) {
         // Clear any residual value
         if (mounted()) {
           setLastStakedBalance(null)
@@ -200,7 +204,7 @@ export function useBalancerStakedBalance(
         ) {
           setLastStakedBalance(stakedBalance)
         }
-      } catch (err) {
+      } catch (err: any) {
         captureErrorWithSentry(err)
         clear()
       }
@@ -249,7 +253,7 @@ export function useAntTokenBalance(
         if (mounted() && (!tokenBalance || !balance.eq(tokenBalance))) {
           setTokenBalance(balance)
         }
-      } catch (err) {
+      } catch (err: any) {
         captureErrorWithSentry(err)
         clear()
       }
@@ -291,7 +295,7 @@ export function useAnjTokenBalance(
         if (mounted() && (!tokenBalance || !balance.eq(tokenBalance))) {
           setTokenBalance(balance)
         }
-      } catch (err) {
+      } catch (err: any) {
         captureErrorWithSentry(err)
         clear()
       }
@@ -333,7 +337,7 @@ export function useAntTotalSupply(tokenVersion: 'v1' | 'v2'): BigNumber | null {
         if (mounted()) {
           setTotalSupply(fetchedTotalsupply)
         }
-      } catch (err) {
+      } catch (err: any) {
         captureErrorWithSentry(err)
       }
     }
@@ -367,7 +371,7 @@ export function useAntStakingMinimum(readOnly?: boolean): BigNumber | null {
         if (mounted() && (!minStakeAmount || !balance.eq(minStakeAmount))) {
           setMinStakeAmount(balance)
         }
-      } catch (err) {
+      } catch (err: any) {
         captureErrorWithSentry(err)
         clear()
       }
@@ -388,7 +392,7 @@ export function useOptionConversionRate(): number {
       const response = await fetch('https://datafeed.aragon.org/organizations')
       const data = await response.json()
       setRate(data.option)
-    } catch (err) {
+    } catch (err: any) {
       captureErrorWithSentry(err)
       clear()
     }

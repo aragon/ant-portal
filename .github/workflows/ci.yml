@@ -9,10 +9,10 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 16
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Build ANT Upgrade Portal
+      - name: Build ANT Redemption Portal
         run: yarn build
       - name: Run BundleWatch
         run: yarn bundlewatch

@@ -10,7 +10,6 @@ import {
   // @ts-ignore
 } from '@aragon/ui'
 import TokenGraphic from '../TokenGraphic/TokenGraphic'
-import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
 import { getEtherscanUrl } from '../../utils/etherscan'
@@ -18,6 +17,7 @@ import TokenTotalAmount from '../TokenTotalAmount/TokenTotalAmount'
 import LoadingSkeleton from '../LoadingSkeleton/LoadingSkeleton'
 import { TokenName } from '../../token-info/types'
 import { tokenInfo } from '../../token-info/tokenInfo'
+import { theme as localTheme } from '../../style/theme'
 
 type BalanceCardProps = {
   tokenName: TokenName
@@ -83,7 +83,7 @@ function BalanceCard({
     ) : (
       <div
         css={`
-          color: ${theme.contentSecondary};
+          color: ${localTheme.secondary};
         `}
       >
         {title}
@@ -94,8 +94,7 @@ function BalanceCard({
   return (
     <div
       css={`
-        background-color: ${theme.surface};
-        box-shadow: ${shadowDepth.high};
+        background-color: ${localTheme.whiteCard};
         border-radius: ${radius.high};
         padding: ${compactMode ? 4 * GU : 5 * GU}px;
 
@@ -196,7 +195,7 @@ function BalanceCard({
               ) : (
                 <span
                   css={`
-                    color: ${theme.contentSecondary};
+                    color: ${localTheme.secondary};
                   `}
                 >
                   {/* TODO: Potentially remove this, though I can't imagine we'd have any external visitors to our staging deploy */}
@@ -207,7 +206,7 @@ function BalanceCard({
         ) : (
           <p
             css={`
-              color: ${theme.contentSecondary};
+              color: ${localTheme.secondary};
             `}
           >
             Enable account to see your balance

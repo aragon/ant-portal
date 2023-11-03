@@ -4,12 +4,14 @@ import { useLayout, GU } from '@aragon/ui'
 import TokenAmount from 'token-amount'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import TokenConversionCard from './TokenConversionCard'
+import AntV2EthConversionCard from './AntV2EthConversionCard'
 import { useAccountBalances } from '../../providers/AccountBalances'
 import LpInfoModal from './LpInfoModal/LpInfoModal'
 import { bigNum } from '../../utils/math-utils'
 import { useWallet } from '../../providers/Wallet'
 import { networkEnvironment } from '../../environment'
 import { CONVERSION_RATE } from '../Migrate/conversionUtils'
+import useRedemptionEthBalance from '../../hooks/useRedemptionEthBalance'
 
 const { chainId } = networkEnvironment
 
@@ -22,8 +24,21 @@ function Balances({
   const { account } = useWallet()
   const [modalVisible, setModalVisible] = useState(false)
   const { layoutName } = useLayout()
-  const { antV1, anj, lpBalances } = useAccountBalances()
+  const { antV2, antV1, anj, lpBalances } = useAccountBalances()
   const stackedCards = layoutName === 'small' || layoutName === 'medium'
+  const antV2RedeemContractBalance = useRedemptionEthBalance()
+  const antV2RedeemContractHasBalance = Boolean(
+    antV2RedeemContractBalance && antV2RedeemContractBalance > 0
+  )
+
+  const formattedAntV2Balance = useMemo(
+    (): string | null =>
+      antV2.balance &&
+      new TokenAmount(antV2.balance, antV2.decimals).format({
+        digits: FORMATTED_DIGITS,
+      }),
+    [antV2.balance, antV2.decimals]
+  )
 
   const formattedAntV1Balance = useMemo(
     (): string | null =>
@@ -74,8 +89,19 @@ function Balances({
           display: grid;
           grid-gap: ${4 * GU}px;
           grid-template-columns: ${stackedCards ? '1fr' : '1fr 1fr'};
+
+          ${!stackedCards &&
+          `& > *:nth-child(1) {
+              grid-column: 1 / 3;
+              max-width: 100%;
+            }`}
         `}
       >
+        <AntV2EthConversionCard
+          balance={formattedAntV2Balance}
+          accountConnected={accountConnected}
+          available={antV2RedeemContractHasBalance}
+        />
         <TokenConversionCard
           tokenName="anj"
           balance={formattedAnjBalance}
@@ -102,7 +128,7 @@ function Balances({
   ) : (
     <div
       css={`
-        padding-bottom: ${30 * GU}px;
+        padding-bottom: ${24 * GU}px;
       `}
     ></div>
   )

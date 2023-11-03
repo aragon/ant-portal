@@ -1,8 +1,6 @@
 import React, { ReactNode, useContext, useMemo } from 'react'
 import { providers as EthersProviders } from 'ethers'
 import { UseWalletProvider, useWallet } from 'use-wallet'
-import { ExternalProvider } from '@ethersproject/providers'
-import { networkEnvironment } from '../environment'
 import { getUseWalletConnectors } from '../components/Account/ethereum-providers'
 import { WalletWithProvider } from '../components/Account/types'
 
@@ -16,7 +14,7 @@ const WalletAugmentedContext = React.createContext<WalletContext | null>(null)
 
 // Adds Ethers.js to the useWallet() object
 function WalletAugmented({ children }: { children: ReactNode }) {
-  const wallet = useWallet<ExternalProvider>()
+  const wallet = useWallet()
   const { ethereum } = wallet
 
   const ethers = useMemo(
@@ -38,10 +36,7 @@ function WalletAugmented({ children }: { children: ReactNode }) {
 
 function WalletProvider({ children }: { children: ReactNode }): JSX.Element {
   return (
-    <UseWalletProvider
-      chainId={networkEnvironment.chainId}
-      connectors={getUseWalletConnectors()}
-    >
+    <UseWalletProvider connectors={getUseWalletConnectors()}>
       <WalletAugmented>{children}</WalletAugmented>
     </UseWalletProvider>
   )

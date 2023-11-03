@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 // @ts-ignore
 import { GU, Link } from '@aragon/ui'
-import { fontWeight } from '../../style/font'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import Faq from './Faq'
 import PageHeading from '../PageHeading/PageHeading'
@@ -11,148 +10,113 @@ import { getEtherscanUrl } from '../../utils/etherscan'
 const { contracts } = networkEnvironment
 
 // TODO: Add url and content when available
-const FAQS_URL = 'https://aragon.org/faqs/tokens#ant-faq'
 const FAQS_ITEMS: [string, ReactNode][] = [
   [
-    'What is ANT v2?',
+    'How did the Aragon Association (AA) determine the redemption rate?',
     <>
       <p>
-        ANTv1 was optimized for on-chain voting. Because of that, the ANT smart
-        contract needed more complex logic. As we are{' '}
-        <Link href="https://aragon.org/blog/snapshot">
-          moving voting off-chain
-        </Link>
-        , that logic is not needed anymore.
+        The AA arrived at the best redemption rate it could achieve for all ANT
+        holders by identifying the most compliant and tax efficient path forward
+        allowing for the continuation and protection of the project.
       </p>
       <p>
-        Switching to a new, simpler token makes ANT transactions 66% cheaper —
-        lowering the barrier to entry and making it a better token to use. ANTv2
-        will also support gasless transactions, enabling service operators (and
-        delegated hot wallets) to pay for their users’ gas.
+        <b>First (1)</b>, the AA defined the circulating supply with the
+        following calculation: [Total ANT Supply] - [ANT directly owned or
+        controlled by the AA] - [ANT locked in inactive legacy contracts]. This
+        ensures all ANT holders have the option to participate in the
+        redemption, regardless of whether they are currently holding ANTv1 or
+        v2. This resulted in <b>34,220,397 ANT</b>.
       </p>
       <p>
-        Further documentation about ANT token contract is available at{' '}
-        <Link href="http://docs.aragon.org/ant">docs.aragon.org/ant</Link>.
+        <b>Second (2)</b>, the AA committed the majority of its treasury toward
+        the redemption, with the exception of funds necessary for project
+        protection, continuity, and tax compliance. This amount was calculated
+        as: [Total treasury held in non-native assets] - [Funds to protect the
+        project] - [Funds for development and operations]. This resulted in{' '}
+        <b>86,343 ETH</b> (approx. 87% of non-native assets).
       </p>
       <p>
-        A gas cost comparison against ANTv1 is available{' '}
-        <Link href="https://github.com/aragon/aragon-network-token/pull/21">
-          here
-        </Link>
-        .
-      </p>
-      <p>
-        ANTv1 address: <AddressLink address={contracts.tokenAntV1} />
-      </p>
-      <p>
-        ANTv2 address: <AddressLink address={contracts.tokenAntV2} />
+        The ETH/ANT rate was set by dividing the (2) treasury committed to the
+        redemption by (1) the circulating supply. This resulted in a fixed rate
+        of <b>0.0025376 ETH / ANT</b>.
       </p>
     </>,
   ],
   [
-    'Why should I upgrade my ANT?',
-    <>
-      <p>
-        ANTv2 is not a different token, but just a new version of ANT. If you
-        have ANTv1, you will be able to easily upgrade it to ANTv2.
-      </p>
-      <p>
-        Together with the upgrade, we will also kickstart a new{' '}
-        <Link href="https://liquidity.aragon.org/">
-          liquidity rewards program
-        </Link>{' '}
-        on both Uniswap and Balancer, starting October 29th.
-      </p>
-      <p>ANT holders who upgrade early will be eligible for:</p>
-      <ul
+    "If I can't find my ANT or have lost the keys of the wallet where I hold ANT, can I still participate in the redemption?",
+    <p>
+      ANT Holders will need to connect a wallet holding ANT to the redemption
+      contract in order to participate. If you hold your ANT in a self-custodial
+      wallet but have lost your keys, unfortunately there is nothing we can do.
+    </p>,
+  ],
+  [
+    'If I have my ANT in a centralized exchange (CEX), what am I supposed to do?',
+    <p>
+      If your ANT is in a CEX, we recommend you to withdraw the tokens to your
+      own self-custody wallet to perform the redemption directly. However, we
+      are aware not everyone will be capable of doing so. For this reason, the
+      AA has asked all CEXs to automatically redeem any remaining ANT on behalf
+      of users before the termination date.
+    </p>,
+  ],
+  [
+    'Can I review the smart contract?',
+    <p>
+      The contract can be viewed{' '}
+      <Link
+        href={
+          contracts.antV2Redemption
+            ? getEtherscanUrl(contracts.antV2Redemption, 'address')
+            : ''
+        }
         css={`
-          li {
-            margin-left: 24px;
-          }
+          text-align: left;
+          white-space: initial;
+          word-break: break-all;
         `}
       >
-        <li>
-          The new liquidity rewards program, starting on October 29th and
-          lasting two weeks
-        </li>
-        <li>
-          Voting on bootstrapping a new governance process for the Aragon
-          Network
-        </li>
-      </ul>
-      <p>ANT v2 will continue to be used to govern Aragon Network services.</p>
-    </>,
-  ],
-  [
-    'Why I need to redeem my ANJ?',
-    <>
-      <p>
-        ANJ was launched in February 2020 as the work token for Aragon Court
-        jurors. Since then, over 250 jurors have activated their ANJ to
-        adjudicate disputes in Aragon Court. While that makes sense in theory,
-        the drawbacks outnumber that single benefit.
-      </p>
-      <p>
-        Even with that success, community members and other participants have
-        raised questions about ANJ, starting with why a separate token is really
-        needed.
-      </p>
-      <p>
-        The main reason to have multiple tokens was to isolate the
-        cryptoeconomic incentives — so that jurors have a set of incentives
-        different to those of ANT holders.
-      </p>
-      <p>
-        Read more in{' '}
-        <Link href="https://aragon.org/blog/merge-anj">
-          https://aragon.org/blog/merge-anj
-        </Link>
-      </p>
-    </>,
-  ],
-  [
-    'For how long will this upgrade last?',
-    <p>
-      Users will be able to use the Upgrade Portal as many times as they’d like.
-      It will be continually supported going forward, ensuring that tokenholders
-      are always using an up-to-date version of ANT. Each token upgrade
-      currently costs about 200,000 gas (or around $2).
+        here
+      </Link>{' '}
+      and the Halborn audit report{' '}
+      <Link href="./audit-report.pdf">can be viewed here</Link>.
     </p>,
   ],
   [
-    'What is the conversion rate?',
+    "Why can't I just send ANT to the smart contract instead of going through the ANT Redemption Portal?",
     <p>
-      The conversion rate is fixed at 1:1, this means that you will get one
-      ANTv2 for every ANTv1 you upgrade.
+      There is a specific function that has to be called on the smart contract.
+      Sending ANT or any other assets to the contract will result in a loss of
+      funds.
     </p>,
   ],
   [
-    'What happens to the ANT held in CEXs & DEXs?',
-    <>
-      <p>
-        This tool is designed to help users upgrade ANTv1 balances held in their
-        own wallets in just a few clicks.
-      </p>
-      <p>
-        If you have ANT in major exchanges supporting the upgrade, including{' '}
-        <Link href="https://www.binance.com/">Binance</Link>,{' '}
-        <Link href="https://www.huobi.com/">Huobi</Link> and{' '}
-        <Link href="https://www.okex.com/">OKEx</Link>, your ANT will be
-        upgraded automatically.
-      </p>
-
-      <p>
-        If you have ANTv1 staked in other contracts, such as liquidity pools and
-        DEXes, you must upgrade your liquidity manually. In order to do so,
-        first exit the existing pool, upgrade it through this portal and
-        re-enter it into the equivalent ANTv2 pool.
-      </p>
-
-      <p>
-        Please note that most sites, coin trackers and DEXes will map ANTv1 to
-        “ANT (old)” and ANTv2 to “ANT”.
-      </p>
-    </>,
+    'What if I have technical issues? Do you have any support?',
+    <p>
+      If you have technical issues, you can email{' '}
+      <Link href="mailto:ant@aragon.org">ant@aragon.org</Link> and a
+      representative from the Aragon Shield Foundation will get back to you as
+      soon as possible.
+    </p>,
+  ],
+  [
+    'Will there be any future redemption initiatives?',
+    <p>
+      The token redemption is a voluntary initiative by the Aragon Association.
+      It is time-bound, one-off, and subject to the{' '}
+      <Link href="#/terms">Terms and Conditions</Link>. There will be no future
+      redemption initiatives or utility for the Aragon Network Token (ANT).
+    </p>,
+  ],
+  [
+    'What does this mean for the future of the Aragon Project?',
+    <p>
+      The Aragon Project will continue under new leadership. Please{' '}
+      <Link href="https://blog.aragon.org/a-new-chapter-for-the-aragon-project/">
+        refer to the announcement
+      </Link>{' '}
+      for more details.
+    </p>,
   ],
 ]
 
@@ -168,47 +132,31 @@ function Faqs(): JSX.Element {
       >
         <PageHeading
           title="FAQs"
-          description="Have questions? We have answers."
+          description=""
           css={`
             width: 100%;
             margin-bottom: ${7 * GU}px;
           `}
         />
         <Faq items={FAQS_ITEMS} />
-        <div
-          css={`
-            text-align: center;
-          `}
-        >
-          <Link
-            href={FAQS_URL}
-            css={`
-              margin-top: ${6 * GU}px;
-              font-weight: ${fontWeight.medium};
-              font-size: 20px;
-            `}
-          >
-            Go to all FAQs
-          </Link>
-        </div>
       </div>
     </LayoutLimiter>
   )
 }
 
-function AddressLink({ address }: { address: string }): JSX.Element {
-  return (
-    <Link
-      href={getEtherscanUrl(address)}
-      css={`
-        text-align: left;
-        white-space: initial;
-        word-break: break-all;
-      `}
-    >
-      {address}
-    </Link>
-  )
-}
+// function AddressLink({ address }: { address: string }): JSX.Element {
+//   return (
+//     <Link
+//       href={getEtherscanUrl(address)}
+//       css={`
+//         text-align: left;
+//         white-space: initial;
+//         word-break: break-all;
+//       `}
+//     >
+//       {address}
+//     </Link>
+//   )
+// }
 
 export default Faqs

@@ -4,10 +4,11 @@ import { GU, Link, useTheme, useLayout } from '@aragon/ui'
 import FooterLogo from './FooterLogo'
 import LayoutGutter from '../Layout/LayoutGutter'
 import { useHistory, useLocation } from 'react-router-dom'
-import { DISCLAIMER_PATH } from '../../Routes'
+import { TERMS_AND_CONDITIONS_PATH } from '../../Routes'
+import { theme as localTheme } from '../../style/theme'
 
-const DOCS_URL = 'https://docs.aragon.org/ant/'
-const COMMUNITY_URL = 'https://discord.com/invite/aragon'
+const DOCS_URL = 'https://legacy-docs.aragon.org/the-ant-token/about-the-token'
+const CONTACT_URI = 'mailto:ant@aragon.org'
 
 const ARAGON_WEBSITE_URL = 'https://aragon.org'
 
@@ -18,9 +19,9 @@ function Footer(): JSX.Element {
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
 
-  const handleDisclaimerClick = useCallback(() => {
-    if (location.pathname !== DISCLAIMER_PATH) {
-      history.push(DISCLAIMER_PATH)
+  const handleTermsAndConditionsClick = useCallback(() => {
+    if (location.pathname !== TERMS_AND_CONDITIONS_PATH) {
+      history.push(TERMS_AND_CONDITIONS_PATH)
     }
   }, [location.pathname, history])
 
@@ -48,8 +49,10 @@ function Footer(): JSX.Element {
             `}
           >
             <FooterLink href={DOCS_URL}>Documentation</FooterLink>
-            <FooterLink onClick={handleDisclaimerClick}>Disclaimer</FooterLink>
-            <FooterLink href={COMMUNITY_URL}>Community</FooterLink>
+            <FooterLink onClick={handleTermsAndConditionsClick}>
+              Terms and Conditions
+            </FooterLink>
+            <FooterLink href={CONTACT_URI}>Contact</FooterLink>
           </div>
           <Link href={ARAGON_WEBSITE_URL}>
             <FooterLogo />
@@ -73,7 +76,7 @@ function FooterLink({ href, children, onClick }: FooterLinkProps): JSX.Element {
     <Link
       css={`
         text-decoration: none;
-        color: ${theme.surfaceContentSecondary};
+        color: ${localTheme.secondary};
 
         &:hover {
           color: ${theme.surfaceContent};

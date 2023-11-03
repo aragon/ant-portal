@@ -7,7 +7,7 @@ import Header from './Header'
 import Balances from './Balances'
 import Faqs from './Faqs'
 import useDetectMobileDevice from '../../hooks/useDetectMobileDevice'
-import Stats from './Stats'
+// import Stats from './Stats'
 import AnimateEntrance from '../AnimateEntrance/AnimateEntrance'
 
 function GetStarted(): JSX.Element {
@@ -33,9 +33,8 @@ function GetStarted(): JSX.Element {
                 margin-right: auto;
               `}
             >
-              ANT v2 Migration is not supported for mobile wallets. Use a web or
-              hardware wallet to interact with your account and begin the
-              migration.{' '}
+              This portal is not supported on mobile wallets. Use a desktop
+              browser with Wallet Connect to begin the migration.
             </Info>
           )}
           <Balances
@@ -49,11 +48,11 @@ function GetStarted(): JSX.Element {
               padding-bottom: ${24 * GU}px;
             `}
           />
-          <Stats
+          {/* <Stats
             css={`
               padding-bottom: ${20 * GU}px;
             `}
-          />
+          /> */}
           <Faqs />
         </LayoutGutter>
       </div>

@@ -11,4 +11,8 @@ export const theme = {
   contentSecondary: '#8991b1',
   surfaceContentSecondary: '#6f7ca6',
   surfaceSelected: '#fdfefe',
+  primary: '#8889BB',
+  secondary: '#767D94',
+  black: '#212B36',
+  whiteCard: 'rgb(255,255,255,0.75)',
 }

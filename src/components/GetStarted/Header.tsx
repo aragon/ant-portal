@@ -3,8 +3,8 @@ import React, { ReactNode, useState, useEffect, useMemo } from 'react'
 import {
   GU,
   IconConnect,
-  useTheme,
   useLayout,
+  Link,
   // @ts-ignore
 } from '@aragon/ui'
 import { fontWeight } from '../../style/font'
@@ -12,25 +12,67 @@ import BrandButton from '../BrandButton/BrandButton'
 import LayoutLimiter from '../Layout/LayoutLimiter'
 import { useAccountBalances } from '../../providers/AccountBalances'
 import { useAccountModule } from '../Account/AccountModuleProvider'
+import { useWallet } from '../../providers/Wallet'
+import { TERMS_URL_PATH } from '../../lib/terms'
+import { theme as localTheme } from '../../style/theme'
 
 type BalanceStatus =
   | 'default'
   | 'success'
   | 'noMigrationsAvailable'
   | 'accountEnabled'
+  | 'redemptionAvailable'
+  | 'noRedemptionAvailable'
 
 const MESSAGES: Record<BalanceStatus, ReactNode> = {
   default: (
     <>
-      Use the ANT Upgrade Portal to redeem your ANJ or upgrade your ANT balance
-      to the newest version of the token contract. Connect your wallet to view
-      the available upgrades on your account.
+      Use the ANT Redemption Portal to redeem your ANT for ETH. You can redeem
+      your ANT at a fixed rate of 0.0025376 ETH until November 2nd 2024 at 23h59
+      UTC.
+    </>
+  ),
+  redemptionAvailable: (
+    <>
+      You are now connected and can redeem your ANT for ETH.
+      <br />
+      <div>
+        <span
+          css={`
+            font-weight: 700;
+            }
+          `}
+        >
+          Important:
+        </span>{' '}
+        When you redeem your ANT for ETH, you agree to the{' '}
+        <Link
+          href={TERMS_URL_PATH}
+          css={`
+            text-decoration: none;
+            &:focus:after {
+              border: none;
+            }
+          `}
+        >
+          terms of service
+        </Link>
+        .
+      </div>
+    </>
+  ),
+  noRedemptionAvailable: (
+    <>
+      There are no redemptions or upgrades available for this account. Connect a
+      different wallet to check if you have any token balances to redeem or
+      upgrade.
     </>
   ),
   accountEnabled: (
     <>
-      Use the ANT Upgrade Portal to redeem your ANJ or upgrade your ANT balance
-      to the newest version of the token contract.
+      Use the ANT Redemption Portal to redeem your ANT for ETH. You can redeem
+      your ANT at a fixed rate of 0.0025376 ETH until November 2nd 2024 at 23h59
+      UTC.
     </>
   ),
   success: (
@@ -55,20 +97,26 @@ const MESSAGES: Record<BalanceStatus, ReactNode> = {
 }
 
 function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
-  const theme = useTheme()
   const { showAccount } = useAccountModule()
   const { antV1, antV2, anj } = useAccountBalances()
   const { layoutName } = useLayout()
   const [balanceStatus, setBalanceStatus] = useState<BalanceStatus>('default')
-
+  const { account } = useWallet()
+  const accountConnected = Boolean(account)
+  const noAccountBalance = Boolean(
+    !antV2.balance || antV2.balance.toString() === '0'
+  )
   const compactMode = layoutName === 'small'
 
   const primaryButton = useMemo(() => {
-    if (balanceStatus === 'accountEnabled') {
+    if (
+      balanceStatus === 'accountEnabled' ||
+      balanceStatus === 'redemptionAvailable'
+    ) {
       return null
     }
 
-    if (balanceStatus === 'default') {
+    if (balanceStatus === 'default' && !accountConnected) {
       return (
         <BrandButton
           mode="strong"
@@ -89,7 +137,7 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
         label="Connect a different wallet"
       />
     )
-  }, [balanceStatus, showAccount])
+  }, [balanceStatus, showAccount, accountConnected])
 
   useEffect(() => {
     if (antV1.balance && antV2.balance && anj.balance) {
@@ -111,8 +159,20 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
       return
     }
 
+    if (accountConnected) {
+      if (noAccountBalance) setBalanceStatus('noRedemptionAvailable')
+      else setBalanceStatus('redemptionAvailable')
+      return
+    }
+
     setBalanceStatus('default')
-  }, [antV1.balance, antV2.balance, anj.balance])
+  }, [
+    antV1.balance,
+    antV2.balance,
+    anj.balance,
+    accountConnected,
+    noAccountBalance,
+  ])
 
   return (
     <LayoutLimiter {...props}>
@@ -126,17 +186,11 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
           css={`
             font-weight: ${fontWeight.medium};
             font-size: 26px;
-            background: linear-gradient(
-              88.01deg,
-              ${theme.accentStart} 0%,
-              ${theme.accentEnd} 75%
-            );
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: ${localTheme.primary};
             margin-bottom: ${1 * GU}px;
           `}
         >
-          ANT Upgrade Portal
+          ANT Redemption Portal
         </h3>
         <h1
           css={`
@@ -148,22 +202,22 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
               : `54`}px;
           `}
         >
-          Upgrade to ANTv2
+          Redeem ANT for ETH
         </h1>
-        <p
+        <div
           css={`
             font-weight: ${fontWeight.medium};
             font-size: ${compactMode || balanceStatus === 'accountEnabled'
-              ? `22`
-              : `26`}px;
-            color: ${theme.contentSecondary};
+              ? `20`
+              : `22`}px;
+            color: ${localTheme.secondary};
             margin: auto;
             margin-bottom: ${4 * GU}px;
             max-width: ${110 * GU}px;
           `}
         >
           {MESSAGES[balanceStatus]}
-        </p>
+        </div>
         {primaryButton}
       </div>
     </LayoutLimiter>

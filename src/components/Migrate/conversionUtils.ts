@@ -7,7 +7,7 @@ export const CONVERSION_RATE: Record<TokenConversionType, number> = {
 }
 
 const { contracts } = networkEnvironment
-export const MIGRATORS: Record<TokenConversionType, string> = {
+export const MIGRATORS: Record<TokenConversionType, string | undefined> = {
   ANT: contracts.antV2Migrator,
   ANJ: contracts.anjNoLockMinterMigrator,
 }

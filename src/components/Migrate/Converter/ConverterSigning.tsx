@@ -59,6 +59,8 @@ function ConverterSigning({
     | undefined => {
     if (!convertAmount) {
       throw new Error('No amount was provided!')
+    } else if (!contracts.antV2Migrator) {
+      throw new Error('Migration is not available on this network')
     }
 
     // We need to call the "migrate" method directly when there is an existing
@@ -84,6 +86,8 @@ function ConverterSigning({
     | undefined => {
     if (!convertAmount) {
       throw new Error('No amount was provided!')
+    } else if (!contracts.anjNoLockMinterMigrator) {
+      throw new Error('Migration is not available on this network')
     }
 
     if (signingConfiguration === 'withinAnExistingAllowance') {
@@ -241,6 +245,11 @@ function ConverterSigning({
               : antTokenV1Contract
 
             const migrator = MIGRATORS[conversionType]
+            if (!migrator) {
+              throw new Error(
+                'The migrator contract is not available on this network'
+              )
+            }
             const tx = await contract?.functions.approve(migrator, '0')
 
             if (tx) {

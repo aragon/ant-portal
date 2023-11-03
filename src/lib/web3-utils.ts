@@ -1,7 +1,12 @@
 export function getNetworkName(chainId: number): string {
-  if (chainId === 1) return 'Ethereum'
-  if (chainId === 4) return 'Rinkeby'
-
+  switch (chainId) {
+    case 1:
+      return 'Ethereum'
+    case 4:
+      return 'Rinkeby'
+    case 5:
+      return 'Goerli'
+  }
   return 'Unknown'
 }
 

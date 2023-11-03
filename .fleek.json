@@ -1,0 +1,14 @@
+{
+  "site": {
+    "id": "b2280cec-5d04-42f7-bbad-39758ca84dd8",
+    "team": "aragonone-team",
+    "platform": "ipfs",
+    "source": "ipfs",
+    "name": "long-mountain-7075"
+  },
+  "build": {
+    "baseDir": "",
+    "publicDir": "build",
+    "rootDir": ""
+  }
+}

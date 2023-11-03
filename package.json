@@ -1,16 +1,16 @@
 {
-  "name": "aragon-upgrade",
-  "description": "ANT Upgrade Portal",
+  "name": "aragon-ant-portal",
+  "description": "ANT Redemption Portal",
   "version": "0.1.0",
   "private": true,
   "license": "AGPL-3.0-or-later",
   "author": "Aragon Association <legal@aragon.org>",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/aragon/upgrade.git"
+    "url": "git+ssh://git@github.com/aragon/ant-portal.git"
   },
   "bugs": {
-    "url": "https://github.com/aragon/upgrade/issues"
+    "url": "https://github.com/aragon/ant-portal/issues"
   },
   "keywords": [
     "aragon",
@@ -38,7 +38,7 @@
     "@juggle/resize-observer": "^3.2.0",
     "@sentry/browser": "^5.25.0",
     "clipboard-polyfill": "^3.0.1",
-    "ethers": "^5.0.15",
+    "ethers": "^5.7.0",
     "is-ipfs": "^2.0.0",
     "polished": "^4.0.2",
     "react": "^16.13.1",
@@ -49,7 +49,7 @@
     "react-use-measure": "^2.0.2",
     "token-amount": "^0.3.0",
     "use-token": "^0.2.0",
-    "use-wallet": "^0.9.0-alpha.1"
+    "use-wallet": "^0.15.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -84,9 +84,11 @@
     "start": "yarn sync-assets && cross-env TSC_COMPILE_ON_ERROR=true react-app-rewired start",
     "start:ethereum": "cross-env REACT_APP_NETWORK_ENVIRONMENT=ethereum yarn start",
     "start:rinkeby": "cross-env REACT_APP_NETWORK_ENVIRONMENT=rinkeby yarn start",
+    "start:goerli": "cross-env REACT_APP_NETWORK_ENVIRONMENT=goerli yarn start",
     "build": "yarn sync-assets && yarn lint && react-app-rewired build",
     "build:ethereum": "cross-env REACT_APP_NETWORK_ENVIRONMENT=ethereum yarn build",
     "build:rinkeby": "cross-env REACT_APP_NETWORK_ENVIRONMENT=rinkeby yarn build",
+    "build:goerli": "cross-env REACT_APP_NETWORK_ENVIRONMENT=goerli yarn build",
     "test": "react-app-rewired test --passWithNoTests --watchAll=false",
     "testWatch": "yarn test --watchAll=true",
     "eject": "react-scripts eject",

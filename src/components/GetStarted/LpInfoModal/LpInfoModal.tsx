@@ -16,6 +16,7 @@ import UsdAmount from '../../UsdAmount/UsdAmount'
 import TokenIcon from './TokenIcon'
 import { radius } from '../../../style/radius'
 import { shadowDepth } from '../../../style/shadow'
+import { theme as localTheme } from '../../../style/theme'
 
 // TODO: Link to specific section
 const READ_MORE_URL = 'https://docs.aragon.org/ant/'
@@ -76,7 +77,6 @@ type LpInfoModalProps = {
 function LpInfoModal({ visible, onClose }: LpInfoModalProps): JSX.Element {
   const { antV1, antTokenPriceUsd, lpBalances } = useAccountBalances()
 
-  const theme = useTheme()
   const { layoutName } = useLayout()
   const compactMode = layoutName === 'small'
 
@@ -123,7 +123,7 @@ function LpInfoModal({ visible, onClose }: LpInfoModalProps): JSX.Element {
         </h1>
         <p
           css={`
-            color: ${theme.surfaceContentSecondary};
+            color: ${localTheme.secondary};
             margin-bottom: ${3.5 * GU}px;
           `}
         >
@@ -152,8 +152,6 @@ function LpInfoModal({ visible, onClose }: LpInfoModalProps): JSX.Element {
 }
 
 function PoolTable({ items }: { items: PoolItem[] }) {
-  const theme = useTheme()
-
   return (
     <table
       css={`
@@ -171,7 +169,7 @@ function PoolTable({ items }: { items: PoolItem[] }) {
 
         th {
           font-weight: ${fontWeight.regular};
-          color: ${theme.contentSecondary};
+          color: ${localTheme.secondary};
 
           padding-bottom: ${0.75 * GU}px;
         }
@@ -280,14 +278,12 @@ function PoolListItem({
   label: string
   content: ReactNode
 }) {
-  const theme = useTheme()
-
   return (
     <div {...props}>
       <h2
         css={`
           font-weight: ${fontWeight.regular};
-          color: ${theme.contentSecondary};
+          color: ${localTheme.secondary};
           margin-bottom: ${0.25 * GU}px;
         `}
       >

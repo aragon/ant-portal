@@ -6,6 +6,7 @@ import {
 } from '@aragon/ui'
 import { tokenInfo } from '../../token-info/tokenInfo'
 import { TokenName } from '../../token-info/types'
+import { theme as localTheme } from '../../style/theme'
 
 type AntAmountProps = {
   amount: string
@@ -32,7 +33,7 @@ function TokenTotalAmount({
       <span
         css={`
           color: ${amount === '0'
-            ? theme.contentSecondary
+            ? localTheme.secondary
             : theme.surfaceContent};
         `}
       >
@@ -40,7 +41,7 @@ function TokenTotalAmount({
       </span>
       <span
         css={`
-          color: ${theme.contentSecondary};
+          color: ${localTheme.secondary};
           margin-left: ${0.75 * GU}px;
         `}
       >

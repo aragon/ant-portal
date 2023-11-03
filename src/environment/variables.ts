@@ -1,6 +1,6 @@
 import { EnvNetworkName, EnvVariables } from './types'
 
-const DEFAULT_NETWORK_ENVIRONMENT: EnvNetworkName = 'rinkeby'
+const DEFAULT_NETWORK_ENVIRONMENT: EnvNetworkName = 'goerli'
 
 export const ENV_VARS: EnvVariables = {
   NETWORK_ENVIRONMENT() {
@@ -23,5 +23,8 @@ export const ENV_VARS: EnvVariables = {
   },
   ANALYTICS_ENABLED() {
     return process.env.REACT_APP_ANALYTICS_ENABLED || ''
+  },
+  WALLETCONNECTV2_PROJECTID() {
+    return process.env.REACT_APP_WALLETCONNECTV2_PROJECTID || ''
   },
 }

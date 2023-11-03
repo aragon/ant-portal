@@ -12,6 +12,7 @@ import {
   ProviderConfig,
   Providers,
   WalletConfig,
+  UseWalletConfig,
   WalletConnector,
 } from '../types'
 
@@ -56,6 +57,15 @@ const PROVIDERS: Providers = {
   },
   walletconnect: {
     id: 'walletconnect',
+    name: 'WalletConnect',
+    type: 'Any',
+    image: walletconnect,
+    strings: {
+      'your Ethereum wallet': 'WalletConnect',
+    },
+  },
+  walletconnectV2: {
+    id: 'walletconnectV2',
     name: 'WalletConnect',
     type: 'Any',
     image: walletconnect,
@@ -124,7 +134,7 @@ function getProviderFromUseWalletId(id: WalletConnector): ProviderConfig {
       getProvider(identifyProvider(window.ethereum)) || getProvider('unknown')
     )
   }
-  return id in PROVIDERS
+  return id && id in PROVIDERS
     ? getProvider(id as KnownProviderId)
     : getProvider('unknown')
 }
@@ -132,12 +142,15 @@ function getProviderFromUseWalletId(id: WalletConnector): ProviderConfig {
 export function getUseWalletProviders(): WalletConfig[] {
   const providers: WalletConfig[] = [{ id: 'injected' }, { id: 'frame' }]
 
-  if (chainId === 1) {
-    // WalletConnect is only supported on mainnet environments because the web3-react WalletConnect connector is broken on any chain > 1
-    // https://github.com/NoahZinsmeister/web3-react/blob/v6/packages/walletconnect-connector/src/index.ts#L31
+  if (envVar('WALLETCONNECTV2_PROJECTID')) {
     providers.push({
-      id: 'walletconnect',
-      useWalletConf: { rpcUrl: endpoints.ethereum },
+      id: 'walletconnectV2',
+      useWalletConf: {
+        projectId: envVar('WALLETCONNECTV2_PROJECTID'),
+        rpc: {
+          [`${chainId}`]: endpoints.ethereum,
+        },
+      },
     })
   }
 
@@ -158,13 +171,10 @@ export function getUseWalletProviders(): WalletConfig[] {
   return providers
 }
 
-export function getUseWalletConnectors(): Record<
-  string,
-  WalletConfig['useWalletConf'] | unknown
-> {
+export function getUseWalletConnectors(): Record<string, UseWalletConfig> {
   return getUseWalletProviders().reduce(
-    (connectors: Record<string, unknown>, provider) => {
-      if (provider.useWalletConf) {
+    (connectors: Record<string, UseWalletConfig>, provider) => {
+      if (provider.useWalletConf && provider.id) {
         connectors[provider.id] = provider.useWalletConf
       }
 

@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react'
 // @ts-ignore
-import { GU, useTheme } from '@aragon/ui'
+import { GU } from '@aragon/ui'
 import { fontWeight } from '../../style/font'
+import { theme as localTheme } from '../../style/theme'
 
 type HeadingLevel = '1' | '2'
 
@@ -30,8 +31,6 @@ function PageHeading({
   level = '1',
   ...props
 }: PageHeadingProps): JSX.Element {
-  const theme = useTheme()
-
   const { margin, titleSize } = levelProperties[level]
 
   return (
@@ -57,7 +56,7 @@ function PageHeading({
             font-size: 24px;
             line-height: 1.4;
             margin-top: ${margin}px;
-            color: ${theme.contentSecondary};
+            color: ${localTheme.secondary};
             font-weight: ${fontWeight.medium};
             max-width: ${95 * GU}px;
             margin-left: auto;

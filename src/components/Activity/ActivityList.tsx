@@ -13,6 +13,7 @@ import { radius } from '../../style/radius'
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'
 import { getEtherscanUrl } from '../../utils/etherscan'
 import ActivityStatusIcon from './ActivityStatusIcon'
+import { theme as localTheme } from '../../style/theme'
 
 function ActivityList({
   ...props
@@ -62,7 +63,7 @@ function ActivityList({
                 border-radius: ${radius.low};
                 line-height: 1;
                 font-weight: ${fontWeight.medium};
-                color: ${theme.contentSecondary};
+                color: ${localTheme.secondary};
               `}
             >
               Clear all
@@ -81,7 +82,7 @@ function ActivityList({
                     css={`
                       display: flex;
                       justify-content: space-between;
-                      color: ${theme.contentSecondary};
+                      color: ${localTheme.secondary};
                       font-size: 14px;
 
                       &:not(:last-child) {
@@ -141,7 +142,7 @@ function ActivityList({
       ) : (
         <p
           css={`
-            color: ${theme.contentSecondary};
+            color: ${localTheme.secondary};
             line-height: 1.2;
           `}
         >

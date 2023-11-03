@@ -1,7 +1,7 @@
 import React from 'react'
 // @ts-ignore
 import { unselectable, GU } from '@aragon/ui'
-import footerLogoSvg from '../../assets/aragon-logo.svg'
+import footerLogoSvg from '../../assets/logo-footer.svg'
 
 function FooterLogo(): JSX.Element {
   return (

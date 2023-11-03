@@ -27,6 +27,7 @@ import { CONVERSION_RATE, MIGRATORS } from '../conversionUtils'
 import { TokenConversionType } from '../types'
 import ConversionInfo from './ConversionInfo'
 import ValidationWarning from './ValidationWarning'
+import { theme as localTheme } from '../../../style/theme'
 
 const FLOAT_REGEX = /^\d*[.]?\d*$/
 
@@ -175,7 +176,7 @@ function BaseConverterFormControls({
       <p
         css={`
           margin-top: ${1 * GU}px;
-          color: ${theme.surfaceContentSecondary};
+          color: ${localTheme.secondary};
         `}
       >
         You will receive:{' '}
@@ -234,10 +235,14 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
     try {
       if (!account) {
         throw new Error('No account is connected!')
-      }
-
-      if (!contract) {
+      } else if (!contract) {
         throw new Error(`The ${conversionType} token contract is not defined!`)
+      }
+      const migrator = MIGRATORS[conversionType]
+      if (!migrator) {
+        throw new Error(
+          'The migrator contract is not available on this network'
+        )
       }
 
       setAllowanceCheckLoading(true)
@@ -246,7 +251,6 @@ function useCheckAllowanceAndProceed(parsedAmountBn: BigNumber) {
       // Without it the flicker can feel very subtly jarring
       await mockPromiseLatency(200)
 
-      const migrator = MIGRATORS[conversionType]
       const {
         remaining: allowanceRemaining,
       } = await contract.functions.allowance(account, migrator)

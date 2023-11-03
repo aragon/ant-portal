@@ -1,7 +1,7 @@
 import React from 'react'
 import { keyframes } from 'styled-components'
 // @ts-ignore
-import { GU, useTheme, textStyle, Link } from '@aragon/ui'
+import { GU, textStyle, Link } from '@aragon/ui'
 import {
   getProviderFromUseWalletId,
   getProviderString,
@@ -10,6 +10,7 @@ import {
 import loadingRing from './assets/loading-ring.svg'
 import { WalletConnector } from './types'
 import { fontWeight } from '../../style/font'
+import { theme as localTheme } from '../../style/theme'
 
 const spin = keyframes`
   from {
@@ -29,7 +30,6 @@ function ScreenConnecting({
   onCancel,
   providerId,
 }: ScreenConnectingProps): JSX.Element {
-  const theme = useTheme()
   const provider = providerId
     ? getProviderFromUseWalletId(providerId)
     : { id: undefined, image: '', name: '' }
@@ -102,7 +102,7 @@ function ScreenConnecting({
         <p
           css={`
             width: ${36 * GU}px;
-            color: ${theme.surfaceContentSecondary};
+            color: ${localTheme.secondary};
             line-height: 1.4;
             margin-bottom: ${1 * GU}px;
           `}

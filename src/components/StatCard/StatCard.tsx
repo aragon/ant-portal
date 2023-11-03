@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react'
 // @ts-ignore
-import { useTheme, GU } from '@aragon/ui'
+import { GU } from '@aragon/ui'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
 import LoadingSkeleton from '../LoadingSkeleton/LoadingSkeleton'
+import { theme as localTheme } from '../../style/theme'
 
 type StatCardProps = {
   title: string
@@ -13,12 +14,10 @@ type StatCardProps = {
 }
 
 function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {
-  const theme = useTheme()
-
   return (
     <div
       css={`
-        background-color: ${theme.surface};
+        background-color: ${localTheme.whiteCard};
         border-radius: ${radius.high};
         padding: ${5 * GU}px;
         width: 100%;
@@ -38,7 +37,7 @@ function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {
         css={`
           font-size: 18px;
           font-weight: ${fontWeight.medium};
-          color: ${theme.contentSecondary};
+          color: ${localTheme.secondary};
         `}
       >
         {title}
@@ -65,7 +64,7 @@ function StatCard({ graphic, title, value, desc }: StatCardProps): JSX.Element {
       <p
         css={`
           font-size: 18px;
-          color: ${theme.contentSecondary};
+          color: ${localTheme.secondary};
           line-height: 1.4;
         `}
       >

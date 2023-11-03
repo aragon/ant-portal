@@ -1,10 +1,11 @@
 import React, { AllHTMLAttributes, ReactNode } from 'react'
 // @ts-ignore
-import { Button, useTheme, GU } from '@aragon/ui'
+import { Button, GU } from '@aragon/ui'
 import { shadowDepth } from '../../style/shadow'
 import { fontWeight } from '../../style/font'
 import { radius } from '../../style/radius'
 import { css } from 'styled-components'
+import { theme as localTheme } from '../../style/theme'
 
 type NativeButtonProps = AllHTMLAttributes<HTMLButtonElement>
 
@@ -32,8 +33,6 @@ function BrandButton({
   label,
   ...props
 }: BrandButtonProps): JSX.Element {
-  const theme = useTheme()
-
   return (
     <Button
       mode={mode}
@@ -52,7 +51,7 @@ function BrandButton({
         font-weight: ${fontWeight.medium};
         ${!disabled ? `box-shadow: ${shadowDepth.low};` : ''}
         ${!disabled && mode === 'strong'
-          ? `background: linear-gradient(135deg, ${theme.accentEnd} 0%, ${theme.accentStart} 100%);`
+          ? `background: ${localTheme.primary};`
           : ''};
 
         ${size === 'large' ? largeStyles : ''}

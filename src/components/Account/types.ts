@@ -1,9 +1,8 @@
 import { ExternalProvider } from '@ethersproject/providers'
 import {
-  Wallet,
+  useWallet,
   ChainUnsupportedError,
   ConnectionRejectedError,
-  ConnectorConfigError,
   ConnectorUnsupportedError,
 } from 'use-wallet'
 
@@ -12,6 +11,7 @@ export type KnownProviderId =
   | 'frame'
   | 'metamask'
   | 'walletconnect'
+  | 'walletconnectV2'
   | 'status'
   | 'cipher'
   | 'fortmatic'
@@ -32,17 +32,26 @@ export type Providers = {
 
 // Wallet
 export type WalletProvider = ExternalProvider
-export type WalletWithProvider = Wallet<WalletProvider>
+export type WalletWithProvider = ReturnType<typeof useWallet>
 export type WalletConnector = WalletWithProvider['connector']
 export type WalletError =
   | ChainUnsupportedError
   | ConnectorUnsupportedError
   | ConnectionRejectedError
-  | ConnectorConfigError
+  | Error
+  | null
+
+export type UseWalletConfig = {
+  apiKey?: string
+  dAppId?: string
+  rpcUrl?: string
+  projectId?: string
+  rpc?: { [key: string]: string }
+}
 
 export type WalletConfig = {
   id: WalletConnector
-  useWalletConf?: { apiKey?: string; dAppId?: string; rpcUrl?: string }
+  useWalletConf?: UseWalletConfig | undefined
 }
 
 // Account module screens

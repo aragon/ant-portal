@@ -1,12 +1,13 @@
 import React, { useMemo, useRef } from 'react'
 // @ts-ignore
-import { GU, Link, textStyle, useTheme } from '@aragon/ui'
+import { GU, Link, textStyle } from '@aragon/ui'
 import { ChainUnsupportedError } from 'use-wallet'
 import { getNetworkName } from '../../lib/web3-utils'
 import { networkEnvironment } from '../../environment'
 import connectionError from './assets/connection-error.png'
 import { WalletError } from './types'
 import { fontWeight } from '../../style/font'
+import { theme as localTheme } from '../../style/theme'
 
 type ScreenErrorProps = {
   error: WalletError
@@ -14,7 +15,6 @@ type ScreenErrorProps = {
 }
 
 function ScreenError({ error, onBack }: ScreenErrorProps): JSX.Element {
-  const theme = useTheme()
   const elementRef = useRef<HTMLElement | null>(null)
 
   const [title, secondary] = useMemo(() => {
@@ -75,7 +75,7 @@ function ScreenError({ error, onBack }: ScreenErrorProps): JSX.Element {
         <p
           css={`
             width: ${36 * GU}px;
-            color: ${theme.surfaceContentSecondary};
+            color: ${localTheme.secondary};
             line-height: 1.4;
             margin-bottom: ${1 * GU}px;
           `}

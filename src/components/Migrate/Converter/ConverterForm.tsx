@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import { css } from 'styled-components'
 import {
-  useTheme,
   useLayout,
   GU,
   // @ts-ignore
@@ -10,12 +9,12 @@ import TokenAmount from 'token-amount'
 import { fontWeight } from '../../../style/font'
 import { TokenConversionType } from '../types'
 import { useMigrateState } from '../MigrateStateProvider'
-import { shadowDepth } from '../../../style/shadow'
 import { useAccountBalances } from '../../../providers/AccountBalances'
 import ConverterFormControls from './ConverterFormControls'
 import { radius } from '../../../style/radius'
 import ConversionRate from './ConversionRate'
 import PageHeading from '../../PageHeading/PageHeading'
+import { theme as localTheme } from '../../../style/theme'
 
 export const TOKEN_SYMBOL: Record<TokenConversionType, string> = {
   ANT: 'ANTv1',
@@ -39,7 +38,6 @@ const stackedLayout = css`
 `
 
 function ConverterForm(): JSX.Element {
-  const theme = useTheme()
   const { layoutName } = useLayout()
   const { conversionType } = useMigrateState()
   const { antV1, anj } = useAccountBalances()
@@ -74,8 +72,7 @@ function ConverterForm(): JSX.Element {
       <div
         css={`
           padding: ${compactMode ? 4 * GU : 6 * GU}px;
-          background-color: ${theme.surface};
-          box-shadow: ${shadowDepth.high};
+          background-color: ${localTheme.whiteCard};
           border-radius: ${radius.high};
           display: grid;
           grid-gap: ${4 * GU}px;
@@ -100,7 +97,7 @@ function ConverterForm(): JSX.Element {
           </h2>
           <p
             css={`
-              color: ${theme.surfaceContentSecondary};
+              color: ${localTheme.secondary};
             `}
           >
             {formattedBalance ? (

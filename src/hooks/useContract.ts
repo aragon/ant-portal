@@ -7,8 +7,10 @@ import {
 import { Provider } from '@ethersproject/providers'
 import { useWallet } from '../providers/Wallet'
 import { networkEnvironment } from '../environment'
+import antV2RedemptionAbi from '../abi/ant-v2-redemption.json'
+import blockListAbi from '../abi/block-list.json'
 import tokenAntV1Abi from '../abi/token-ant-v1.json'
-import tokenAntV2Abi from '../abi/token-ant-v1.json'
+import tokenAntV2Abi from '../abi/token-ant-v2.json'
 import tokenAnjAbi from '../abi/token-anj.json'
 import migratorAbi from '../abi/migrator.json'
 import courtAbi from '../abi/court.json'
@@ -16,6 +18,8 @@ import anjNoLockMinterMigratorAbi from '../abi/anj-migrator.json'
 import uniswapPoolAbi from '../abi/uniswap-pool.json'
 import incentivePoolAbi from '../abi/incentive-pool.json'
 import balancerPoolAbi from '../abi/balancer-pool.json'
+import { AntV2Redemption } from '../abi/types/AntV2Redemption'
+import { BlockList } from '../abi/types/BlockList'
 import { TokenAntV1 } from '../abi/types/TokenAntV1'
 import { TokenAntV2 } from '../abi/types/TokenAntV2'
 import { TokenAnj } from '../abi/types/TokenAnj'
@@ -71,6 +75,28 @@ function useContract<T>({
 
     return getContract(address, abi, signer ? ethers.getSigner() : ethers)
   }, [abi, account, address, ethers, signer, readOnly])
+}
+
+export function useAntV2RedemptionContract(
+  readOnly?: boolean
+): AntV2Redemption | null {
+  const { antV2Redemption } = contracts
+
+  return useContract<AntV2Redemption>({
+    address: antV2Redemption,
+    abi: antV2RedemptionAbi,
+    readOnly,
+  })
+}
+
+export function useBlockListContract(readOnly?: boolean): BlockList | null {
+  const { blockList } = contracts
+
+  return useContract<BlockList>({
+    address: blockList,
+    abi: blockListAbi,
+    readOnly,
+  })
 }
 
 export function useAntV2MigratorContract(readOnly?: boolean): Migrator | null {

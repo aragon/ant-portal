@@ -1,12 +1,12 @@
 import React from 'react'
 // @ts-ignore
 import { useTheme, GU, Help } from '@aragon/ui'
-import { shadowDepth } from '../../../style/shadow'
 import { fontWeight } from '../../../style/font'
 import { radius } from '../../../style/radius'
 import { useMigrateState } from '../MigrateStateProvider'
 import TokenGraphic from '../../TokenGraphic/TokenGraphic'
 import { CONVERSION_RATE } from '../conversionUtils'
+import { theme as localTheme } from '../../../style/theme'
 
 type ConversionRateProps = {
   compactMode: boolean
@@ -59,11 +59,10 @@ function ConversionRate({
         css={`
           display: flex;
           padding: ${2 * GU}px;
-          background-color: ${theme.surface};
+          background-color: ${localTheme.whiteCard};
 
           // Create pill corners
           border-radius: ${radius.pill};
-          box-shadow: ${shadowDepth.high};
           margin-bottom: ${3.5 * GU}px;
         `}
       >
@@ -99,11 +98,7 @@ function ConversionRate({
             line-height: 1;
             margin-bottom: ${1.75 * GU}px;
 
-            background: linear-gradient(
-              160deg,
-              ${theme.accentStart} -20%,
-              ${theme.accentEnd} 60%
-            );
+            background: ${localTheme.primary};
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
           `}
@@ -136,7 +131,7 @@ function ConversionRate({
         </div>
         <p
           css={`
-            color: ${theme.surfaceContentSecondary};
+            color: ${localTheme.secondary};
             letter-spacing: 0.04em;
           `}
         >
@@ -152,7 +147,7 @@ function ConversionRate({
             css={`
               margin-left: ${1 * GU}px;
               margin-right: ${1 * GU}px;
-              color: ${theme.contentSecondary};
+              color: ${localTheme.secondary};
             `}
           >
             :

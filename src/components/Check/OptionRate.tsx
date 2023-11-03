@@ -8,6 +8,7 @@ import TokenGraphic from '../TokenGraphic/TokenGraphic'
 import styled, { css } from 'styled-components'
 import { Rate } from '../Migrate/Converter/ConversionRate'
 import { useOptionConversionRate } from '../../hooks/usePolledBalance'
+import { theme as localTheme } from '../../style/theme'
 
 type OptionRateProps = {
   compactMode: boolean
@@ -46,11 +47,7 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
             line-height: 1;
             margin-bottom: ${1.75 * GU}px;
 
-            background: linear-gradient(
-              160deg,
-              ${theme.accentStart} -20%,
-              ${theme.accentEnd} 60%
-            );
+            background: ${localTheme.primary};
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
           `}
@@ -87,13 +84,13 @@ function OptionRate({ tokenSymbol }: OptionRateProps): JSX.Element {
             </p>
           </Help>
         </div>
-        <SecondaryParagraph color={theme.surfaceContentSecondary}>
+        <SecondaryParagraph color={localTheme.secondary}>
           <NumberSpan color={theme.surfaceContent}>1</NumberSpan> {tokenSymbol}{' '}
-          <ColonSpan color={theme.contentSecondary}>:</ColonSpan>{' '}
+          <ColonSpan color={localTheme.secondary}>:</ColonSpan>{' '}
           <NumberSpan color={theme.surfaceContent}>{conversionRate}</NumberSpan>{' '}
           ANTv2
         </SecondaryParagraph>
-        <SecondaryParagraph color={theme.surfaceContentSecondary}>
+        <SecondaryParagraph color={localTheme.secondary}>
           <b>Expiry Date:</b> September 30th 2021
         </SecondaryParagraph>
       </TextContainer>

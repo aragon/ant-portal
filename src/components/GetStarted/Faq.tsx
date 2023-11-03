@@ -3,9 +3,9 @@ import React, { ReactNode, useState, useCallback } from 'react'
 import { ButtonBase, IconRight, GU, useLayout, useTheme } from '@aragon/ui'
 import { Transition, animated } from 'react-spring/renderprops'
 import { fontWeight } from '../../style/font'
-import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { springs } from '../../style/springs'
+import { theme as localTheme } from '../../style/theme'
 
 const AnimatedDiv = animated.div
 
@@ -57,10 +57,9 @@ function Item({ title, description }: ItemProps): JSX.Element {
           z-index: 2;
           padding: ${compactMode ? 3.5 * GU : 4 * GU}px;
           padding-right: ${12 * GU}px;
-          background: ${theme.surface};
-          box-shadow: ${shadowDepth.medium};
+          background: ${localTheme.whiteCard};
           border-radius: ${radius.high};
-          color: ${opened ? theme.content : theme.surfaceContentSecondary};
+          color: ${opened ? theme.content : localTheme.secondary};
           text-align: left;
           white-space: initial;
           transition: color 250ms ease-in-out;
@@ -106,14 +105,14 @@ function Item({ title, description }: ItemProps): JSX.Element {
                 <div
                   css={`
                     border-radius: ${radius.high};
-                    background-color: ${theme.surfaceSelected};
+                    background-color: ${localTheme.whiteCard};
                     padding: ${3.75 * GU}px ${4.5 * GU}px ${3.2 * GU}px;
                   `}
                 >
                   <AnimatedDiv
                     style={{ opacity }}
                     css={`
-                      color: ${theme.surfaceContentSecondary};
+                      color: ${localTheme.secondary};
                       font-size: ${compactMode ? 16 : 18}px;
                       p,
                       ul {

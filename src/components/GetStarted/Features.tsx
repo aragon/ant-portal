@@ -1,18 +1,22 @@
 import React from 'react'
 // @ts-ignore
-import { GU, Link, useTheme, useLayout } from '@aragon/ui'
-import featuresPng from '../../assets/antv2-features.png'
-import redeemAnjPng from '../../assets/redeem-anj.png'
+import { GU, Link, useLayout } from '@aragon/ui'
+import movingBeyondANTSvg from '../../assets/moving-beyond-ant.svg'
+import upgradeToANTv2Svg from '../../assets/upgrade-to-antv2.svg'
+import wANTHoldersSvg from '../../assets/want-holders.svg'
 import { fontWeight } from '../../style/font'
 import LayoutLimiter from '../Layout/LayoutLimiter'
+import { theme as localTheme } from '../../style/theme'
+import { radius } from '../../style/radius'
 
-const BLOG_POST_URL = 'https://aragon.org/blog/antv2'
-const REDEEM_ANJ_PROPOSAL_URL = 'https://aragon.org/blog/merge-anj'
+const ANNOUNCEMENT_URL =
+  'https://blog.aragon.org/a-new-chapter-for-the-aragon-project/'
+const ARAGON_DAO_TOKEN_WRAPPER_URL =
+  'https://dao.aragon.org/#/token-wrapper/0x5713c2d9e9d4381bff966b1cdbf52cf4e8addc2c'
 
 function Features({
   ...props
 }: React.HTMLAttributes<HTMLElement>): JSX.Element {
-  const theme = useTheme()
   const { layoutName } = useLayout()
 
   const compactMode = layoutName === 'small'
@@ -23,11 +27,17 @@ function Features({
       <div
         css={`
           display: grid;
-          grid-template-columns: ${stackColumns ? '1fr' : '1fr 1fr'};
+          grid-template-columns: ${stackColumns ? '1fr' : '20% 80%'};
           align-items: center;
-          grid-gap: ${10 * GU}px;
+          grid-gap: ${6 * GU}px;
           text-align: ${stackColumns ? 'center' : 'left'};
-          padding-bottom: ${10 * GU}px;
+          margin-bottom: ${compactMode ? 16 * GU : 20 * GU}px;
+          background-color: ${localTheme.whiteCard};
+          border-radius: ${radius.high};
+          padding: ${3 * GU}px;
+          margin-left: auto;
+          margin-right: auto;
+          width: 100%;
         `}
       >
         <div>
@@ -47,8 +57,116 @@ function Features({
               `}
             >
               <img
-                alt="Redeem ANJ into ANTv2"
-                src={redeemAnjPng}
+                alt="wAnt holders"
+                src={wANTHoldersSvg}
+                css={`
+                  width: 100%;
+                  max-width: 250px;
+                `}
+              />
+            </div>
+          </div>
+        </div>
+        <div>
+          <h2
+            css={`
+              font-weight: ${fontWeight.semiBold};
+              line-height: 1.2;
+              font-size: ${compactMode ? `24` : `28`}px;
+              margin-bottom: ${2 * GU}px;
+            `}
+          >
+            wANT holders
+          </h2>
+          <p
+            css={`
+              font-weight: ${fontWeight.medium};
+              font-size: ${compactMode ? `18` : `22`}px;
+              color: ${localTheme.secondary};
+              margin-bottom: ${2 * GU}px;
+            `}
+          >
+            If you are a wANT holder, to obtain your ANTv2, you must first
+            unwrap it
+          </p>
+          <div
+            css={`
+              font-weight: ${fontWeight.medium};
+              font-size: ${compactMode ? `16` : `18`}px;
+              color: ${localTheme.secondary};
+              margin-bottom: ${1 * GU}px;
+            `}
+          >
+            <span
+              css={`
+                color: ${localTheme.black};
+                margin-right: ${2 * GU}px;
+              `}
+            >
+              Step 1
+            </span>
+            Navigate to the{' '}
+            <Link
+              href={ARAGON_DAO_TOKEN_WRAPPER_URL}
+              css={`
+                text-decoration: none;
+                &:focus:after {
+                  border: none;
+                }
+              `}
+            >
+              Aragon DAO’s token wrapper
+            </Link>
+          </div>
+          <div
+            css={`
+              font-weight: ${fontWeight.medium};
+              font-size: ${compactMode ? `16` : `18`}px;
+              color: ${localTheme.secondary};
+            `}
+          >
+            <span
+              css={`
+                color: ${localTheme.black};
+                margin-right: ${2 * GU}px;
+              `}
+            >
+              Step 2
+            </span>
+            Click the button “Convert tokens” to unwrap your wANT back to ANTv2.
+          </div>
+        </div>
+      </div>
+
+      <div
+        css={`
+          display: grid;
+          grid-template-columns: ${stackColumns ? '1fr' : '1fr 1fr'};
+          align-items: center;
+          grid-gap: ${10 * GU}px;
+          text-align: ${stackColumns ? 'center' : 'left'};
+          padding-bottom: ${compactMode ? 10 * GU : 20 * GU}px;
+        `}
+      >
+        <div>
+          <div
+            css={`
+              max-width: ${stackColumns ? `${62 * GU}px` : 'auto'};
+              margin: auto;
+            `}
+          >
+            <div
+              css={`
+                position: relative;
+                width: 100%;
+
+                margin-left: auto;
+                margin-right: auto;
+              `}
+            >
+              <img
+                alt="Upgrade to ANTv2"
+                src={upgradeToANTv2Svg}
                 css={`
                   width: 100%;
                 `}
@@ -65,30 +183,20 @@ function Features({
               margin-bottom: ${2.5 * GU}px;
             `}
           >
-            Redeem your ANJ&nbsp;into ANTv2
+            Upgrade to ANTv2
           </h2>
           <p
             css={`
               font-weight: ${fontWeight.medium};
               font-size: ${compactMode ? `18` : `26`}px;
-              color: ${theme.contentSecondary};
+              color: ${localTheme.secondary};
               margin-bottom: ${3 * GU}px;
             `}
           >
-            ANJ holders will be compensated with ANTv2 to ensure they can
-            continue participating in Aragon Court with equivalent economic
-            weight.
+            Only ANTv2 is eligible for redemption. If you haven’t already, you
+            will need to first migrate your ANTv1 or ANJ to ANTv2. Once your
+            tokens are migrated to ANTv2, you can redeem it for ETH.
           </p>
-          <Link
-            href={REDEEM_ANJ_PROPOSAL_URL}
-            css={`
-              font-weight: ${fontWeight.medium};
-              font-size: ${compactMode ? `17` : `20`}px;
-              text-decoration: none;
-            `}
-          >
-            Review the proposal
-          </Link>
         </div>
       </div>
 
@@ -101,7 +209,11 @@ function Features({
           text-align: ${stackColumns ? 'center' : 'left'};
         `}
       >
-        <div>
+        <div
+          css={`
+            order: ${stackColumns ? 1 : 0};
+          `}
+        >
           <h2
             css={`
               font-weight: ${fontWeight.bold};
@@ -110,32 +222,38 @@ function Features({
               margin-bottom: ${2.5 * GU}px;
             `}
           >
-            Why are we modernizing&nbsp;ANT?
+            Moving beyond ANT
           </h2>
           <p
             css={`
               font-weight: ${fontWeight.medium};
               font-size: ${compactMode ? `18` : `26`}px;
-              color: ${theme.contentSecondary};
+              color: ${localTheme.secondary};
               margin-bottom: ${3 * GU}px;
             `}
           >
-            It’s time for ANT to get an upgrade! Switching to a newer, simpler
-            token contract makes ANT transactions 66% cheaper and support
-            gasless&nbsp;transfers.
+            The Aragon Association has decided to voluntarily use most of its
+            treasury to offer all ANT holders the opportunity to redeem their
+            ANT for ETH at a fixed rate of <b>0.0025376 ETH / ANT</b> as part of
+            its dissolution process. The redemption period will be open for 1
+            year, ending on <b>November 2nd 2024 at 23h59 UTC</b>.
           </p>
           <Link
-            href={BLOG_POST_URL}
+            href={ANNOUNCEMENT_URL}
             css={`
               font-weight: ${fontWeight.medium};
               font-size: ${compactMode ? `17` : `20`}px;
               text-decoration: none;
             `}
           >
-            Read the blog post
+            Read the announcement
           </Link>
         </div>
-        <div>
+        <div
+          css={`
+            order: ${stackColumns ? 0 : 1};
+          `}
+        >
           <div
             css={`
               max-width: ${stackColumns ? `${62 * GU}px` : 'auto'};
@@ -145,7 +263,7 @@ function Features({
             <div
               css={`
                 position: relative;
-                padding-top: 108%;
+                padding-top: 86%;
                 width: 100%;
 
                 margin-left: auto;
@@ -154,7 +272,7 @@ function Features({
             >
               <img
                 alt="ANT v2"
-                src={featuresPng}
+                src={movingBeyondANTSvg}
                 css={`
                   position: absolute;
                   top: 0;

@@ -1,7 +1,7 @@
-export type EnvNetworkName = 'ethereum' | 'rinkeby'
+export type EnvNetworkName = 'ethereum' | 'rinkeby' | 'goerli'
 
-type LegacyNetworkType = 'main' | 'rinkeby'
-type ChainId = 1 | 4
+type LegacyNetworkType = 'main' | 'rinkeby' | 'goerli'
+type ChainId = 1 | 4 | 5
 
 export interface EnvVariables {
   NETWORK_ENVIRONMENT(): string
@@ -10,6 +10,7 @@ export interface EnvVariables {
   PORTIS_DAPP_ID(): string
   SENTRY_DSN(): string
   ANALYTICS_ENABLED(): string
+  WALLETCONNECTV2_PROJECTID(): string
 }
 
 export interface EnvNetworkConfig {
@@ -20,14 +21,16 @@ export interface EnvNetworkConfig {
   }
   ipfsGateway: string
   contracts: {
-    court: string
-    tokenAntV1: string
+    court?: string
+    tokenAntV1?: string
     tokenAntV2: string
-    tokenAnj: string
-    anjNoLockMinterMigrator: string
-    antV2Migrator: string
+    tokenAnj?: string
+    anjNoLockMinterMigrator?: string
+    antV2Migrator?: string
     antEthUniswapPool?: string
     antUniIncentivePool?: string
     antEthBalancerPool?: string
+    antV2Redemption?: string
+    blockList?: string
   }
 }

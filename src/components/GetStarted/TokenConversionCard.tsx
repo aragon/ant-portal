@@ -11,7 +11,6 @@ import { useHistory } from 'react-router-dom'
 import TokenGraphic from '../TokenGraphic/TokenGraphic'
 import BrandButton from '../BrandButton/BrandButton'
 import { BalanceItem } from './BalanceCard'
-import { shadowDepth } from '../../style/shadow'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
 import { TokenName } from '../../token-info/types'
@@ -19,6 +18,7 @@ import { tokenInfo } from '../../token-info/tokenInfo'
 import rightArrowPng from '../../assets/right-arrow.png'
 import LockIcon from '../icons/LockIcon'
 import { CONVERTER_PATH, REDEEM_ANJ_PATH } from '../../Routes'
+import { theme as localTheme } from '../../style/theme'
 
 type TokenConversionCardProps = {
   tokenName: TokenName
@@ -88,7 +88,7 @@ function TokenConversionCard({
     ) : (
       <div
         css={`
-          color: ${theme.contentSecondary};
+          color: ${localTheme.secondary};
         `}
       >
         {title}
@@ -99,8 +99,7 @@ function TokenConversionCard({
   return (
     <div
       css={`
-        background-color: ${theme.surface};
-        box-shadow: ${shadowDepth.high};
+        background-color: ${localTheme.whiteCard};
         border-radius: ${radius.high};
         padding: ${3 * GU}px;
 
@@ -217,7 +216,7 @@ function TokenConversionCard({
               css={`
                 font-weight: ${fontWeight.medium};
                 font-size: 22px;
-                color: ${theme.contentSecondary};
+                color: ${localTheme.secondary};
                 padding-top: ${2 * GU}px;
               `}
             >
@@ -319,7 +318,7 @@ function TokenConversionCard({
                 ) : (
                   <span
                     css={`
-                      color: ${theme.contentSecondary};
+                      color: ${localTheme.secondary};
                     `}
                   >
                     Distribution unavailable on Rinkeby
@@ -329,7 +328,7 @@ function TokenConversionCard({
           ) : (
             <p
               css={`
-                color: ${theme.contentSecondary};
+                color: ${localTheme.secondary};
               `}
             >
               Enable account to see your balance

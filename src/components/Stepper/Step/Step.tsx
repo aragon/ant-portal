@@ -8,6 +8,7 @@ import StatusVisual from './StatusVisual'
 import { springs } from '../../../style/springs'
 import { useDisableAnimation } from '../../../hooks/useDisableAnimation'
 import { StepStatus } from '../types'
+import { theme as localTheme } from '../../../style/theme'
 
 const AnimatedSpan = animated.span
 
@@ -36,11 +37,11 @@ function Step({
     const appearance = {
       waiting: {
         visualColor: theme.accent,
-        descColor: theme.surfaceContentSecondary,
+        descColor: localTheme.secondary,
       },
       prompting: {
         visualColor: theme.accent,
-        descColor: theme.surfaceContentSecondary,
+        descColor: localTheme.secondary,
       },
       working: {
         visualColor: theme.accent,
@@ -102,7 +103,7 @@ function Step({
             text-align: center;
 
             ${textStyle('body1')}
-            color: ${theme.surfaceContentSecondary};
+            color: ${localTheme.secondary};
             line-height: 1.2;
           `}
         >

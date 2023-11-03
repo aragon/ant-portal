@@ -65,7 +65,7 @@ function AccountModule(): JSX.Element {
       // We should update use-wallet to return a boolean on
       // whether this was successful so we don't have to wait
       // until a next render to figure out the status.
-      await wallet.connect(providerId)
+      await wallet.connect(providerId || undefined)
 
       trackEvent('web3_connect', {
         segmentation: {
