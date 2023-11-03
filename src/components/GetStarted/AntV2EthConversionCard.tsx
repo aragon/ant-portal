@@ -190,7 +190,7 @@ function AntV2EthConversionCard({
                 size="large"
                 wide
                 disabled={true}
-                label="Coming soon"
+                label="Please, ensure that you are connected to Ethereum mainnet"
                 css={`
                   width: 100%;
                   height: ${14.75 * GU}px;
