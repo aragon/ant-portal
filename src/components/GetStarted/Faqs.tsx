@@ -52,12 +52,39 @@ const FAQS_ITEMS: [string, ReactNode][] = [
   ],
   [
     'If I have my ANT in a centralized exchange (CEX), what am I supposed to do?',
+    <>
+      <p>
+        If your ANT is in a CEX, we recommend you to withdraw the tokens to a
+        self-custody wallet, such as{' '}
+        <a
+          href="https://metamask.io/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Metamask
+        </a>
+        , and then login to the ANT Redemption Portal with it to perform the
+        redemption directly.
+      </p>
+      <p>
+        You may also withdraw your ANT to a hard wallet, such as Ledger or
+        Trezor. However, you will need to import the hard wallet into Metamask
+        in order to connect to the ANT Redemption Portal.
+      </p>
+    </>,
+  ],
+  [
+    'If I have my ANT in a Ledger Live, Exodus, or other unsupported wallets, what am I supposed to do?',
     <p>
-      If your ANT is in a CEX, we recommend you to withdraw the tokens to your
-      own self-custody wallet to perform the redemption directly. However, we
-      are aware not everyone will be capable of doing so. For this reason, the
-      AA has asked all CEXs to automatically redeem any remaining ANT on behalf
-      of users before the termination date.
+      If you attempt to connect to the ANT Redemption Portal with a wallet that
+      is not supported, you may not be able to interact with the portal. In that
+      case, please transfer your ANT to a supported self-custody wallet, such as
+      <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">
+        Metamask
+      </a>
+      , and connect with it instead. If you are using a hardware wallet, such as
+      Trezor or Ledger, you can also import it into Metamask and use that to
+      connect to the ANT Redemption Portal.
     </p>,
   ],
   [
