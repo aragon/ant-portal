@@ -78,7 +78,7 @@ const FAQS_ITEMS: [string, ReactNode][] = [
     <p>
       If you attempt to connect to the ANT Redemption Portal with a wallet that
       is not supported, you may not be able to interact with the portal. In that
-      case, please transfer your ANT to a supported self-custody wallet, such as
+      case, please transfer your ANT to a supported self-custody wallet, such as{' '}
       <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">
         Metamask
       </a>
