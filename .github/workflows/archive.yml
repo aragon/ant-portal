@@ -1,0 +1,30 @@
+name: CI
+
+on: push
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build ANT Redemption Portal
+        run: yarn build
+      - name: Run BundleWatch
+        run: yarn bundlewatch
+      - name: Run tests
+        run: yarn test
+      - name: Archive build
+        uses: actions/upload-artifact@v4
+        with:
+          name: ant-portal
+          path: build/
+          retention-days: 1
+
+    env:
+      CI: true
+      BUNDLEWATCH_GITHUB_TOKEN: ${{ secrets.BUNDLEWATCH_GITHUB_TOKEN }}
