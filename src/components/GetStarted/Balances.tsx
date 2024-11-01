@@ -11,7 +11,6 @@ import { bigNum } from '../../utils/math-utils'
 import { useWallet } from '../../providers/Wallet'
 import { networkEnvironment } from '../../environment'
 import { CONVERSION_RATE } from '../Migrate/conversionUtils'
-import useRedemptionEthBalance from '../../hooks/useRedemptionEthBalance'
 
 const { chainId } = networkEnvironment
 
@@ -24,21 +23,8 @@ function Balances({
   const { account } = useWallet()
   const [modalVisible, setModalVisible] = useState(false)
   const { layoutName } = useLayout()
-  const { antV2, antV1, anj, lpBalances } = useAccountBalances()
+  const { antV1, anj, lpBalances } = useAccountBalances()
   const stackedCards = layoutName === 'small' || layoutName === 'medium'
-  const antV2RedeemContractBalance = useRedemptionEthBalance()
-  const antV2RedeemContractHasBalance = Boolean(
-    antV2RedeemContractBalance && antV2RedeemContractBalance > 0
-  )
-
-  const formattedAntV2Balance = useMemo(
-    (): string | null =>
-      antV2.balance &&
-      new TokenAmount(antV2.balance, antV2.decimals).format({
-        digits: FORMATTED_DIGITS,
-      }),
-    [antV2.balance, antV2.decimals]
-  )
 
   const formattedAntV1Balance = useMemo(
     (): string | null =>
@@ -97,11 +83,7 @@ function Balances({
             }`}
         `}
       >
-        <AntV2EthConversionCard
-          balance={formattedAntV2Balance}
-          accountConnected={accountConnected}
-          available={antV2RedeemContractHasBalance}
-        />
+        <AntV2EthConversionCard />
         <TokenConversionCard
           tokenName="anj"
           balance={formattedAnjBalance}
