@@ -6,13 +6,11 @@ import {
   // @ts-ignore
 } from '@aragon/ui'
 import TokenGraphic from '../TokenGraphic/TokenGraphic'
-import BrandButton from '../BrandButton/BrandButton'
 import { radius } from '../../style/radius'
 import { fontWeight } from '../../style/font'
 import { TokenName } from '../../token-info/types'
 import { tokenInfo } from '../../token-info/tokenInfo'
 import rightArrowPng from '../../assets/right-arrow.png'
-import LockIcon from '../icons/LockIcon'
 import useAntV2ToEthRate from '../../hooks/useAntV2ToEthRate'
 import { theme as localTheme } from '../../style/theme'
 
@@ -77,14 +75,16 @@ function AntV2EthConversionCard(): JSX.Element {
             >
               For ANTv2 Holders
             </div>
-            <div
-              css={`
-                display: flex;
-                align-items: center;
-              `}
-            >
-              ETH/ANTv2: {antV2ToEthRate}
-            </div>
+            {antV2ToEthRate && (
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                `}
+              >
+                ETH/ANTv2: {antV2ToEthRate}
+              </div>
+            )}
           </div>
           <div
             css={`
@@ -151,20 +151,14 @@ function AntV2EthConversionCard(): JSX.Element {
               padding-top: ${2 * GU}px;
               width: 100%;
               height: 100%;
+              text-align: center;
             `}
           >
-            <BrandButton
-              icon={<LockIcon />}
-              mode="strong"
-              size="large"
-              wide
-              disabled={true}
-              label="The ANT Redemption Initiative ended on November 2nd 2024 23:59 UTC. For any questions, please reach out to ant@aragon.org"
-              css={`
-                width: 100%;
-                height: ${14.75 * GU}px;
-              `}
-            />
+            <p>
+              The ANT Redemption Initiative ended on November 2nd 2024 23:59
+              UTC. <br />
+              For any questions, please reach out to ant@aragon.org
+            </p>
           </div>
         </div>
       </div>
