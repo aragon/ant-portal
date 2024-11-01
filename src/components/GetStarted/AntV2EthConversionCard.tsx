@@ -25,7 +25,6 @@ function AntV2EthConversionCard(): JSX.Element {
   const antV2ToEthRate = useAntV2ToEthRate()
 
   const compactMode = layoutName === 'small'
-  // const tabletMobileMode = layoutName === 'small' || layoutName === 'medium'
 
   const tokenTitle = tokenInfo[tokenName].suffix
 
