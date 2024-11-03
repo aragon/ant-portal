@@ -117,15 +117,7 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
     }
 
     if (balanceStatus === 'default' && !accountConnected) {
-      return (
-        <BrandButton
-          mode="strong"
-          size="large"
-          onClick={showAccount}
-          icon={<IconConnect />}
-          label="Connect your wallet"
-        />
-      )
+      return ()
     }
 
     return (
