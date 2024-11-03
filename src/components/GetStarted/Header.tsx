@@ -192,18 +192,6 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
         >
           ANT Redemption Portal
         </h3>
-        <h1
-          css={`
-            font-weight: ${fontWeight.bold};
-            line-height: 1.2;
-            margin-bottom: ${2.5 * GU}px;
-            font-size: ${compactMode || balanceStatus === 'accountEnabled'
-              ? `44`
-              : `54`}px;
-          `}
-        >
-          Redeem ANT for ETH
-        </h1>
         <div
           css={`
             font-weight: ${fontWeight.medium};
