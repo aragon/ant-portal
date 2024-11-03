@@ -115,7 +115,7 @@ function Header({ ...props }: React.HTMLAttributes<HTMLElement>): JSX.Element {
     }
 
     if (balanceStatus === 'default' && !accountConnected) {
-      return ()
+      return (<></>)
     }
 
     return (
