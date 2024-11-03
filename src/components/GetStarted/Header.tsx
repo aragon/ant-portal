@@ -27,9 +27,7 @@ type BalanceStatus =
 const MESSAGES: Record<BalanceStatus, ReactNode> = {
   default: (
     <>
-      Use the ANT Redemption Portal to redeem your ANT for ETH. You can redeem
-      your ANT at a fixed rate of 0.0025376 ETH until November 2nd 2024 at 23h59
-      UTC.
+      The ANT Redemption Initiative ended on November 2nd 2024 23:59 UTC. Please read the report <a href="https://blog.aragon.org/ant-redemption-initiative-report/">here</a>. 
     </>
   ),
   redemptionAvailable: (
