@@ -27,7 +27,12 @@ type BalanceStatus =
 const MESSAGES: Record<BalanceStatus, ReactNode> = {
   default: (
     <>
-      The ANT Redemption Initiative ended on November 2nd 2024 23:59 UTC. Please read the report <a href="https://blog.aragon.org/ant-redemption-initiative-report/">here</a>. 
+      The ANT Redemption Initiative ended on November 2nd 2024 23:59 UTC. Please 
+      read the report 
+      <a href="https://blog.aragon.org/ant-redemption-initiative-report/">
+        here
+      </a>
+      . 
     </>
   ),
   redemptionAvailable: (
